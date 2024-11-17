@@ -1,0 +1,309 @@
+<head>
+	<title>
+		Complex Function Plotter
+	</title>
+</head>
+<body >
+<a href="../index.html">HOME</a> <br>
+<h1> Complex Plotter</h1>
+<div style="display: flex;">
+	<div> 
+		<h2>Parameters</h2>
+		<h3> Graph</h3>
+		<input type="range" min="0.0" max="6.2831853" value="0.0000" step="any" class="slider" id="angle-a"> a <br>
+		<input type="range" min="0.0" max="6.2831853" value="1.5708" step="any" class="slider" id="angle-b"> b <br>
+		<input type="range" min="0.0" max="6.2831853" value="1.0472" step="any" class="slider" id="angle-c"> c <br>
+		<input type="range" min="0.0" max="6.2831853" value="0.5236" step="any" class="slider" id="angle-d"> d <br>
+	    <br>
+		<input type="range" min="0" max="2" value="1" step="any" id="domain-scale">  Domain Scale  <br>
+		<input type="range" min="0" max="2" value="1" step="any" id="range-scale"> Range Scale <br>
+		<input type="checkbox" step="any" checked="true" id="draw-bases"> Draw Bases <br>
+		<input type="text" value="8" step="any" id="lipschitz-const">  Lipschitz Const  <br>
+
+
+		<h3>Function</h3>
+		<input type="text" value="0, 1" step="any" class="slider" id="branches"> branches <br>
+		<input type="range" min="0.0" max="1.0" value="0.0" step="any" class="slider" id="slider-p"> t <br>
+	</div>
+	<div style="align-self: center; max-width: 800; margin: auto;">
+		<h2>Graph</h2>
+		<div style="display:flex; flex-wrap: wrap; max-height:50px">
+			<p> f(z) = </p>
+			<input type="text" style="flex-grow: 1" name="f(z)" value = "cpow(cmult(z, z) + vec2(1.0, 0.0), 0.5, branch * 2.0 * pi)" id ="function-input" onenter="reloadFunction();">
+			<button type="button" name="submit-function" onclick="reloadFunction();"> Enter </button> 
+		</div>
+		<br>
+		<canvas id="c" width="800" height="540" onmousedown="OnDragCanvas(event)"></canvas>
+		<br>
+	</div>
+	
+	<div>
+	<h2>Instructions</h2>
+	<h3> Inputing Functions</h3>
+		<li> Complex numbers are represented with 2D vectors.  <br>
+		Therefore, <i>f(z)</i> must return a 2D vector.
+		<li> To input the complex number <i>x + iy</i> write <code>vec2(x, y)</code> <br>
+		<li> All real numbers must be written with decimal points <br>
+		  e.g. <i> 2.0 </i>, not <i> 2 </i> <br>
+    <h3> Function Reference</h3>
+		<li> <code> i, pi </code> and  <code> e </code> can be used as constants <br>
+	<br>
+	For all complex numbers <i> z,w </i> and real number <i>phi</i>: <br>
+	<br>
+		<li> <code> ccosh(z) </code> returns <i> cosh(z) </i> <br>
+		<li> <code> z + w </code> returns <i> z + w </i> <br>
+		<li> <code> cmult(z, w) </code> returns <i> zw </i> <br>
+		<li> <code> clog(z, phi) </code> returns <i> Log<sub>phi</sub>(z) </i> <br>
+		<li> <code> cexp(z) </code> returns <i> e<sup>z</sub> </i> <br>
+		<li> <code> cpow(z, w) </code> returns <i> exp(w Log<sub>-pi</sub>(z)) </i> <br>
+		<li> <code> cpow(z, w, phi) </code> returns <i> exp(w Log<sub>phi</sub>(z)) </i> <br>
+		<li> <code> csinh(z) </code> returns <i> sinh(z) </i> <br>
+		<li> <code> ccosh(z) </code> returns <i> cosh(z) </i> <br>
+		<li> <code> csin(z) </code> returns <i> sin(z) </i> <br>
+		<li> <code> ccos(z) </code> returns <i> cos(z) </i> <br>
+
+	<h3> Function Parameters </h3>
+		<li> Change the list of `branches` on the left-panel. <br>
+		The function will be rendered once for each branch. <br>
+		Use parameter `branch` in your function definition <br>
+		to define different branches of your function. <br>
+		<li> Use parameter <code>t</code> in function definition <br>
+		to allow for easy editing of some function property
+			
+	<h3> Interaction</h3>
+		Click and drag on the graph to rotate the "domain plane". <br>
+		Hold `Ctrl` whilst dragging to rotate the "range plane".
+	</div>
+</div>
+
+<h2>How to Interpret the Graph</h2>
+
+In order to see how this interpret the 4D graphs drawn by plotter, we can relate them to the simpler case of 2d graphs of real valued functions.
+<br>
+<br>
+In the graph of a real function <i> f: R -> R</i> there are <i>2</i> axes, corresponding to the domain and range of <i>f</i>. 
+In order to plot a point on the graph of the real function we can move from the origin <i>x</i> units to the right (along the "domain axis"), 
+and then from there move <i>f(x)</i> units upwards (along the "range axis"). 
+<br>
+<br>
+The 4D graph plotter functions in much the same way, whereas instead of having domain and range axes, for a complex function
+<i>g(z): C -> C</i> we have a plane for each <i>z</i> and <i>g(z)</i>, which we will call the "domain plane" and "range plane". 
+The "domain plane" has basis <i>{(cos(a), sin(a))<sup>T</sup>, (cos(b), sin(b))<sup>T</sup>}</i> and the range plane has basis  <i>{(cos(c), sin(c))<sup>T</sup>, (cos(d), sin(d))<sup>T</sup>}</i>.
+In order to plot a point on the graph of we can move from the origin to the point <i>z</i> in our "domain plane", 
+and from there move to the point <i>g(z)</i> in our "range plane". This process is repeated for all the points in a subset of our domain.
+
+<footer>
+	  <p>Made by Otis Laundon. Email me at <a href="mailto:sepee67@gmail.com">sepee67@gmail.com</a> with questions/suggestions!</p>
+	  <a href="https://github.com/sepee/sepee.github.io/"> Source code</a>
+	<footer> 
+	
+</body>
+
+<!-- > SHADERS <!-->
+
+<script id="func-eval-vertex-shader" type="notjs">
+
+  // an attribute will receive data from a buffer
+  attribute vec4 a_position;
+  uniform mat4 u_dom_mat;
+  uniform mat4 u_ran_mat;
+  uniform float u_lipschitz;
+  
+  uniform float t;
+  uniform float branch;
+
+  varying vec4 color;
+
+  vec4 hsv2rgb_smooth( vec4 c )
+	{
+	    vec3 rgb = clamp( abs(mod(c.x*6.0+vec3(0.0,4.0,2.0),6.0)-3.0)-1.0, 0.0, 1.0);
+		rgb = rgb*rgb*(3.0-2.0*rgb); // cubic smoothing	
+		rgb = c.z * mix(vec3(1.0), rgb, c.y);
+		return vec4(rgb, c.w);
+	}
+
+  vec4 complexToColor(vec2 z)
+  {
+    float zmag = length(z);
+    float heading = atan(z.y, z.x);
+
+    return hsv2rgb_smooth(vec4(heading / (2.0 * 3.1415927) + 0.5, min(1.0, 1.0/zmag), min(1.0, zmag), 0.6));
+  }
+
+// complex functions START
+
+float e = 2.7183;
+float pi = 3.14159;
+
+vec2 i = vec2(0.0, 1.0);
+
+// START : complex powers
+
+vec2 cmult(vec2 a, vec2 b)
+{
+  //returns a * b
+  return vec2(a.x * b.x - a.y * b.y, a.x * b.y + a.y * b.x);
+}
+
+
+vec2 cexp(vec2 z)
+{
+	return vec2(pow(e, z.x) * cos(z.y), pow(e, z.x) * sin(z.y));
+}
+
+vec2 clog(vec2 z, float branch)
+{
+  int k = int((branch - atan(z.y, z.x) + 2.0 *  pi) / (2.0 * pi));
+
+  return vec2(log(length(z)), atan(z.y, z.x) + (2.0 * float(k) * pi));
+}
+
+vec2 cpow(vec2 z, vec2 alpha, float branch)
+{
+  return cexp(cmult(clog(z, branch), alpha));
+}
+
+vec2 cpow(vec2 z, float alpha, float branch)
+{
+  return cpow(z, vec2(alpha, 0.0), branch);
+}
+
+vec2 cpow(vec2 z, float alpha)
+{
+  return cpow(z, vec2(alpha, 0.0), -pi);
+}
+
+vec2 cpow(float x, vec2 alpha)
+{
+  return cpow(vec2(x, 0.0), alpha, -pi);
+}
+vec2 cpow(float x, float alpha)
+{
+  return cpow(vec2(x, 0.0), vec2(alpha, 0.0), -pi);
+}
+// END : complex powers
+
+vec2 clog(vec2 z)
+{
+return clog(z, -pi);
+}
+
+vec2 csinh(vec2 z)
+{
+	return (cexp(z) - cexp(-z)) / 2.0;
+}
+
+vec2 ccosh(vec2 z)
+{
+	return (cexp(z) + cexp(-z)) / 2.0;
+}
+
+vec2 csin(vec2 z)
+{
+	return cmult(-i, csinh(vec2(-z.y, z.x)));
+}
+
+vec2 ccos(vec2 z)
+{
+	return cmult(-i, ccosh(vec2(-z.y, z.x)));
+}
+
+vec2 cconj(vec2 z)
+{
+return vec2(z.x, -z.y);
+}
+
+vec2 Re(vec2 z)
+{
+return vec2(z.x, 0.0);
+}
+
+vec2 Im(vec2 z)
+{
+return vec2(0.0, z.y);
+}
+
+vec2 cdiv(vec2 a, vec2 b)
+{
+  //returns a * b
+  return cmult(a, cpow(b, -1.0, 0.0));
+}
+
+// complex functions END
+
+
+  vec2 complexFunction(vec2 z)
+  {
+  	float p = 0.0;
+
+    //USERDEFINED
+	// good example from homework: cpow(vec2(e, 0.0), (clog(z + vec2(0.0, 1.0), pi/2.0) + clog(z + vec2(0.0, -1.0), pi/2.0)) * 0.5, 0.0)
+	return vec2(0);
+  }
+
+  // all shaders have a main function
+  void main() {
+
+    // gl_Position is a special variable a vertex shader
+    // is responsible for setting
+
+    vec2 image = complexFunction(a_position.xy);
+
+    float dx = 0.05;
+    
+    vec2 imagemdx = complexFunction(a_position.xy - vec2(dx,0));
+    vec2 imagemdy = complexFunction(a_position.xy - vec2(0.0,dx));
+    vec2 imagedx = complexFunction(a_position.xy + vec2(dx,0));
+    vec2 imagedy = complexFunction(a_position.xy + vec2(0.0,dx));
+
+    vec4 dom_screen = u_dom_mat * a_position;
+    vec4 ran_screen = u_ran_mat * vec4(image, 0, 1);
+
+    bool notTooSteep = length(imagemdx - imagedx) < u_lipschitz * 2.0 * dx && length(imagemdy - imagedy) < u_lipschitz * 2.0 * dx;
+
+    gl_Position = dom_screen + ran_screen;
+    gl_Position = vec4(gl_Position.rgb, gl_Position.w);
+    color = complexToColor(image.xy);
+	
+	float alpha = float(notTooSteep) * color.a;
+    color = vec4(color.rgb * alpha, alpha);
+  }
+
+</script>
+
+<script  id="direct-vertex-shader" type="notjs">
+
+  // an attribute will receive data from a buffer
+  attribute vec4 a_position;
+  uniform mat4 u_dom_mat;
+  uniform mat4 u_ran_mat;
+
+  varying vec4 color;
+
+  // all shaders have a main function
+  void main() 
+  {
+    gl_Position = a_position;
+    color = vec4(1.0, 1.0, 1.0, 1.0);
+  }
+
+</script>
+
+<script  id="fragment-shader" type="notjs">
+
+  // fragment shaders don't have a default precision so we need
+  // to pick one. mediump is a good default
+  precision mediump float;
+
+  varying vec4 color;
+
+  void main() {
+    // gl_FragColor is a special variable a fragment shader
+    // is responsible for setting
+    gl_FragColor = color; 
+  }
+  </script>
+
+<!-- > RUN APP AFTER EVERYTHING ELSE IS LOADED <!-->
+
+<script src="app.js"></script>
