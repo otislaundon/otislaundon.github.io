@@ -1,1 +1,0 @@
-Interactive complex function plotter.

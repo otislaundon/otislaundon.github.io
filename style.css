@@ -1,3 +1,39 @@
 body{
-    background-color: lightgray;
+    font-family: Helvetica, sans-serif;
+    color: white;
+    background-color: #282828;
+    padding-left:  10px;
+    padding-right: 10px;
+}
+.main-title{
+    font-size: 20px;
+    color: white;
+    text-decoration: none;
+}
+.cards-container{
+    width: auto;
+    
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    grid-gap: 12px;
+}
+.card{
+    padding: 0px;
+    width: 360px;
+
+    color:white;
+    text-decoration: none;
+
+    background-color: #ffffff11;
+
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+.card-content{
+    padding: 10px 24px;
+}
+
+.card-title{
+    font-size: 24px;
+    margin-top: 0px;
+    margin-bottom: 0px;
 }

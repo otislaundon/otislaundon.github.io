@@ -1,10 +1,30 @@
+<style>
+	body{
+		font-family: Helvetica, sans-serif;
+		color:white;
+		background-color: #282828;
+	}
+	input{
+		color: inherit;
+		background-color: #282828;
+		border-color	: #ffffff33;
+		border-style: solid;
+	}
+	button{
+		color: inherit;
+		background-color: #ffffff22;
+		border-color	: #ffffff33;
+		border-style: solid;
+	}
+</style>
+
 <head>
 	<title>
 		Complex Function Plotter
 	</title>
 </head>
 <body >
-<a href="../index.html">HOME</a> <br>
+<a href="../../index.html">HOME</a> <br>
 <h1> Complex Plotter</h1>
 <div style="display: flex;">
 	<div> 
@@ -33,7 +53,7 @@
 			<button type="button" name="submit-function" onclick="reloadFunction();"> Enter </button> 
 		</div>
 		<br>
-		<canvas id="c" width="800" height="540" onmousedown="OnDragCanvas(event)"></canvas>
+		<canvas id="c" width="800" height="540" onmousedown="OnDragCanvas(event)" style="background-color: white;"></canvas>
 		<br>
 	</div>
 	
