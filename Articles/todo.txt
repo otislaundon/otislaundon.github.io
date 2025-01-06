@@ -1,0 +1,8 @@
+Articles to add:
+    - Grid Symmetry and Harmony
+    - 4D Raymarching
+    - Camera bag
+    - Chinese checkers board
+    - Photo Gallery
+    - some kind of daily puzzle? could be fun
+    - playing games agains AI, e.g. bricks.
