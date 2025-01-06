@@ -1,7 +1,7 @@
 body{
     font-family: Helvetica, sans-serif;
     color: white;
-    background-color: #282828;
+    background-color: #111111;
     padding: 0px;
     margin: 0px;
 }
@@ -24,6 +24,7 @@ footer{
     padding: 0px;
 }
 .page-container{
+    background-color: #282828;
     min-height: calc(100vh - 80px);
     padding:  20px;
     margin: 0px;
