@@ -31,6 +31,18 @@
             [TODO: INSERT SOUND THINGS HERE]
 
             <h2>Symmetric patterns</h2>
+            
+            <p>
+                Certain points in the image stand out more than others, as a whole bunch of spheres line up behind one another. I have highlighted a few of these points below.
+            </p>
+            
+            <img src="highlighted grid points.png">
+
+            Each point on the image represents some direction in 3D space. The point "A" in the center of the image for example is the cameras forward direction, written as a row vector (0, 0, 1). Whereas the point "B" corresponds to the direction (-0.5, 0, 1), and "C" is to the direction (-0.4, 0.2, 1). We can scale each of these direction vectors so that they have integer components, allowing us to look at the ratios of their components. 
+            
+            A is still just (0, 0, 1), giving ratio 0:0:1. 
+            B scales up to give (-1, 0, 2). We dont care about the negative, so we end up with ratio 1:0:2. 
+            C scales up to give (-2, 1, 5), giving ratio 2:1:5.
 
             <h2>Ratios of vector components</h2>
             <div class="hline"></div>
