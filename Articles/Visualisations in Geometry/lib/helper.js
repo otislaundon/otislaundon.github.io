@@ -9,10 +9,6 @@ const isVisibleInViewport = (element) => {
     )
 }
 
-const sum = (x) => x.reduce((partial_sum, a) => (partial_sum + a), 0);
-const v_length = (x) => Math.sqrt(sum(x.map((a) => a*a)));
-const v_normalise = (x) => {let l = v_length(x); return x.map((a) => a/l)};
-
 // This function takes in a p5 instance and adds to it drawing functions in R4
 // We will create simmilar libraries potentially for hyperbolic or other drawing methods.
 let augment_p5_instance = function(p){
