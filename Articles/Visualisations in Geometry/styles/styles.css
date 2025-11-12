@@ -1,0 +1,41 @@
+body{
+    max-width:720px;
+    margin: auto;
+
+    font-family: Helvetica, Arial, sans-serif;
+
+    color: white;
+    background-color: #202020;
+}
+.top-bar{
+    border-width: 1px;
+    border-color: black;
+    border: black;
+    
+    justify-content: center;
+    align-content: center;
+    
+    display: grid;
+}
+.top-bar > h1{
+    padding: 0px;
+}
+.top-bar-item{
+    justify-content: center;
+    align-content: left;
+}
+
+/* The below class styles are for custom html elements formatted from typst html export */
+.eqn_block{
+    scale: 1.5;
+    max-width: min-content;
+    margin: auto;
+}
+.eqn_inline{
+    scale: 1.2;
+}
+.align-right{
+    width: min-content;
+    margin-right: 0px;
+    margin-left: auto;
+}

@@ -1,0 +1,10 @@
+as lie groups:
+so4 = so3 + so3
+
+lie algebra is antisymmetric real matrices
+
+carter, siegel, mcdonald: lectures on lie groups and lie algebras.
+
+(read, chapter 1, chapter 2 (abt 20 pages))
+(first few sections of second series, siegel) (sections 1, 2, 4)
+

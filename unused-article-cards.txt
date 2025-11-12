@@ -1,0 +1,8 @@
+<a class="card" href="Articles/Harmony and Grid Symmetry/Harmony and Grid Symmetry.html">
+	<img src="Articles/Harmony and Grid Symmetry/Harmony and Grid Symmetry Thumbnail.png">
+	<div class="card-content">
+		<h3 class="card-title">Harmony and Grid Symmetry [UNFINISHED ARTICLE]</h3>
+		<h4>Music, Programming</h4>
+		<p>An audio-visual link between musical harmony and the symmetries of a grid</p>
+	</div>
+</a>
