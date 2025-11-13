@@ -1,6 +1,7 @@
 let cos = Math.cos;
 let sin = Math.sin;
 let PI = Math.PI;
+let TWOPI = 2 * PI;
 
 function generate_hypercube_edgecolors(){
     let colors = [];
