@@ -4,14 +4,14 @@ let sketch_template = new p5((p) => {
 
     p.surface = function(u, v) {
         
-        let depth = 4;
+        let depth = 12;
         
         let w = new Complex(u, v);
         let PI_c = new Complex(PI, 0);
         let pw = weierstrass_p(w, depth);
         let zeta_wmh = weierstrass_zeta(w.sub(0.5), depth);
         let zeta_wmih = weierstrass_zeta(w.sub(0,0.5), depth);
-        let e1 = new Complex(weierstrass_e1, 0);
+        let e1 = weierstrass_p(new Complex(0, 0.5)).mul(-1);
 
         let x = 0;
         let y = 0;

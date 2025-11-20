@@ -82,21 +82,21 @@ weierstrass_sigma = function(z, depth=2){
 
 weierstrass_p = function(z, depth = 3) 
 {
-  let result = new Complex(z);
+  let result = z.pow(-2);
 
  for(let n = -depth; n <= depth; n++)
  for(let m = -depth; m <= depth; m++){
   if(n == 0 && m==0)
     continue;
   let l = new Complex(n, m);
-  result = result.add(((z.sub(l)).pow(2)).inverse().sub(l.inverse()))
+  result = result.add((z.sub(l).pow(-2)).sub(l.pow(-2)))
 }
- return result.add(z.pow(2).inverse());
+ return result;
 }
 
 weierstrass_zeta = function(z, depth=3) 
 {
-  let result = new Complex(z);
+  let result = z.inverse();
 
  for(let n = -depth; n <= depth; n++)
  for(let m = -depth; m <= depth; m++){
@@ -105,10 +105,8 @@ weierstrass_zeta = function(z, depth=3)
   let l = new Complex(n, m);
   result = result.add((z.sub(l)).inverse().add(l.inverse()).add(z.mul(l.pow(-2))))
 }
- return result.add(z.inverse());
+ return result;
 }
-
-weierstrass_e1 = 6.87519;
 
 // Augments a p5 instance with the capability to draw domain colourings. 
 // TODO: improve performance

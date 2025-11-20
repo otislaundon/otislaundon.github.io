@@ -8,3 +8,10 @@ carter, siegel, mcdonald: lectures on lie groups and lie algebras.
 (read, chapter 1, chapter 2 (abt 20 pages))
 (first few sections of second series, siegel) (sections 1, 2, 4)
 
+
+historical use of visualisations
+    examples:
+    - elements of euclic by oliver byrne
+
+    including historical context for what the project is trying to achieve
+

@@ -37,6 +37,14 @@
     }
   }
 
+  #show block: a => context{
+    if target() == "html"{
+      html.elem("div")[#a.body]
+    }else{
+      [#a]
+    }
+  }
+
   #set math.equation(numbering: "    (1)")
 
   #content
@@ -51,7 +59,7 @@
       html.elem("script", attrs: (src: sketch_path))
     }
     else{
-      link("https://otislaundon.com", 
+      link("https://otislaundon.com/", 
       align(center, 
       image(placeholder_path, width: 80%)))
     }

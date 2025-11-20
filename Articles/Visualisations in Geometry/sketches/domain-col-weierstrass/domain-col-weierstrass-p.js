@@ -5,7 +5,7 @@ let dom_col_weierstrass_p = new p5((p) => {
     p.setup = function(){
         p.canvas = p.createCanvas(360, 360);
         p.canvas.parent(p.canvas_id);
-        p.domain_col(weierstrass_p);
+        p.domain_col(z => weierstrass_p(z, 3));
     }
 })
 
