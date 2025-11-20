@@ -44,6 +44,8 @@ function vc_mult(v, c){
   return result;
 }
 
+vs_mult = (v, s) => v.map(a => a * s);
+
 function rot4_xy_zw(theta, phi){
     let ct = cos(theta);
     let st = sin(theta);
