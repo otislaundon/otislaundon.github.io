@@ -24,7 +24,7 @@ p.draw = function(){
         return;
 
     // Set the styles
-    p.background(32);
+    p.background(0);
 
     if (p.keyIsPressed === true) 
         p.theta += p.deltaTime / 1000;

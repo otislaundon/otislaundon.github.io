@@ -80,9 +80,23 @@ function rot4_xw_yz(theta, phi){
         st,0,0,ct];
 }
 
+function rot3_xy(theta){
+    let ct = cos(theta);
+    let st = sin(theta);
+    return [
+        ct, -st, 0,
+        st, ct, 0,
+        0,0,1
+    ]
+}
+
 const mat4_id = [
     1,0,0,0,
     0,1,0,0,
     0,0,1,0,
     0,0,0,1
 ]
+
+function vv_lerp(a, b, t){
+    return vv_add(vs_mult(a, 1-t), vs_mult(b, t));
+}

@@ -1,111 +1,159 @@
 let sketch_paths_of_rotations = new p5((p) => {
     p.canvas_id = "sketch:paths-of-rotations";
+    p5_lib_surfaceparam(p);
+    p5_lib_controls(p);
+
+    p.surface = function(a, b){
+        return vv_lerp([0,0,0], [sin(TWOPI*a), -2, cos(TWOPI*a)], b);
+    }
+
+    // TODO: fix this jank!!! randomising the gid is a terrible solution.
+    p.createPathGeom = function(f, res){
+        let geom = new p5.Geometry();
+        geom.gid = "path"+p.random(100000);
+        for(let x = 0; x <= res; x++)
+        {
+            let x_scaled = x/res;
+            let pos = f(x_scaled);
+            geom.vertices.push(p.createVector(pos[0], pos[1], pos[2]));
+            if(x <res)
+                geom.edges.push([x, x+1]);
+        }
+        return geom;
+    }
+
+    p.draw_homotopy_sphere = function(){
+        p.noStroke();
+        p.fill(p.color(1,1,1,0.1))
+        p.GL.disable(p.GL.DEPTH_TEST);
+        p.sphere(PI);
+    }
+    p.draw_parameterised_surface = function(){
+        p.GL.enable(p.GL.DEPTH_TEST);
+
+        p.noStroke();
+        p.stroke(1,0,0.85);
+        p.fill(1,0,0.75, 255);
+        p.strokeWeight(1);
+        p.model(p.surface_geom);
+    }
+
+    p.draw_parameterised_path =function(){
+        p.stroke(1,1,0.5);
+        p.GL.disable(p.GL.DEPTH_TEST);
+        p.model(p.path_geom);
+    }
+
+    p.draw_parameterised_path_points =function(){
+        p.GL.enable(p.GL.DEPTH_TEST);
+        p.colorMode(p.HSL, 1);
+        p.noStroke();
+        for(let theta = 0; theta < 1; theta += 0.01){
+            // Box
+            p.push();
+            p.fill(theta,1,0.6);
+            
+            let rot = p.surface(theta, p.t);
+            p.translate(rot[0], rot[1], rot[2]);
+            p.sphere(0.05, 5,5);
+            p.pop();
+        }
+    }
+
+    p.homotopy_surface = function(){
+        p.draw_homotopy_sphere();
+        p.draw_parameterised_surface();
+        //p.draw_parameterised_path();
+        p.draw_parameterised_path_points();
+    }
+
+    p.draw_rotation_path = function(path, object)
+    {
+        p.GL.enable(p.GL.DEPTH_TEST);
+        p.colorMode(p.HSL, 1);
+        p.stroke(1,0,1);
+        p.strokeWeight(0.5);
+        for(let theta = 0; theta < 1; theta += 0.01){
+            // Box
+            p.push();
+            p.fill(theta,1,0.6);
+            p.translate(3*p.cos(theta * TWOPI), 3 * p.sin(theta * TWOPI), 0);
+            p.rotate(theta*TWOPI,[0,0,1]);
+            
+            let rot = p.surface(theta, p.t);
+            let angle = v_length(rot);
+            let axis = v_normalise(rot);
+            if(angle != 0)
+            p.rotate(angle,axis);
+            p.scale(1);
+            p.box(0.1,0.5,1);
+            p.pop();
+        }
+    }
 
     p.setup = function(){
         p.canvas = p.createCanvas(720, 360, p.WEBGL);
         p.canvas.parent(p.canvas_id);
 
-        p.perspective();
+        p.slider_t = p.createSlider("t");
+        p.slider_theta = p.createSlider("theta");
 
-        p.gl = p._renderer.GL;
+        p.surface_geom = p.createSurfaceGeom(p.surface, 50, 10);
+
+        p.GL = p._renderer.GL;
 
         p.colorMode(p.HSL, 1);
-    }
 
-    p.homotopy = function(t){
-        return function(theta){
-            return {
-            "angle": t * 0.001 + theta - p.PI,
-            "axis" : v_normalise([p.sin(t*0.001), p.cos(t*0.001), 0.5])
-            }
-        }
-    }
-
-    let TWOPI = 2*p.PI;
-    p.draw_homotopy_cylinder = function(h, r, res_t = 4, res_theta = 4){
-        p.fill(1,1,1,0.1);
-        // draw the sphere
-        p.noStroke();
-        p.push();
-        p.sphere(p.PI);
-        p.pop();
-        //draw the axes
-        p.draw_axes();
-
+        p.stroke(0);
         p.strokeWeight(1);
-        p.stroke(0,0,0.8);
-        for(let t = 0; t < 1; t += 1/res_t)
-            for(let theta = 0; theta < TWOPI; theta += TWOPI/res_theta)
-        {
-            let h_0 = h(t)(theta);
-            let h_1 = h(t)(theta + TWOPI/res_theta); 
-            p.line(h_0["axis"][0] * h_0["angle"],
-                 h_0["axis"][1] * h_0["angle"],
-                 h_0["axis"][2] * h_0["angle"],
-                 h_1["axis"][0] * h_1["angle"],
-                 h_1["axis"][1] * h_1["angle"],
-                 h_1["axis"][2] * h_1["angle"]
-             );// this is really slow probably, indexing with strings.
-        //console.log(h_0["angle"], h_0["axis"][0] * h_0["angle"] * r + c[0]);
-        }
-        
     }
 
-    p.t = 0;
-    p.dtheta = 2*p.PI/16;
-
-    p.draw_axes = function(){
-
-        p.strokeWeight(2);
-        p.gl.disable(p.gl.DEPTH_TEST);
-        p.stroke(0,1,0.5);
-        p.line(0,0,0, p.PI,0,0);
-        p.stroke(1/3,1,0.5);
-        p.line(0,0,0, 0,-p.PI,0);
-        p.stroke(2/3,1,0.5);
-        p.line(0,0,0, 0,0,p.PI);
+    p.orientation = mat4_id;
+    p.obj_rot_yaw = 0;
+    p.obj_rot_pitch = 0;
+    p.mouse_sensetivity = 0.01;
+    p.interact = function(){
+        p.orientation = mm_prod(rot4_xz_yw(p.obj_rot_yaw, 0.0), rot4_xw_yz(0.0,p.obj_rot_pitch), 4);
+        console.log(p.obj_rot_pitch);
     }
 
-    p.draw_rotation_path = function(path, object)
-    {
-        p.stroke(255,0,0);
-        p.colorMode(p.HSL, 1);
-        for(let theta = 0; theta < 2 * p.PI; theta += p.dtheta){
-            p.stroke(theta/6.283, 1.0, 0.6);
-            // Box
-            p.push();
-            p.translate(100 * p.cos(theta) - p.width/2 + 250, 100*p.sin(theta), 0);
-            let rot = p.homotopy(p.t)(theta);
-            let angle = rot.angle;
-            let axis = rot.axis;
-            p.rotate(angle,axis);
-            //p.box(70, 70, 70);
-            p.scale(20);
-            p.draw_axes();
-            p.pop();
-        }
+    p.mouseDragged = function(){
+            p.obj_rot_yaw += (p.mouseX - p.pmouseX) * p.mouse_sensetivity;
+            p.obj_rot_pitch += (p.mouseY - p.pmouseY) * p.mouse_sensetivity;
     }
 
     p.draw = function(){
-        // don't do any drawing if not visible
-        if(!isVisibleInViewport(p.canvas.elt))
-            return;
-    
-        p.background(255,255,255,0);
 
-        p.orbitControl();
-        
-        // the circle with objects of different rotations around them
-        p.draw_rotation_path(p.homotopy(p.t));
+        p.background(0);
 
-        // the 3-sphere with homotopy visualised as a cylinder mapped into it
+        p.interact();
+        //p.orientation = mm_prod(p.orientation, rot4_xz_yw(0.01,0), 4);
+
         p.push();
-        p.translate(150,0,0);
-        p.scale(30);
-        p.draw_homotopy_cylinder(p.homotopy, 100);
+        p.scale(40);
+
+        p.push();
+        p.translate(4,0,0);
+        p.applyMatrix(p.orientation);
+        p.homotopy_surface();
         p.pop();
 
-        p.t += p.deltaTime;
+        p.push();
+        p.translate(-4,0,0);
+        p.applyMatrix(p.orientation);
+        p.draw_rotation_path(p.homotopy)
+
+        p.colorMode(p.HSL, 1);
+        p.fill(p.slider_theta.value, 1, 0.5);
+        let selected_rot = p.surface(p.slider_theta.value, p.slider_t.value);
+        if(v_length(selected_rot) != 0)
+            p.rotate(v_length(selected_rot), v_normalise(selected_rot));
+        p.box(0.1,0.5,1);
+
+        p.pop();
+        p.pop();
+
+        p.t = p.slider_t.value;
     }
 })
 

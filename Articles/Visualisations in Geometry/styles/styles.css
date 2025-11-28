@@ -6,6 +6,7 @@ body{
 
     color: white;
     background-color: #202020;
+    background-color: black;
 }
 .top-bar{
     border-width: 1px;
@@ -41,4 +42,11 @@ body{
 }
 a{
     color:white;
+}
+.sidenote{
+    float: right;
+    margin-right: -280px;
+    width: 280px;
+
+    /*outline: 1px dotted darkgrey;*/
 }

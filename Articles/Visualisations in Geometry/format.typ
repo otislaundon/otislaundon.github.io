@@ -51,11 +51,22 @@
   ]
 }
 
+#let sidenote(elem_id) = {
+  context{
+    if target() == "html"{
+      html.elem("div", attrs:(class: "sidenote", id: elem_id))
+    }
+  }
+}
 // The below function embeds an html canvas and javascript script that together make up an interactive visual, a "sketch". The placeholder_path points to an image that should be displayed in the non-interactive pdf version.
-#let sketch(sketch_path, canvas_id, placeholder_path) = {
+#let sketch(sketch_path, canvas_id, placeholder_path, controls: false) = {
     context{
     if target() == "html"{
-      html.elem("div", attrs: (class: "canvas_holder", id: canvas_id))
+      html.elem("div", attrs: (class: "canvas_holder", id: canvas_id))[
+        #if controls{
+          sidenote(canvas_id+"-controls")
+        }
+      ]
       html.elem("script", attrs: (src: sketch_path))
     }
     else{

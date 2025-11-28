@@ -50,4 +50,4 @@ We will visualise a loop of rotations in the following way: Let $alpha: S^1 -> S
 
 == Visualisation
 
-#sketch("./sketches/paths-of-rotations/paths-of-rotations.js", "sketch:paths-of-rotations", "./sketches/template/placeholder.png")
+#sketch("./sketches/paths-of-rotations/paths-of-rotations.js", "sketch:paths-of-rotations", "./sketches/template/placeholder.png", controls: true)

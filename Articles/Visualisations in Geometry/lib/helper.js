@@ -169,3 +169,36 @@ let p5_lib_surfaceparam = p => {
         return geom;
     }
 }
+
+let p5_lib_orbit_nozoom = p => {
+  p.orbit_nozoom = function(){
+    
+  }
+}
+
+let p5_lib_controls = p =>{
+  p.createSlider = function(){
+    let sl = document.createElement("input");
+    sl.type="range";
+    sl.min = 0;
+    sl.max = 1;
+    sl.step = 0.01;
+    //sl.oninput = (e) => {val_callback = e.target.value};
+    document.getElementById(p.canvas_id+"-controls").appendChild(sl);
+
+    return sl;
+  }
+}
+
+let p5_lib_axes = p =>{
+    p.draw_axes = function(){
+        p.strokeWeight(2);
+        //p.gl.disable(p.gl.DEPTH_TEST);
+        p.stroke(0,1,0.5);
+        p.line(0,0,0, p.PI,0,0);
+        p.stroke(1/3,1,0.5);
+        p.line(0,0,0, 0,-p.PI,0);
+        p.stroke(2/3,1,0.5);
+        p.line(0,0,0, 0,0,p.PI);
+    }
+}
