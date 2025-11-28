@@ -55,7 +55,13 @@ let sketch_paths_of_rotations = new p5((p) => {
             
             let rot = p.surface(theta, p.t);
             p.translate(rot[0], rot[1], rot[2]);
-            p.sphere(0.05, 5,5);
+            if(theta - 0.01/2 < p.slider_theta.value && theta + 0.01 > p.slider_theta.value)
+            {
+                p.fill(theta,1,0.2);
+                p.sphere(0.12, 5,5);
+            }else{
+                p.sphere(0.05, 5,5);
+            }
             p.pop();
         }
     }
@@ -117,9 +123,21 @@ let sketch_paths_of_rotations = new p5((p) => {
         console.log(p.obj_rot_pitch);
     }
 
+    p.mousePressed = () => {
+        if(p.mouseX > 0 && p.mouseY > 0 && p.mouseX < p.width && p.mouseY < p.height)
+        p.clickStartedInCanvas = true;
+        
+        console.log(document.getElementById(p.canvas_id).matches(':hover'))
+    }
+    p.mouseReleased = () => {
+        p.clickStartedInCanvas = false;
+    }
+
     p.mouseDragged = function(){
+        if(p.clickStartedInCanvas){
             p.obj_rot_yaw += (p.mouseX - p.pmouseX) * p.mouse_sensetivity;
             p.obj_rot_pitch += (p.mouseY - p.pmouseY) * p.mouse_sensetivity;
+        }
     }
 
     p.draw = function(){
