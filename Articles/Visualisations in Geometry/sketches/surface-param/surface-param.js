@@ -80,7 +80,7 @@ let surface_param = new p5((p) => {
             p.push();
             p.fill(theta,1,0.6);
             p.translate(3*p.cos(theta * TWOPI), 3 * p.sin(theta * TWOPI), 0);
-            p.rotate(theta*TWOPI,[0,0,1]);
+            //p.rotate(theta*TWOPI,[0,0,1]);
             
             let rot = p.surface(theta, p.t);
             let angle = v_length(rot);

@@ -15,3 +15,7 @@ historical use of visualisations
 
     including historical context for what the project is trying to achieve
 
+SECTIONS TO ADD: 
+	orientability as bicolorability of cellular decomposition
+	
+
