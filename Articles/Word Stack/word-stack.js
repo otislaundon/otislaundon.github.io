@@ -108,7 +108,7 @@ rand_letter = () =>{
     }
 }
 rand_int = (n) => {return Math.floor(Math.random() * n);}
-rand_block = () => {return new block(rand_int(7));}
+rand_block = () => {return new block(rand_int(8));}
 
 const BLOCKTYPE = {
     HBAR : 0,
@@ -142,11 +142,15 @@ let block_patterns = {
 5: 
 [[1,0],
  [1,1],
- [0,1]],
+ [1,0]],
 6: 
+[[1,0],
+ [1,0],
+ [1,1]],
+7: 
 [[0,1],
- [1,1],
- [1,0]]
+ [0,1],
+ [1,1]]
 };
 
 array_2d = (n, m, val) => {
@@ -384,7 +388,7 @@ input_spinl = () =>{
 input_confirm = () =>{
     if(place_block(block_cur) == false)
         return false;
-    block_cur = new block(rand_int(7));
+    block_cur = new block(rand_int(8));
     let words_found = find_words();
     while(words_found.length > 0){
         collect_words(words_found);
