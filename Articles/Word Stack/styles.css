@@ -4,6 +4,7 @@ body{
     font-family: Arial, Helvetica, sans-serif;
 }
 .tile{
+    box-sizing: border-box;
     color: white;
     background-color: #222222;
     width: 32px;
@@ -12,26 +13,45 @@ body{
     justify-content: center;
     line-height: 32px;
     font-size: 28px;
+    border-color: black;
+    border-style: solid;
+    border-width: 1px;
+}
+.marker{
+    font-size: 18px;
+    color: lightgrey;
+}
+.marker-left{
+    border-right: 2px solid black;
+}
+.marker-bottom{
+    border-top: 2px solid black;
 }
 .group{
     background-color: blue;
 }
+.validword{
+    background-color: rebeccapurple;
+}
+.selectedword{
+    background-color: #c030f0;
+}
 .board-container{
-    background-color: black;
     display: grid;
-    grid-template-columns: auto auto auto auto auto auto auto auto auto auto;
-    gap:2px;
-    padding:2px;
+    margin-left: auto;
+    margin-right: auto;
     width: min-content;
+    gap: 0;
+    border: 2px solid black;
 }
 .container{
     display: grid;
-    grid-template-columns: auto auto auto;
+    grid-template-columns: 2fr 3fr 2fr;
 }
-#collected-words{
+.word-panel{
     max-height: 200px;
     overflow-y:scroll;
-    background-color: #00000020;
     scrollbar-width: none;
     padding: 6px;
+    margin-bottom: 10px;
 }
