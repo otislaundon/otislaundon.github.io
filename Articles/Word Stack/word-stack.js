@@ -26,6 +26,10 @@ let hover_info_elem = document.getElementById("hover-info");
 
 let options = {allow_diagonal: false, show_corner_numbers: true};
 
+document.getElementById("setting-show-numbers").addEventListener("change", (ev) =>
+{options.show_corner_numbers = ev.target.checked; ev.target.blur(); render_board();});
+options.show_corner_numbers = document.getElementById("setting-show-numbers").checked;
+
 let block_cur;
 
 gameover_elem.style.display = "none";
@@ -681,8 +685,7 @@ render_board = () => {
             let letter = board[i][j].letter;
             board_display_buttons[i][j].innerHTML = letter;
             board_display_buttons[i][j].setAttribute("class", "tile-button" + (letter != "" ? " filled" : ""));
-            if(options.show_corner_numbers)
-                board_display_numbers[i][j].innerHTML = (letter != "" ? scores[letter] : "");
+            board_display_numbers[i][j].innerHTML = (letter != "" && options.show_corner_numbers? scores[letter] : "");
         }
     render_found_words();
     if(block_cur != null)
