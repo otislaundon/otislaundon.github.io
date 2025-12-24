@@ -1,15 +1,26 @@
 const bwidth = 9;
 const bheight = 9;
-let board = []
-let board_disp = []
+let board = [];
+let board_disp = [];
+let board_rows_disp = [];
 let score_total = 0;
-let words_found = {};
+let words_found = [];
+let rows_completed = [];
 
-let collected_words = document.getElementById("collected-words");
+let game_ended = false;
+
+let collected_words_elem = document.getElementById("collected-words");
 let found_words_elem = document.getElementById("found-words");
 let score_counter_elem = document.getElementById("score-counter");
+let gameover_elem = document.getElementById("gameover");
+let board_container = document.getElementById("board-container");
+let hover_info_elem = document.getElementById("hover-info");
 
 let options = {allow_diagonal: false};
+
+let block_cur;
+
+gameover_elem.style.display = "none";
 
 init_board = (n, m) => {
     board = [];
@@ -24,15 +35,18 @@ init_board = (n, m) => {
 }
 
 create_board_display = (n, m) => {
-    board_container = document.getElementById("board-container");
+    board_container.innerHTML = "";
     board_container.style["grid-template-columns"] = "auto ".repeat(m + 1);
     board_display = [];
+    board_rows_disp = [];
     for(let i = 0; i < n; i++) 
     {
-        let new_marker = document.createElement("div");
+        let new_marker = document.createElement("button");
         new_marker.setAttribute("class", "tile marker marker-left");
         new_marker.innerText = "" + (n-i);
+        new_marker.onclick = (event) => {event.target.blur(); clear_row(i);};
         board_container.appendChild(new_marker);
+        board_rows_disp.push(new_marker);
         let row_i = [];
         for(let j = 0; j < m; j++) {
             let new_board_tile = document.createElement("button");
@@ -156,9 +170,9 @@ let block_patterns = {
 [[1,1,0],
  [0,1,1]],
 4: 
-[[1,0],
- [1,1],
- [1,0]],
+[[0,1,0],
+ [0,1,1],
+ [0,1,0]],
 5: 
 [[1,0],
  [1,0],
@@ -181,8 +195,12 @@ array_2d = (n, m, val) => {
     return arr;
 }
 
+const alternate_placements_short = [[-1,0], [2,0], [-1, -1], [0,2], [-1,-2], [2,0], [-2,2]];
+const alternate_placements_long = [[-1,0], [2,0], [-1, -1], [0,2], [-2,-1], [1,-1],[1,-1],[1,1],[-2,2],[-1,-2],[1,-1],[-1,0]];
+
 class block {
     constructor(block_type){
+        this.block_type = block_type;
         let block_pattern = block_patterns[block_type];
         this.n = block_pattern.length;
         this.m = block_pattern[0].length;
@@ -201,10 +219,28 @@ class block {
             this.letters.push(row_i);
         }
     }
-    valid_placement = (x, y) => {
-        for(let i = 0; i < this.n; i ++)
-            for(let j = 0; j < this.m; j ++){
-                if(this.letters[i][j] == "")
+    valid_placement = (x, y, spin) => {
+        let n_after_spin = spin == 0 ? this.n : this.m;
+        let m_after_spin = spin == 0 ? this.m : this.n;
+        let letters_after_spin = this.letters;
+
+        if (spin != 0)
+            letters_after_spin = array_2d(n_after_spin, m_after_spin, "");
+        
+        // right spin
+        if(spin == 1)
+            for(let i = 0; i < n_after_spin; i++)
+                for(let j = 0; j < m_after_spin; j++)
+                    letters_after_spin[i][j] = this.letters[m_after_spin - 1 - j][i];
+        // left spin
+        else if (spin == -1)
+            for(let i = 0; i < n_after_spin; i++)
+                for(let j = 0; j < m_after_spin; j++)
+                    letters_after_spin[i][j] = this.letters[j][n_after_spin - 1 - i];
+
+        for(let i = 0; i < n_after_spin; i ++)
+            for(let j = 0; j < m_after_spin; j ++){
+                if(letters_after_spin[i][j] == "")
                     continue;
                 // ensure occupied tiles are in board:
                 if(j + x >= bwidth || i + y >= bheight || i + y < 0 || j + x < 0) 
@@ -215,21 +251,42 @@ class block {
             }
         return true;
     }
-    move = (dx, dy) => {
-        if(this.valid_placement(this.x + dx, this.y + dy)){
-            this.x += dx;
-            this.y += dy;
-            render_board();
-            return true;
-        } else
-            return false;
+
+    transform_checked = (dx, dy, spin) => {
+        // checks each position left, right, up, down until a valid position is found, if all invalid then return.
+        if(!this.valid_placement(this.x + dx, this.y + dy, spin))
+            if(spin != 0) {
+                let alternate_placements = this.block_type == 0 ? alternate_placements_long : alternate_placements_short;
+
+                for (let i = 0; i < alternate_placements.length; i++)
+                {
+                    dx += alternate_placements[i][0];
+                    dy += alternate_placements[i][1];
+                    if(this.valid_placement(this.x + dx, this.y + dy, spin))
+                        break;
+                    else if (i == alternate_placements.length - 1)
+                        return false;
+                }
+            }
+            else return false;
+
+        this.x += dx;
+        this.y += dy;
+        if(spin == 1) this.spin_right();
+        if(spin == -1) this.spin_left();
+
+        render_board();
+        return true;
     }
 
     supported = () => {
-        return this.valid_placement(this.x, this.y + 1);
+        return this.valid_placement(this.x, this.y + 1, 0);
     }
 
     spin_right = () => {
+        if(!this.valid_placement(this.x, this.y, 1))
+            return false;
+
         let temp_letters = this.letters;
         //swap n, m
         let n_prev = this.n;
@@ -242,9 +299,13 @@ class block {
             this.letters[i][j] = temp_letters[this.m - 1 - j][i];
         }
         render_board();
+        return true;
     }
 
     spin_left = () => {
+        if(!this.valid_placement(this.x, this.y, -1))
+            return false;
+
         let temp_letters = this.letters;
         //swap n, m
         let n_prev = this.n;
@@ -257,15 +318,19 @@ class block {
             this.letters[i][j] = temp_letters[j][this.n - 1 - i];
         }
         render_board();
+        return true;
     }
 }
 
 place_block = (b) => {
+    if(!b.valid_placement(b.x, b.y,0))
+        return false;
     for(let i = 0; i < b.n; i++) 
         for(let j = 0; j < b.m; j++) {
             if(b.letters[i][j] != "")
                 board[i+b.y][j+b.x] = {letter: b.letters[i][j], words: []};
         }
+    return true;
 }
 
 is_word = (maybe_word) => {
@@ -273,8 +338,33 @@ is_word = (maybe_word) => {
 }
 
 select_square = (x, y, val) => {
+    let selection_info = "";
     for(let i = 0; i < board[y][x].words.length; i++){
         board[y][x].words[i].selected = val;
+        selection_info += board[y][x].words[i].str + " : " + board[y][x].words[i].score.str + "  ";
+    }
+    hover_info_elem.innerText = selection_info;
+}
+
+select_row = (y, val) => {
+
+}
+clear_row = (y) => {
+    for(let i = 0; i < rows_completed.length; i++)
+        if(rows_completed[i].y0 == y)
+        {
+            collect_words([rows_completed[i]]);
+            break;
+        }
+    render_board();
+    find_rows();
+}
+
+disp_rows = () => {
+    board_rows_disp.forEach((r) => {r.setAttribute("class", "tile marker marker-left")});
+    for(let i = 0; i < rows_completed.length; i++)
+    {
+        board_rows_disp[rows_completed[i].y0].setAttribute("class", "tile marker marker-left rowcomplete");
     }
 }
 
@@ -325,6 +415,35 @@ find_words = () => {
     words_found = words;
     //disp_found_words();
 }
+
+find_rows = () => {
+    rows_completed = [];
+    for(let i = 0; i < bheight; i++)
+    {
+        let row_full = true;
+        let row_str = "";
+        for(let j = 0; j < bwidth; j++)
+        {
+            if(board[i][j].letter == "")
+            {
+                row_full = false;
+                break;
+            }
+            row_str += board[i][j].letter;
+        }
+        if(row_full)
+        {
+            let score = score_word(row_str);
+            if(!is_word(row_str)){
+                score.val *= -1;
+                score.str = "-" + score.str;
+            }
+            rows_completed.push({str: row_str, len: bwidth, x0: 0, y0: i, dx: 1, dy: 0, score: score});
+        }
+    }
+    disp_rows();
+}
+
 score_word = (word) => {
     let val = 0;
     for(let i = 0; i < word.length; i++){
@@ -340,19 +459,23 @@ shift_above_down = (arr, x0, y0, def)=>{
     arr[0][x0] = def;
 }
 
+disp_score = () =>{
+    score_counter_elem.innerHTML = "SCORE · " + score_total;
+}
+
 collect_words = (words) => {
     let collected_mask = array_2d(bheight, bwidth, 0);
     for(let i = 0; i < words.length; i++){
         for(let j = 0; j < words[i].len; j++){
-            board[words[i].y0 + words[i].dy * j][words[i].x0 + words[i].dx * j].letter = "";
+//            board[words[i].y0 + words[i].dy * j][words[i].x0 + words[i].dx * j].letter = "";
             collected_mask[words[i].y0 + words[i].dy * j][words[i].x0 + words[i].dx * j] = 1;
         }
-        let score = score_word(words[i].str);
+        let score = words[i].score;
         score_total += score.val;
-        score_counter_elem.innerHTML = "SCORE · " + score_total;
+        disp_score();
         let new_word_elem = document.createElement("div");
         new_word_elem.innerHTML = words[i].str + " · " + score.str;
-        collected_words.insertBefore(new_word_elem, collected_words.firstChild);
+        collected_words_elem.insertBefore(new_word_elem, collected_words_elem.firstChild);
     }
     for(let y = 0; y < bheight; y++)
     for(let x = 0; x < bwidth; x++){
@@ -361,10 +484,11 @@ collect_words = (words) => {
             shift_above_down(collected_mask, x, y, 0);
         }
     }
+    if(block_cur == null)
+        input_confirm();
 }
 
 collect_at_square = (x, y) => {
-    console.log(board[y][x].words); 
     collect_words(board[y][x].words);
 }
 
@@ -416,47 +540,98 @@ render_board = () => {
         board_display[i][j].innerHTML = board[i][j].letter;
         board_display[i][j].setAttribute("class", "tile");
         }
-    render_block(block_cur);
     render_found_words();
+    if(block_cur != null)
+        render_block(block_cur);
+}
+
+gameover = () => {
+    gameover_elem.style.display = "block";
+    game_ended = true;
+}
+start_game = () => {
+    game_ended = false;
+    gameover_elem.style.display = "none";
+
+    block_cur = rand_block();
+    init_board(bheight, bwidth);
+    create_board_display(bheight, bwidth);
+    find_words();
+    words_found = [];
+    collected_words_elem.innerHTML = "";
+    score_total = 0;
+    disp_score();
+    render_board();
 }
 
 // START input -------------------------
 input_left = () =>{
-    return block_cur.move(-1,0);
+    if(block_cur == null || game_ended) return false;
+    return block_cur.transform_checked(-1,0,0);
 }
 
 input_up = () =>{
-    return block_cur.move(0,-1);
+    if(block_cur == null || game_ended) return false;
+    return block_cur.transform_checked(0,-1,0);
 }
 
 input_down = () =>{
-    return block_cur.move(0,1);
+    if(block_cur == null || game_ended) return false;
+    return block_cur.transform_checked(0,1,0);
 }
 
 input_right = () =>{
-    return block_cur.move(1,0);
+    if(block_cur == null || game_ended) return false;
+    return block_cur.transform_checked(1,0,0);
 }
 
 input_spinr = () =>{
-    return block_cur.spin_right();
+    if(block_cur == null || game_ended) return false;
+    return block_cur.transform_checked(0,0,1);
 }
 
 input_spinl = () =>{
-    return block_cur.spin_left();
+    if(block_cur == null || game_ended) return false;
+    return block_cur.transform_checked(0,0,-1);
 }
 
 input_confirm = () =>{
+    //if(block_cur == null || game_ended) return false;
+    if(block_cur != null)
+    {
     if(block_cur.supported())
         return false;
     if(place_block(block_cur) == false)
         return false;
+    }
+
     block_cur = new block(rand_int(7));
     find_words();
+    find_rows();
     render_board();
+    // game is over if piece is invalid and cant be rotated to be valid
+        if(!block_cur.valid_placement(block_cur.x, block_cur.y, 0))
+            if(!block_cur.transform_checked(0,0,1))
+                if(!block_cur.transform_checked(0,0,-1))
+                if(!block_cur.transform_checked(1,0,0))
+                if(!block_cur.transform_checked(0,1,0))
+                if(!block_cur.transform_checked(-1,0,0))
+                if(!block_cur.transform_checked(0,-1,0))
+                {
+                    block_cur = null;
+                    render_board();
+                    if(words_found.length == 0 && rows_completed.length == 0)
+                    {
+                        gameover();
+                        return false;
+                    }
+                }
+    
     return true;
 }
 
 input_drop = () => {
+    if(block_cur == null || game_ended) return false;
     while(input_down() != false){}
     input_confirm();
     return true;
@@ -483,37 +658,4 @@ document.addEventListener('keydown', function(event) {
 });
 // END input -------------------------
 
-let block_cur = rand_block();
-
-init_board(bheight, bwidth);
-create_board_display(bheight, bwidth);
-render_board();
-
-// thought: 
-// generalisation is adjoint to specialisation?
-// if you generalise and then specialise, you do nothing. if you specialise and then generalise you might change something?
-
-// our dictionary is sorted alphabetically. we can leverage this to make checking against it quick. a tree structure with up to 26 branches per node could work
-
-//ideally, we would have a datastructure that has a 26 bit mask per node (would use 32) and the memory layout would be topological wrt lexicographic ordering.
-
-//topological memory layout! sounds appealing.
-
-// first let's just try the dumb solution, where we have an array of length 270000 and check with "includes"
-
-// the dumb solution seems fast enough
-
-
-/*
-<button onclick="input_left()">left</button>
-<button onclick="input_up()">up</button>
-<button onclick="input_down()">down</button>
-<button onclick="input_right()">right</button>
-<button onclick="input_spinr()">spin</button>
-<button onclick="input_spinl()">unspin</button>
-<button onclick="input_confirm()">confirm</button>
-*/
-
-        //<h2>FOUND WORDS</h2>
-        //<div id="found-words" class="word-panel"></div>
-        //<h3 id="highest-word">HIGHEST SCORING WORD · _ · 0</h3>
+start_game();
