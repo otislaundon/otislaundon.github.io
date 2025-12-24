@@ -16,17 +16,17 @@ body{
 .tile-button{
     color: white;
     background-color: #222222;
-    font-size: 28px;
+    font-size: 26px;
     line-height: 32px;
     width: 100%;
     height: 100%;
     border: 1px solid black;
 }
 .tile-corner-num{
-    font-size: 12px;
+    font-size: 8px;
     background-color: #00000000;
     position:absolute;
-    right: 0px;
+    right: 2px;
     bottom: 0px;
     pointer-events: none;
     width: min-content;

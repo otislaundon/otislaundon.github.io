@@ -24,7 +24,7 @@ let gameover_elem = document.getElementById("gameover");
 let board_container = document.getElementById("board-container");
 let hover_info_elem = document.getElementById("hover-info");
 
-let options = {allow_diagonal: true, show_corner_numbers: false};
+let options = {allow_diagonal: false, show_corner_numbers: true};
 
 let block_cur;
 
@@ -236,13 +236,13 @@ let block_patterns = {
  [0,1,1],
  [0,1,0]],
 5: 
-[[1,0],
- [1,0],
- [1,1]],
+[[0,1,0],
+ [0,1,0],
+ [0,1,1]],
 6: 
-[[0,1],
- [0,1],
- [1,1]]
+[[0,1,0],
+ [0,1,0],
+ [1,1,0]]
 };
 
 array_2d = (n, m, val) => {
@@ -489,16 +489,19 @@ find_words = () => {
         }
     }
     // add word to list of words attached to each of its letters, so it can be selected on hover
-    for(let i = 0; i < words.length; i++)
-    {
+    for(let i = 0; i < words.length; i++){
         let wi = words[i];
             for(let j = 0; j < words[i].len; j++)
             {
                 board[wi.y0 + wi.dy * j][wi.x0 + wi.dx * j].words.push(wi);
             }
     }
+    // now that we have added words to each square, we need to make sure that the words are "closed under masking" to improve visual consistency:
+    for(let x0 = 0; x0 < bwidth; x0++)
+        for(let y0 = 0; y0 < bheight; y0++)
+            board[y0][x0].words = mask_words(words, words_to_mask(board[y0][x0].words));
+
     words_found = words;
-    //disp_found_words();
 }
 
 find_words_in_row = (i) => {
@@ -513,6 +516,33 @@ find_words_in_row = (i) => {
         }
     }
     return words_in_row;
+}
+
+words_to_mask = (words) => {
+    let mask = array_2d(bwidth, bheight, 0);
+    words.forEach((w) => {
+        for(let i = 0; i < w.len; i++)
+            mask[w.y0 + w.dy * i][w.x0 + w.dx * i] = 1;
+    });
+    return mask;
+}
+
+//this is used to find subwords once words have been found in first round.
+mask_words = (words, mask) => {
+    let words_masked = [];
+    words.forEach((w) => {
+        // loop over each letter in word, if we reach end of word without leaving array, word is masked
+        let is_masked = true;
+        for(let i = 0; i < w.len; i++){
+            if(mask[w.y0 + w.dy * i][w.x0 + w.dx * i] == 0){
+                is_masked = false;
+                break;
+            }
+        }
+        if(is_masked)
+            words_masked.push(w);
+    });
+    return words_masked;
 }
 
 find_rows = () => {
@@ -532,15 +562,21 @@ find_rows = () => {
         }
         if(row_full)
         {
-            let score = score_word(row_str);
-            if(!is_word(row_str)){
-                score.val *= -1;
-                score.str = "-" + score.str;
-            }
-            // find words contained in row:
+            // find and score words contained in row:
             let words_in_row = find_words_in_row(i);
-            rows_completed.push(
-                {str: row_str, len: bwidth, x0: 0, y0: i, dx: 1, dy: 0, score: score, words: words_in_row});
+            let words_in_row_mask = words_to_mask(words_in_row)[i];
+            let unmasked_score = 0;
+            for(let j = 0; j < bwidth; j++)
+                if(words_in_row_mask[j] == 0)
+                    unmasked_score -= scores[board[i][j].letter];
+            rows_completed.push({
+                    str: row_str, 
+                    len: bwidth, 
+                    x0: 0, y0: i, 
+                    dx: 1, 
+                    dy: 0, 
+                    score: {val: unmasked_score, str: unmasked_score.toString()},
+                    words: words_in_row});
         }
     }
     disp_rows();
