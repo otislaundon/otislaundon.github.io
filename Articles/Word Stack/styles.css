@@ -11,14 +11,31 @@ body{
     height: 32px;
     text-align: center;
     justify-content: center;
+    position: relative;
+}
+.tile-button{
+    color: white;
+    background-color: #222222;
     font-size: 28px;
-    border-color: black;
-    border-style: solid;
-    border-width: 1px;
     line-height: 32px;
+    width: 100%;
+    height: 100%;
+    border: 1px solid black;
+}
+.tile-corner-num{
+    font-size: 12px;
+    background-color: #00000000;
+    position:absolute;
+    right: 0px;
+    bottom: 0px;
+    pointer-events: none;
+    width: min-content;
+    height: min-content;
+    line-height: 12px;
 }
 .marker{
     font-size: 18px;
+    border: 1px solid black;
     color: lightgrey;
 }
 .marker-left{
@@ -29,6 +46,9 @@ body{
 }
 .marker-bottom{
     border-top: 2px solid black;
+}
+.filled{
+    background-color: #333333;
 }
 .group{
     background-color: blue;

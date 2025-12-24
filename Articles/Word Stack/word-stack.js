@@ -1,9 +1,15 @@
 const bwidth = 9;
 const bheight = 9;
-let board = [];
-let board_disp = [];
-let board_rows_disp = [];
+
 let score_total = 0;
+let high_score_today = 0;
+let highscores = {};
+
+let board = [];
+let board_display_tiles = [];
+let board_display_buttons = [];
+let board_display_numbers = [];
+let board_rows_disp = [];
 let words_found = [];
 let rows_completed = [];
 
@@ -12,11 +18,13 @@ let game_ended = false;
 let collected_words_elem = document.getElementById("collected-words");
 let found_words_elem = document.getElementById("found-words");
 let score_counter_elem = document.getElementById("score-counter");
+let highscore_counter_elem = document.getElementById("highscore-counter");
+let scores_elem = document.getElementById("scores");
 let gameover_elem = document.getElementById("gameover");
 let board_container = document.getElementById("board-container");
 let hover_info_elem = document.getElementById("hover-info");
 
-let options = {allow_diagonal: false};
+let options = {allow_diagonal: true, show_corner_numbers: false};
 
 let block_cur;
 
@@ -37,28 +45,47 @@ init_board = (n, m) => {
 create_board_display = (n, m) => {
     board_container.innerHTML = "";
     board_container.style["grid-template-columns"] = "auto ".repeat(m + 1);
-    board_display = [];
+    board_display_tiles = [];
+    board_display_buttons = [];
     board_rows_disp = [];
     for(let i = 0; i < n; i++) 
     {
         let new_marker = document.createElement("button");
         new_marker.setAttribute("class", "tile marker marker-left");
         new_marker.innerText = "" + (n-i);
+        new_marker.addEventListener("mouseover", () => {select_row(i);});
+        new_marker.addEventListener("mouseout", () => {hover_info_elem.innerText="";});
         new_marker.onclick = (event) => {event.target.blur(); clear_row(i);};
         board_container.appendChild(new_marker);
         board_rows_disp.push(new_marker);
-        let row_i = [];
+        let tile_row_i = [];
+        let button_row_i = [];
+        let number_row_i = [];
         for(let j = 0; j < m; j++) {
-            let new_board_tile = document.createElement("button");
+            let new_board_tile = document.createElement("div");
             new_board_tile.setAttribute("class", "tile");
-            new_board_tile.addEventListener("mouseover", () => {select_square(j, i, true); render_board();});
-            new_board_tile.addEventListener("mouseout", () => {select_square(j, i, false); render_board();});
-            new_board_tile.addEventListener("click", (event) => {
+
+            let new_board_button = document.createElement("button");
+            new_board_button.setAttribute("class", "tile-button");
+            new_board_button.addEventListener("mouseover", () => {select_square(j, i, true); render_board();});
+            new_board_button.addEventListener("mouseout", () => {select_square(j, i, false); render_board();});
+            new_board_button.addEventListener("click", (event) => {
                 event.target.blur(); collect_at_square(j, i); find_words(); render_board();});
+            
+            let number_elem = document.createElement("div");
+            number_elem.setAttribute("class", "tile-corner-num");
+
+            new_board_tile.appendChild(new_board_button);
+            new_board_tile.appendChild(number_elem);
+            
             board_container.appendChild(new_board_tile);
-            row_i.push(new_board_tile);
+            tile_row_i.push(new_board_tile);
+            button_row_i.push(new_board_button);
+            number_row_i.push(number_elem);
         }
-        board_display.push(row_i);
+        board_display_tiles.push(tile_row_i);
+        board_display_buttons.push(button_row_i);
+        board_display_numbers.push(number_row_i);
     }
     let new_marker = document.createElement("div");
     new_marker.setAttribute("class", "tile marker marker-bottom marker-left");
@@ -127,10 +154,45 @@ const scores = {
     "X": 8,
     "Y": 4,
     "Z": 10,
+};
+
+let get_highscores = () => {
+    if("highscores" in localStorage)
+        highscores = JSON.parse(localStorage.getItem("highscores"));
+    if(today_score_key() in highscores)
+        high_score_today = highscores[today_score_key()];
+
+}
+let today_score_key = () => {
+    let date = new Date();
+    console.log(date.toISOString().split("T")[0]);
+    return date.toISOString().split("T")[0];
+}
+let set_score = (val) => {
+    score_total = val;
+    get_highscores();
+    if(val >= high_score_today)
+        high_score_today = val;
+    highscores[today_score_key()] = high_score_today;
+    localStorage.setItem("highscores", JSON.stringify(highscores));
+    disp_scores();
+}
+let disp_scores = () => {
+    scores_elem.innerText = "";
+    console.log(highscores);
+    Object.entries(highscores).forEach((key) => {
+        scores_elem.innerText += key.toString().replace(",", " : ") + "\n"});
+    highscore_counter_elem.innerText = "HIGHSCORE : " + highscores[today_score_key()];
 }
 
 let freq_total = 0;
 letters.map((l) => {freq_total += l.freq});
+
+//TODO : implement daily determinism with new RNG
+let randomseed = 715;
+random = () => {
+    
+}
 
 rand_letter = () =>{
     let r = Math.random();
@@ -339,23 +401,46 @@ is_word = (maybe_word) => {
 
 select_square = (x, y, val) => {
     let selection_info = "";
+    let square_score = 0;
     for(let i = 0; i < board[y][x].words.length; i++){
         board[y][x].words[i].selected = val;
-        selection_info += board[y][x].words[i].str + " : " + board[y][x].words[i].score.str + "  ";
+        selection_info += (i > 0 ? ", " : "") + board[y][x].words[i].str + " : " + board[y][x].words[i].score.str;
+        square_score += board[y][x].words[i].score.val;
     }
+    selection_info += "\n" + (square_score < 0 ? "-" : "+") + square_score;
     hover_info_elem.innerText = selection_info;
+
+    if(board[y][x].words.length == 0 || !val)
+        hover_info_elem.innerText = "";
 }
 
 select_row = (y, val) => {
-
+    for(let i = 0; i < rows_completed.length; i++)
+        if(rows_completed[i].y0 == y)
+        {
+            let words_text = "";
+            let value_total = rows_completed[i].score.val;
+            rows_completed[i].words.forEach((w) => {
+                words_text += ", " + w.str + " : " + w.score.str;
+                value_total += w.score.val;
+            });
+            hover_info_elem.innerText = rows_completed[i].str + " : "  + rows_completed[i].score.str + words_text
+            + "\n" + (value_total >= 0 ? "+" : "") + value_total;
+            break;
+        }
 }
+
 clear_row = (y) => {
     for(let i = 0; i < rows_completed.length; i++)
         if(rows_completed[i].y0 == y)
         {
-            collect_words([rows_completed[i]]);
+            let words_to_collect = [rows_completed[i]];
+            rows_completed[i].words.forEach((w) => {words_to_collect.push(w)});
+            console.log(words_to_collect);
+            collect_words(words_to_collect);
             break;
         }
+    find_words();
     render_board();
     find_rows();
 }
@@ -416,6 +501,20 @@ find_words = () => {
     //disp_found_words();
 }
 
+find_words_in_row = (i) => {
+    let words_in_row = [];
+    for(let x0 = 0; x0 < bwidth; x0++)
+    {
+        // find largest horizontal word at (x0, i)
+        for(let len = bwidth - x0; len >= 3; len --){
+            let str_extract = extract_word(x0, i, 1, 0, len);
+            if(is_word(str_extract))
+                words_in_row.push({str: str_extract, len: len, x0: x0, y0: i, dx: 1, dy: 0,score: score_word(str_extract),selected:false});
+        }
+    }
+    return words_in_row;
+}
+
 find_rows = () => {
     rows_completed = [];
     for(let i = 0; i < bheight; i++)
@@ -438,7 +537,10 @@ find_rows = () => {
                 score.val *= -1;
                 score.str = "-" + score.str;
             }
-            rows_completed.push({str: row_str, len: bwidth, x0: 0, y0: i, dx: 1, dy: 0, score: score});
+            // find words contained in row:
+            let words_in_row = find_words_in_row(i);
+            rows_completed.push(
+                {str: row_str, len: bwidth, x0: 0, y0: i, dx: 1, dy: 0, score: score, words: words_in_row});
         }
     }
     disp_rows();
@@ -464,6 +566,7 @@ disp_score = () =>{
 }
 
 collect_words = (words) => {
+    hover_info_elem.innerText = "";
     let collected_mask = array_2d(bheight, bwidth, 0);
     for(let i = 0; i < words.length; i++){
         for(let j = 0; j < words[i].len; j++){
@@ -471,7 +574,7 @@ collect_words = (words) => {
             collected_mask[words[i].y0 + words[i].dy * j][words[i].x0 + words[i].dx * j] = 1;
         }
         let score = words[i].score;
-        score_total += score.val;
+        set_score(score_total + score.val);
         disp_score();
         let new_word_elem = document.createElement("div");
         new_word_elem.innerHTML = words[i].str + " · " + score.str;
@@ -486,6 +589,7 @@ collect_words = (words) => {
     }
     if(block_cur == null)
         input_confirm();
+    find_rows();
 }
 
 collect_at_square = (x, y) => {
@@ -513,9 +617,10 @@ render_block = (block) => {
             let letter_ij = block.letters[i][j];
             if(letter_ij != "")
             {
-                let disp_ij = board_display[i+block.y][j+block.x];
-                disp_ij.innerHTML = letter_ij;
-                disp_ij.setAttribute("class", "tile group");
+                board_display_buttons[i+block.y][j+block.x].innerHTML = letter_ij;
+                board_display_buttons[i+block.y][j+block.x].setAttribute("class", "tile-button group");
+                if(options.show_corner_numbers)
+                    board_display_numbers[i+block.y][j+block.x].innerHTML = (letter_ij != "" ? scores[letter_ij] : "");
             }
         }
 }
@@ -525,11 +630,11 @@ render_found_words = () => {
     {
         let wi = words_found[i];
         for(let j = 0; j < wi.len; j++) {
-            let bd = board_display[wi.y0 + wi.dy * j][wi.x0 + wi.dx * j];
+            let bdb = board_display_buttons[wi.y0 + wi.dy * j][wi.x0 + wi.dx * j];
             if(wi.selected)
-                bd.setAttribute("class", "tile selectedword");
-            else if (bd.getAttribute("class") != "tile selectedword")
-                bd.setAttribute("class", "tile validword");
+                bdb.setAttribute("class", "tile-button selectedword");
+            else if (bdb.getAttribute("class") != "tile-button selectedword")
+                bdb.setAttribute("class", "tile-button validword");
         }
     }
 }
@@ -537,8 +642,11 @@ render_found_words = () => {
 render_board = () => {
     for(let i = 0; i < bheight; i++) 
         for(let j = 0; j < bwidth; j++) {
-        board_display[i][j].innerHTML = board[i][j].letter;
-        board_display[i][j].setAttribute("class", "tile");
+            let letter = board[i][j].letter;
+            board_display_buttons[i][j].innerHTML = letter;
+            board_display_buttons[i][j].setAttribute("class", "tile-button" + (letter != "" ? " filled" : ""));
+            if(options.show_corner_numbers)
+                board_display_numbers[i][j].innerHTML = (letter != "" ? scores[letter] : "");
         }
     render_found_words();
     if(block_cur != null)
@@ -559,7 +667,7 @@ start_game = () => {
     find_words();
     words_found = [];
     collected_words_elem.innerHTML = "";
-    score_total = 0;
+    set_score(0);
     disp_score();
     render_board();
 }
