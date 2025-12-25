@@ -492,6 +492,7 @@ find_words = () => {
                 words.push({str: str_extract, len: len, x0: x0, y0: y0, dx: 1, dy: 1,score: score_word(str_extract),selected:false});
         }
     }
+    words = remove_nested_words(words);
     // add word to list of words attached to each of its letters, so it can be selected on hover
     for(let i = 0; i < words.length; i++){
         let wi = words[i];
@@ -501,11 +502,31 @@ find_words = () => {
             }
     }
     // now that we have added words to each square, we need to make sure that the words are "closed under masking" to improve visual consistency:
+    /*
     for(let x0 = 0; x0 < bwidth; x0++)
         for(let y0 = 0; y0 < bheight; y0++)
             board[y0][x0].words = mask_words(words, words_to_mask(board[y0][x0].words));
+        */
+       // this shouldve been taken care of by removing nested words
 
     words_found = words;
+}
+
+remove_nested_words = (words) => {
+    let words_processed = [];
+    let words_to_remove = [];
+    words.forEach((w) =>
+    {
+        mask_words(words, words_to_mask([w])).forEach((v) => {
+            if(!words_to_remove.includes(v) && v != w)
+                words_to_remove.push(v);
+        });
+    });
+    words.forEach((w) => {
+        if(!words_to_remove.includes(w))
+            words_processed.push(w);
+    });
+    return words_processed;
 }
 
 find_words_in_row = (i) => {
@@ -519,7 +540,7 @@ find_words_in_row = (i) => {
                 words_in_row.push({str: str_extract, len: len, x0: x0, y0: i, dx: 1, dy: 0,score: score_word(str_extract),selected:false});
         }
     }
-    return words_in_row;
+    return remove_nested_words(words_in_row);
 }
 
 words_to_mask = (words) => {
