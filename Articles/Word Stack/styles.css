@@ -88,3 +88,13 @@ left: 50%;
 transform: translate(-50%, -50%);
 padding: 100px;
 }
+
+body{
+    min-height: 100vh;
+}
+.credit{
+    font-size: 10px;
+    bottom: 5px;
+    right: 5px;
+    position: absolute;
+}
