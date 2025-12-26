@@ -1,4 +1,4 @@
-const bwidth = 9;
+const bwidth = 10;
 const bheight = 9;
 
 let score_total = 0;
