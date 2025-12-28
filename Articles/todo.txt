@@ -6,3 +6,19 @@ Articles to add:
     - Photo Gallery
     - some kind of daily puzzle? could be fun
     - playing games agains AI, e.g. bricks.
+
+Word Stack:
+    * find bug with vertical words in top right
+    * fix high score
+    * rework rotation (make movement dependent on rotation dir)
+    * find better dictionary
+    + add controls page that shows first time
+    + add special word scores
+    + add other language modes
+        + spanish
+        + german
+        + russian
+
+DONE:
+    * fix page scrolling
+    * adjust letter frequencies

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<head>
+    <link rel="stylesheet" href="styles.css">
+    <script src="word-list.js"></script>
+</head>
+<body>
+<div class="container">
+    <div>
+        <h2>COMPLETED WORDS</h2>
+        <div id="collected-words" class="word-panel"></div>
+    <h3>SETTINGS</h3>
+    <input type="checkbox" id="setting-show-numbers" checked>Show Numbers</input>
+    </div>
+    <div>
+        <div id ="board-container" class="board-container"></div>
+        <div id="hover-info"></div>
+    </div>
+    <div>
+        <h2 id="score-counter">SCORE · 0</h2>
+        <h3 id="highscore-counter">HIGHSCORE · 0</h3>
+        <br>
+        <h2>HIGH SCORES</h2>
+        <div id="scores"></div>
+    </div>
+</div>
+
+<div class="gameover" id="gameover"><h1>GAME OVER</h1><button onclick="start_game()">PLAY AGAIN</button></div>
+
+
+<script src="word-stack.js"></script>
+
+<div class="credit">Inspiration by Isabella Gastel Alejandre</div>
+
+</body>

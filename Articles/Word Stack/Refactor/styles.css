@@ -1,0 +1,99 @@
+body{
+    background-color: #222222;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.tile{
+    box-sizing: border-box;
+    color: white;
+    background-color: #222222;
+    width: 32px;
+    height: 32px;
+    text-align: center;
+    justify-content: center;
+    position: relative;
+}
+.tile-button{
+    color: white;
+    background-color: #222222;
+    font-size: 26px;
+    line-height: 32px;
+    width: 100%;
+    height: 100%;
+    border: 1px solid black;
+}
+.tile-corner-num{
+    font-size: 8px;
+    background-color: #00000000;
+    position:absolute;
+    right: 2px;
+    bottom: 0px;
+    pointer-events: none;
+    width: min-content;
+    height: min-content;
+    line-height: 12px;
+}
+.marker{
+    font-size: 18px;
+    border: 1px solid black;
+    color: lightgrey;
+}
+.marker-left{
+    border-right: 2px solid black;
+}
+.rowcomplete{
+    background-color: red;
+}
+.marker-bottom{
+    border-top: 2px solid black;
+}
+.filled{
+    background-color: #333333;
+}
+.group{
+    background-color: blue;
+}
+.validword{
+    background-color: rebeccapurple;
+}
+.selectedword{
+    background-color: #c030f0;
+}
+.board-container{
+    display: grid;
+    margin-left: auto;
+    margin-right: auto;
+    width: min-content;
+    gap: 0;
+    border: 2px solid black;
+}
+.container{
+    display: grid;
+    grid-template-columns: 2fr 3fr 2fr;
+}
+.word-panel{
+    max-height: 200px;
+    overflow-y:scroll;
+    scrollbar-width: none;
+    padding: 6px;
+    margin-bottom: 10px;
+}
+.gameover{
+background: #000000ee;
+border: 1px solid black;
+border-radius: 5px;
+position: fixed;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+padding: 100px;
+}
+
+body{
+}
+.credit{
+    font-size: 10px;
+    bottom: 5px;
+    right: 5px;
+    position: fixed;
+}
