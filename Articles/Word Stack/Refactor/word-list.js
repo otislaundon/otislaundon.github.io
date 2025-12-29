@@ -1,4 +1,4 @@
-wordlist = [
+wordlistEN = [
 "AA",
 "AAH",
 "AAHED",

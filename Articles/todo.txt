@@ -22,3 +22,5 @@ Word Stack:
 DONE:
     * fix page scrolling
     * adjust letter frequencies
+
+refactoring: failed.

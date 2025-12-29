@@ -1,11 +1,3 @@
-class GameState {
-    
-}
-
-class GameDisplay {
-
-}
-
 const bwidth = 10;
 const bheight = 10;
 
@@ -423,13 +415,13 @@ function find_words() {
     for(let y0 = 0; y0 < bheight; y0++)
     {
         // find largest horizontal word at (x0, y0)
-        for(let len = 3; len < bwidth - x0; len ++){
+        for(let len = 3; len <= bwidth - x0; len ++){
             let str_extract = extract_str(x0, y0, 1, 0, len);
             if(is_word(str_extract))
                 words.push({str: str_extract, len: len, x0: x0, y0: y0, dx: 1, dy: 0,score: score_word(str_extract),selected:false});
         }
         // find largest vertical word at (x0, y0)
-        for(let len = 3; len < bheight - y0; len ++){
+        for(let len = 3; len <= bheight - y0; len ++){
             let str_extract = extract_str(x0, y0, 0, 1, len);
             if(is_word(str_extract))
                 words.push({str: str_extract, len: len, x0: x0, y0: y0, dx: 0, dy: 1,score: score_word(str_extract),selected:false});
