@@ -174,31 +174,33 @@ const BLOCKTYPE = {
 
 let block_patterns = {
 0: 
- [[0,1,0],
-  [0,1,0],
-  [0,1,0],
-  [0,1,0]],
+ [[0,0,0,0],
+  [1,1,1,1],
+  [0,0,0,0],
+  [0,0,0,0]],
 1: 
 [[1,1],
  [1,1]],
 2: 
 [[0,1,1],
- [1,1,0]],
+ [1,1,0],
+ [0,0,0]],
 3: 
 [[1,1,0],
- [0,1,1]],
+ [0,1,1],
+ [0,0,0]],
 4: 
 [[0,1,0],
- [0,1,1],
- [0,1,0]],
+ [1,1,1],
+ [0,0,0]],
 5: 
-[[0,1,0],
- [0,1,0],
- [0,1,1]],
+[[0,0,1],
+ [1,1,1],
+ [0,0,0]],
 6: 
-[[0,1,0],
- [0,1,0],
- [1,1,0]]
+[[1,0,0],
+ [1,1,1],
+ [0,0,0]]
 };
 
 function array_2d(n, m, val) {
@@ -213,12 +215,33 @@ function array_2d(n, m, val) {
     return arr;
 }
 
-const alternate_placements_short = [[-1,0], [2,0], [-1, -1], [0,2], [-1,-2], [2,0], [-2,2]];
-const alternate_placements_long = [[-1,0], [2,0], [-1, -1], [0,2], [-2,-1], [1,-1],[1,-1],[1,1],[-2,2],[-1,-2],[1,-1],[-1,0]];
+//const alternate_placements_short = [[-1,0], [2,0], [-1, -1], [0,2], [-1,-2], [2,0], [-2,2]];
+//const alternate_placements_long = [[-1,0], [2,0], [-1, -1], [0,2], [-2,-1], [1,-1],[1,-1],[1,1],[-2,2],[-1,-2],[1,-1],[-1,0]];
+
+const alternate_placements_short = [
+    [   [[-1,0], [1,-1], [0,2], [-1,2]],  // 0 -> 1
+        [[1,0], [1,-1], [0,2], [1,2]]],  // 0 -> 3
+    [   [[1,0], [1,1], [0,-2], [1,-2]],    // 1 -> 2
+        [[1,0], [1,1], [0,-2], [1,-2]]],   // 1 -> 0
+    [   [[1,0], [1,-1], [0,2], [1,2]],   // 2 -> 3
+        [[-1,0], [-1,-1], [0,2], [-1,2]]], // 2 -> 1
+    [   [[-1,0], [-1,1], [0,2], [-1,-2]],   // 3 -> 0
+        [[-1,0], [-1,1], [0,2], [-1,-2]]]]; // 3 -> 2
+
+const alternate_placements_long = [
+    [[[-2,0],[1,0],[-2,1],[1,-2]],  // 0 -> 1
+     [[-1,0],[2,0],[-1,-2],[2,1]]], // 0 -> 3
+    [[[-1,0],[2,0],[-1,-2],[2,1]],  // 1 -> 2
+     [[2,0],[-1,0],[2,-1],[-1,2]]], // 1 -> 0
+    [[[2,0],[-1,0],[2,-1],[-1,2]],  // 2 -> 3
+     [[1,0],[-2,0],[1,2],[-2,-1]]], // 2 -> 1
+    [[[1,0],[-2,0],[1,2],[-2,-1]],  // 3 -> 0
+     [[-2,0],[1,0],[-2,1],[1,-2]]]]; // 3 -> 2
 
 class block {
     constructor(block_type){
         this.block_type = block_type;
+        this.rotation = 0;
         let block_pattern = block_patterns[block_type];
         this.n = block_pattern.length;
         this.m = block_pattern[0].length;
@@ -262,7 +285,10 @@ class block {
                     continue;
                 // ensure occupied tiles are in board:
                 if(j + x >= bwidth || i + y >= bheight || i + y < 0 || j + x < 0) 
+                {
+                    console.log("piece out of bounds", i,j,x,y);
                     return false;
+                }
                 // ensure no overlaps with board
                 if(board[i + y][j + x].letter != "")
                     return false;
@@ -276,13 +302,22 @@ class block {
             if(spin != 0) {
                 let alternate_placements = this.block_type == 0 ? alternate_placements_long : alternate_placements_short;
 
-                for (let i = 0; i < alternate_placements.length; i++)
+                let rotation_end_idx = (spin == 1) ? 0 : 1;
+                let checks = alternate_placements[this.rotation][rotation_end_idx];
+                console.log("rotation : ", this.rotation);
+                console.log("rotation_end_idx : ", rotation_end_idx);
+                console.log("checks : ", checks);
+
+                for (let i = 0; i < 4; i++)
                 {
-                    dx += alternate_placements[i][0];
-                    dy += alternate_placements[i][1];
+                    dx = checks[i][0];
+                    dy = checks[i][1];
                     if(this.valid_placement(this.x + dx, this.y + dy, spin))
+                    {
+                        console.log(checks[i]);
                         break;
-                    else if (i == alternate_placements.length - 1)
+                    }
+                    else if (i == 3)
                         return false;
                 }
             }
@@ -317,6 +352,7 @@ class block {
             this.letters[i][j] = temp_letters[this.m - 1 - j][i];
         }
         render_board();
+        this.rotation = (this.rotation + 1) % 4;
         return true;
     }
 
@@ -336,6 +372,11 @@ class block {
             this.letters[i][j] = temp_letters[j][this.n - 1 - i];
         }
         render_board();
+
+        this.rotation = (this.rotation - 1);
+        while(this.rotation < 0)
+            this.rotation += 4;
+
         return true;
     }
 }
