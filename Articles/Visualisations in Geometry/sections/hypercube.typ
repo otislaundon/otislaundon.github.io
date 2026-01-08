@@ -13,3 +13,4 @@ In this section, we will be exploring the group structure of rotations in $RR^4$
 == Visualisation
 
 #sketch("./sketches/hypercube/hypercube.js", "sketch:hypercube", "./sketches/hypercube/rotating clifford torus.png")
+

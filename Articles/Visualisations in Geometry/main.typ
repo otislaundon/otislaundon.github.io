@@ -32,4 +32,5 @@ The format of this document is that there will be one section per geometric conc
 
 #include "/sections/cayley_graph_quotients.typ"
 
+
 = How to make interactive visuals like these
