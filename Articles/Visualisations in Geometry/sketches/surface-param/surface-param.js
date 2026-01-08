@@ -1,4 +1,4 @@
-let surface_param = new p5((p) => {
+let sketch_surface_param = new p5((p) => {
     p5_lib_surfaceparam(p);
     p5_lib_controls(p);
     p5_lib_axes(p);

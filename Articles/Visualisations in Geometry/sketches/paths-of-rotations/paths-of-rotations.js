@@ -120,14 +120,11 @@ let sketch_paths_of_rotations = new p5((p) => {
     p.mouse_sensetivity = 0.01;
     p.interact = function(){
         p.orientation = mm_prod(rot4_xz_yw(p.obj_rot_yaw, 0.0), rot4_xw_yz(0.0,p.obj_rot_pitch), 4);
-        console.log(p.obj_rot_pitch);
     }
 
     p.mousePressed = () => {
         if(p.mouseX > 0 && p.mouseY > 0 && p.mouseX < p.width && p.mouseY < p.height)
         p.clickStartedInCanvas = true;
-        
-        console.log(document.getElementById(p.canvas_id).matches(':hover'))
     }
     p.mouseReleased = () => {
         p.clickStartedInCanvas = false;

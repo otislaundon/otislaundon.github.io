@@ -1,4 +1,6 @@
+// rename this to sketch_<SKETCH NAME>
 let sketch_template = new p5((p) => {
+    // rename this to "sketch:<SKETCH NAME>"
     p.canvas_id = "sketch:template";
 
     p.setup = function(){

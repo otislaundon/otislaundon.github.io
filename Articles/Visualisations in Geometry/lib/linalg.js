@@ -36,7 +36,9 @@ function vv_add(u, v){
   return result;
 }
 
-vs_mult = (v, s) => v.map(a => a * s);
+vs_mult = function(v, s) { 
+    return v.map(a => a * s);
+}
 
 v_len_2 = (v) => v.reduce((partial, a) => partial + a^2, 0);
 v_len = (v) => Math.sqrt(v_len_2(v));
@@ -95,4 +97,14 @@ const mat4_id = [
 
 function vv_lerp(a, b, t){
     return vv_add(vs_mult(a, 1-t), vs_mult(b, t));
+}
+
+function mat2_inv(a){
+    let inv_det = 1/(a[0] * a[3] - a[1] * a[2]);
+    if(inv_det == 0)
+        return [0,0,0,0];
+    return [
+         det * a[3], -det * a[1],
+        -det * a[2],  det * a[0]
+    ];
 }

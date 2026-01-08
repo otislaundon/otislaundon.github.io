@@ -170,13 +170,13 @@ let p5_lib_surfaceparam = p => {
     }
 }
 
-let p5_lib_orbit_nozoom = p => {
+let p5_lib_orbit_nozoom = function(p){
   p.orbit_nozoom = function(){
     
   }
 }
 
-let p5_lib_controls = p =>{
+let p5_lib_controls = function(p){
   p.createSlider = function(){
     let sl = document.createElement("input");
     sl.type="range";
@@ -190,8 +190,9 @@ let p5_lib_controls = p =>{
   }
 }
 
-let p5_lib_axes = p =>{
+let p5_lib_axes = function(p){
     p.draw_axes = function(){
+      p.push();
         p.strokeWeight(2);
         //p.gl.disable(p.gl.DEPTH_TEST);
         p.stroke(0,1,0.5);
@@ -200,5 +201,28 @@ let p5_lib_axes = p =>{
         p.line(0,0,0, 0,-p.PI,0);
         p.stroke(2/3,1,0.5);
         p.line(0,0,0, 0,0,p.PI);
+    p.pop();
     }
 }
+
+p5_lib_world_orientation_interaction = function(p) {
+    p.orientation = mat4_id;
+    p.world_rot_xz = 0;
+    p.world_rot_yz = 0;
+    p.mouse_sensetivity = 0.01;
+    p.mousePressed = () => {
+        if(p.mouseX > 0 && p.mouseY > 0 && p.mouseX < p.width && p.mouseY < p.height)
+        p.clickStartedInCanvas = true;
+    }
+    p.mouseReleased = () => {
+        p.clickStartedInCanvas = false;
+    }
+    p.mouseDragged = function(){
+        if(p.clickStartedInCanvas){
+            p.world_rot_xz += (p.mouseX - p.pmouseX) * p.mouse_sensetivity;
+            p.world_rot_yz += (p.mouseY - p.pmouseY) * p.mouse_sensetivity;
+            p.orientation = mm_prod(rot4_xz_yw(p.world_rot_xz, 0.0), rot4_xw_yz(0.0,p.world_rot_yz), 4);
+        }
+    }
+}
+
