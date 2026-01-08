@@ -1,5 +1,5 @@
-let sketch_SKETCH_NAME = new p5((p) => {
-    p.canvas_id = "sketch:SKETCH_NAME";
+let sketch_pink_sketch = new p5((p) => {
+    p.canvas_id = "sketch:pink_sketch";
 
     p.setup = function(){
         p.canvas = p.createCanvas(720, 360);

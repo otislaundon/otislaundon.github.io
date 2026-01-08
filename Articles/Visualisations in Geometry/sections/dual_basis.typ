@@ -13,3 +13,5 @@ In this section, we illustrate the fact that there is no canonical isomorphism b
 == Visualisation
 
 #sketch("./sketches/dual-basis/dual-basis.js", "sketch:dual-basis", "./sketches/hypercube/rotating clifford torus.png")
+#sketch("./sketches/pink_sketch/pink_sketch.js", "sketch:pink_sketch", "./sketches/template/placeholder.png")
+
