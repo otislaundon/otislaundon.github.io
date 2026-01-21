@@ -1,7 +1,14 @@
+#import "@local/mathyml:0.1.0" // TEST
+#import mathyml: to-mathml // TEST
+#import mathyml.prelude: * // TEST
+#mathyml.stylesheets() // TEST
+
 #let section(content) = {
   [
   #let colwhite(x) = text(fill: white, x) 
 
+  //this solution for displaying math in html was janky, and not accessible.
+  /*
   #show math.equation: eqblock => context {
     if target() == "html" {
       // For HTML export, wrap in an HTML frame
@@ -15,7 +22,10 @@
       // For PDF export, show the equation as is
       eqblock
     }
-  }
+    */
+
+    #show math.equation: to-mathml // TEST
+  //}
   
   #show align: a => context{
     if target() == "html"{

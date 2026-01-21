@@ -40,9 +40,10 @@ vs_mult = function(v, s) {
     return v.map(a => a * s);
 }
 
-v_len_2 = (v) => v.reduce((partial, a) => partial + a^2, 0);
-v_len = (v) => Math.sqrt(v_len_2(v));
-v_normalise = (v) => vs_mult(v, 1/v_len(v));
+const sum = function(x){return x.reduce((partial_sum, a) => (partial_sum + a), 0);}
+const v_len_2 = function(x){return sum(x.map((a) => a*a));}
+const v_len = function(x){return Math.sqrt(v_len_2(x));}
+const v_normalise = function(x){let l =v_len(x); return x.map((a) => a/l)};
 
 function rot4_xy_zw(theta, phi){
     let ct = cos(theta);
@@ -86,6 +87,20 @@ function rot3_xy(theta){
         st, ct, 0,
         0,0,1
     ]
+}
+
+function standard_basis(n, i){
+    let e_i = [];
+    for(let j = 0; j < n; j++)
+        e_i.push(i == j ? 1 : 0);
+    return e_i;
+}
+
+function mat_id(n){
+    let columns = [];
+    for(let i = 0; i < n; i++)
+        columns.push(standard_basis(n,i));
+    return columns.flat();
 }
 
 const mat4_id = [

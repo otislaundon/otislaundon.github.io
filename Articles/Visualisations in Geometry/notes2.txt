@@ -18,4 +18,6 @@ historical use of visualisations
 SECTIONS TO ADD: 
 	orientability as bicolorability of cellular decomposition
 	
+What makes a good visualisation?
+- faithfulness: The visualisation of an 2 objects in a set should be the same iff they are the same object.
 
