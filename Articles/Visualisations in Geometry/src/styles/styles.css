@@ -1,0 +1,69 @@
+body{
+    max-width:960px;
+    margin: auto;
+
+    font-family: Helvetica, Arial, sans-serif;
+}
+.top-bar{
+    border-width: 1px;
+    border-color: black;
+    border: black;
+    
+    justify-content: center;
+    align-content: center;
+    
+    display: grid;
+}
+
+/* The below class styles are for custom html elements formatted from typst html export */
+.sidenote{
+    float: right;
+    margin-right: -280px;
+    width: 280px;
+    /*outline: 1px dotted darkgrey;*/
+}
+.canvas_holder{
+    max-width: 720px;
+    display:grid;
+}
+
+canvas{
+	padding: 0;
+	margin: 0;
+}
+
+.input-sketch{
+	max-width:240px;
+	max-height:240px;
+	
+    /*border: 2px yellow solid;*/
+}
+
+/*Hypercube Sketch*/
+.so4-rotations{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 0px;
+}
+
+    
+.sketch-l{
+    grid-column: span 2 / span 2;
+    grid-row: span 2 / span 2;
+	max-height: 480px;
+	max-width: 480px;
+}
+
+.sketch-br {
+    grid-column-start: 3;
+}
+
+.sketch-tr {
+    grid-column-start: 3;
+    grid-row-start: 2;
+	max-width: 240px;
+	max-height: 240px;
+}
+        
+/*Hypercube Sketch*/
