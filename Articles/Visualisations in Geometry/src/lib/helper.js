@@ -237,6 +237,9 @@ p5_lib_world_orientation_interaction = function(p, world_transform) {
             p.world_transform.mat = mm_prod(rot4_xz_yw(p.world_transform.rot_xz, 0.0), rot4_xw_yz(0.0,p.world_transform.rot_yz), 4);
         }
     }
+
+	// p.mousePressed = function(){p.interactOnPressed();}
+	// p.mouseDragged = function(){p.interactOnDragged();}
 }
 
 // Functions for creating special mini-sketches to be used as inputs to other sketches
