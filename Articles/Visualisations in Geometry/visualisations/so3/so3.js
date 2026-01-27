@@ -32,11 +32,11 @@ let sketch_so3 = new p5((p) => {
 		let res = 32;
 		for(let i = 0; i <res; i++)
 		{
-			/*
+			
 			p.points.push([(i/res-0.5)*TWOPI,0,0]);
 			p.points.push([0,(i/res-0.5)*TWOPI,0]);
 			p.points.push([0,0,(i/res-0.5)*TWOPI]);
-			*/
+			
 
 			for(let j = 0; j <= res; j++)
 				p.points.push(p.mult_so3([j/res*TWOPI,0,0], [0,0,(i/res-0.5)*TWOPI]));
