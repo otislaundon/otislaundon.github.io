@@ -12,7 +12,6 @@ const isVisibleInViewport = (element) => {
     )
 }
 
-
 // This function takes in a p5 instance and adds to it drawing functions in R4
 // We will create simmilar libraries potentially for hyperbolic or other drawing methods.
 let augment_p5_instance = function(p){
@@ -177,7 +176,7 @@ let p5_lib_controls = function(p){
     sl.min = 0;
     sl.max = 1;
     sl.step = 0.01;
-    document.getElementById(p.canvas_id+"-controls").appendChild(sl);
+    document.getElementById(p.canvas_id).appendChild(sl);
     return sl;
   }
 }
@@ -228,7 +227,9 @@ p5_lib_world_orientation_interaction = function(p, world_transform) {
 
     p.interactOnPressed = function(){
         if(p.mouseX > 0 && p.mouseY > 0 && p.mouseX < p.width && p.mouseY < p.height)
-          p.clickStartedInCanvas = true;
+			p.clickStartedInCanvas = true;
+		else
+			p.clickeStartedInCanvas = false;
     }
     p.interactOnDragged = function(){
         if(p.clickStartedInCanvas){

@@ -112,6 +112,8 @@ function vv_cross(a, b){
 
 // rotates vector v about axis e by phi radians
 function rotate_vector(v, e, phi){
+	if(v_len_2(e) == 0 || phi == 0)
+		return v;
 	let cp = Math.cos(phi);
 	let sp = Math.sin(phi);
 	return vv_add(vs_prod(v, cp), vv_add(vs_prod(e, vv_dot(e, v) * (1-cp)), vs_prod(vv_cross(v, e),sp)));
@@ -147,6 +149,12 @@ const mat4_id = [
     0,1,0,0,
     0,0,1,0,
     0,0,0,1
+];
+
+const mat3_id = [
+	1,0,0,
+	0,1,0,
+	0,0,1
 ];
 
 function vv_lerp(a, b, t){
