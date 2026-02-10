@@ -43,39 +43,36 @@ p.draw = function(){
     p.applyMatrix(p.world_transform.mat);
     p.scale(100);
     
-    // Set the styles
     p.background(255);
 
-    // handle rotation input from keypresses
-    if (p.keyIsPressed === true) 
-        p.theta += p.deltaTime / 1000;
-    
-    // compute rotation matrix for hypercube object
-    let phi = p.theta;
-    let rot_double_xw_yz = rot4_xy_zw(p.theta, phi);
-    let rot_xz = rot4_xz_yw(-p.mouseX / p.width * 2 * PI, 0);
-    let rot_yz = rot4_xw_yz(0, p.mouseY / p.width * 2.0 * PI);
-    let rot_stage = mm_prod(rot_yz, rot_xz, 4);
-    MODEL_MAT4 = rot_double_xw_yz;
-    MODEL_MAT4 = mm_prod(rot_stage, MODEL_MAT4, 4);
+	p.input_2.val_x += p.deltaTime/1000;
+	p.input_1.val_x += p.deltaTime/1000 * 0.5;
+	p.input_1.val_y += p.deltaTime/1000 * 0.5;
 
-    p.stroke(200);
+    // compute rotation matrix for hypercube object
+    let rot_double_xy_zw = rot4_xy_zw(p.input_1.val_z, p.input_2.val_z);
+    let rot_double_xz_yw = rot4_xz_yw(p.input_1.val_y, p.input_2.val_y);
+    let rot_double_xw_yz = rot4_xw_yz(p.input_2.val_x, p.input_1.val_x);
+
+    p.MODEL_MAT4 = mm_prod(rot_double_xw_yz, mm_prod(rot_double_xz_yw,rot_double_xy_zw, 4), 4);
+
+    p.stroke(100);
     p.strokeWeight(2)
-    //p.draw_wire_mesh_r4(p.hypercube_mesh);
+    p.draw_wire_mesh_r4(p.hypercube_mesh);
 
     p.strokeWeight(8);
     //p.draw_wire_mesh_r4(axes_mesh);
 
-    p.draw_axes(1);
+    //p.draw_axes(1);
     p.draw_ground();
     p.pop();
+
 
     // Draw arrows for commutative diagram
     p.stroke(0);
     p.strokeWeight(2);
     p.arrow(230,120,120,70,20);
     p.arrow(230,-120,120,-70,20);
-
 }
 
 p.mousePressed = function(){

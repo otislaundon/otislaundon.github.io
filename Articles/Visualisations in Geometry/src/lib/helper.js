@@ -15,6 +15,11 @@ const isVisibleInViewport = (element) => {
 // This function takes in a p5 instance and adds to it drawing functions in R4
 // We will create simmilar libraries potentially for hyperbolic or other drawing methods.
 let augment_p5_instance = function(p){
+	p.R4_to_R3 = function(a){
+		a = mv_prod(p.MODEL_MAT4, a);
+		a = vv_add(a, [0,0,0,3]);
+		return project_stereo(a);
+	}
   p.R4_to_screen = function(a)
   {
     a = vv_add(a, [0,0,0,2]);
@@ -41,20 +46,21 @@ let augment_p5_instance = function(p){
    * 
    * @param {vertices, indices, colors?} mesh
    */
-  p.draw_wire_mesh_r4 = function(mesh)
-  {
-      for(let i = 0; i < mesh.indices.length; i += 2){
-          let edge = [mesh.indices[i], mesh.indices[i+1]]; 
-          if(mesh.colors != null)
-              p.stroke(mesh.colors[i/2]);
-          p.lineR4(mesh.vertices[edge[0]], mesh.vertices[edge[1]]);
-      }
-  }
-
-  function draw_wire_mesh_r4_webgl()
-  {
-    //TODO: Implement mesh drawing with 4d coordinates in webgl instead of software renderer.
-  }
+	p.draw_wire_mesh_r4 = function(mesh)
+	{
+		p.beginShape(p.LINES);
+		for(let i = 0; i < mesh.indices.length; i += 2){
+        	let edge = [mesh.indices[i], mesh.indices[i+1]]; 
+			//if(mesh.colors != null)
+            	//p.stroke(mesh.colors[i/2]);
+        	//p.lineR4(mesh.vertices[edge[0]], mesh.vertices[edge[1]]);
+			let p0 = p.R4_to_R3(mesh.vertices[edge[0]]);
+			let p1 = p.R4_to_R3(mesh.vertices[edge[1]]);
+			p.vertex(p0[0], p0[1], p0[2]);
+			p.vertex(p1[0], p1[1], p1[2]);
+		}
+		p.endShape();
+	}
 }
 
 project_stereo = function(v){
@@ -195,7 +201,7 @@ let p5_lib_axes = function(p){
     p.pop();
     }
     p.draw_ground = function(){
-      console.log("this is too slow");
+      //console.log("this is too slow");
       return;
       p.strokeWeight(1);
       p.stroke(255,255,255,50);
@@ -318,6 +324,10 @@ input_rotation_creator = function(name, parent, html_parent, width, height) {
             p.background(255);
             p.applyMatrix(parent.world_transform.mat);
             p.push();
+
+				p.rotateX(p.val_x);
+				p.rotateY(-p.val_y);
+				p.rotateZ(-p.val_z);
               p.fill(0,0,255);
               p.torus(1,0.05,64,12);
               
