@@ -1,7 +1,6 @@
 let sketch_domain_col = new p5((p) => {
     p.canvas_id = "vis:domain-col";
 
-
 p.vertSrc = `
 precision highp float;
 uniform mat4 uModelViewMatrix;
@@ -52,6 +51,7 @@ void main() {
     }
 
     p.draw = function(){
+		p.background(255,0,0);
 		// don't do any drawing if not visible
 		if(!isVisibleInViewport(p.canvas.elt))
 			return;
