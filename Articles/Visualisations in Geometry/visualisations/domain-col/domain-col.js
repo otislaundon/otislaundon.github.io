@@ -31,7 +31,8 @@ vec2 f(vec2 z){
 
 void main() {
     vec2 image = f(vComplexPos);
-    gl_FragColor = vec4(complexToColor(image).xyz, 1.0);
+    //gl_FragColor = vec4(complexToColor(image).xyz, 1.0);
+	gl_FragColor = vec4(1.0,0.0,0.0,1.0);
 }
 `;
 
@@ -51,30 +52,34 @@ void main() {
     }
 
     p.draw = function(){
-		p.background(255,0,0);
 		// don't do any drawing if not visible
 		if(!isVisibleInViewport(p.canvas.elt))
 			return;
+		p.orbitControl();
 
 		p.background(255,255,255,0);
-		p.orbitControl();
 		p.scale(p.height/2);
 
-		p.push()
-			p.dom_col_shader.setUniform("uBounds", [-3,-2, 3,2]);
-			p.dom_col_shader.setUniform("uT", p.millis()/1000);
-			p.shader(p.dom_col_shader);
+		p.dom_col_shader.setUniform("uBounds", [-3,-2, 3,2]);
+		p.dom_col_shader.setUniform("uT", p.millis()/1000);
+		p.shader(p.dom_col_shader);
 
-			p.quad(-1,0,-1,
-					1,0,-1,
-					1,0, 1,
-				   -1,0, 1);
-		p.pop();
+		p.quad(-1,0,-1,
+				1,1,-1,
+				1,0, 1,
+			   -1,0, 1);
 
 		p.push();
 			p.translate(0,-0.2,0);
 			p.sphere(0.2);
 		p.pop();
+
+		p.strokeWeight(2);
+		p.stroke(10);
+		p.background(255,255,255,0);
+		p.fill(0);
+		p.rect(10/p.height,10/p.height,20/p.height,30/p.height);
+
     }
 })
 
