@@ -27,6 +27,10 @@ body{
     display:grid;
 }
 
+.vis-holder{
+	position: relative;
+}
+
 canvas{
 	padding: 0;
 	margin: 0;
@@ -37,6 +41,10 @@ canvas{
 	max-height:240px;
 	
     /*border: 2px yellow solid;*/
+}
+
+.annotation{
+	position: absolute;
 }
 
 /*Hypercube Sketch*/
@@ -67,3 +75,4 @@ canvas{
 }
         
 /*Hypercube Sketch*/
+

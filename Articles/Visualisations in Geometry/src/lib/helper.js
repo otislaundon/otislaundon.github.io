@@ -235,7 +235,7 @@ p5_lib_world_orientation_interaction = function(p, world_transform) {
         if(p.mouseX > 0 && p.mouseY > 0 && p.mouseX < p.width && p.mouseY < p.height)
 			p.clickStartedInCanvas = true;
 		else
-			p.clickeStartedInCanvas = false;
+			p.clickStartedInCanvas = false;
     }
     p.interactOnDragged = function(){
         if(p.clickStartedInCanvas){
@@ -346,3 +346,111 @@ input_rotation_creator = function(name, parent, html_parent, width, height) {
         }   
     }
 }
+
+// returns point [x, y, z] in ball of radius r.
+random_point_in_ball = function(r){
+	let v = [(Math.random()-0.5)*2,(Math.random()-0.5)*2,(Math.random()-0.5)*2];
+	while(v_len(v) >= 1)
+		v = [(Math.random()-0.5)*2,(Math.random()-0.5)*2,(Math.random()-0.5)*2];
+	return vs_prod(v, r);
+}
+
+random_in_cube = function(n){
+	let v = [];
+	for(let i = 0; i < n; i++)
+		v.push((Math.random()-0.5)*2);
+	return v;
+}
+
+random_point_on_sphere = function(dim){
+	let v = random_in_cube(dim);
+
+	while(v_len(v) >= 1)
+		v = random_in_cube(dim);
+	return v_normalise(v);
+}
+
+function p5_lib_so3_core(p){
+
+	p.initialise_points = function(...args){
+		p.points = [];
+
+		let t_0 = args[0];
+		let t_1 = args[1];
+		let t_2 = args[2];
+
+		//initialise points
+		let res = 32;
+		for(let i = 0; i <=res; i++)
+			for(let j = 0; j <= res; j++)
+				p.points.push(mult_so3([t_0,t_1,t_2], [0,0,(i/res-0.5)*TWOPI*0.9999],[j/res*TWOPI*0.9999,0,0]));
+
+		p.n_points = p.points.length;
+		p.background(255,255,255);
+	}
+
+	//Initialise Quaternions randomly
+	/*
+	p.quaternion_matrices = [];
+	p.n_points = 1000;
+	for(let i = 0; i < p.n_points; i++)
+		p.quaternion_matrices.push(p.quaternion_to_real_mat4(p.point_to_quaternion(random_point_in_ball(PI/2))));
+	*/
+
+	//p.quaternion_matrices.push(p.quaternion_to_real_mat4(p.point_to_quaternion([(i/res*PI-PI/2)*2,0,0])));
+	//p.quaternion_matrices.push(p.quaternion_to_real_mat4(p.point_to_quaternion([0,(i/res*PI-PI/2)*2,0])));
+	//p.quaternion_matrices.push(p.quaternion_to_real_mat4(p.point_to_quaternion([0,0,(i/res*PI-PI/2)*2])));
+
+	p.draw_outline_ball = function(r){
+		p.push();
+			p.scale(r);
+			p.gl.disable(p.gl.DEPTH_TEST);
+			p.fill(255,255,255,10);
+			p.sphere(1,32,32);
+
+			p.stroke(0,0,0,30);
+			p.strokeWeight(2);
+			p.rotateX(PI/2);
+			p.ellipse(0,0,2,2,50);
+		p.pop();
+	}
+
+	p.draw_points = function(points){
+		p.beginShape(p.POINTS);
+		for(let i = 0; i < points.length; i++)
+			p.vertex(points[i][0], points[i][1], points[i][2]);
+		p.endShape();
+	}
+
+	p.draw_spheres = function(points){
+		p.push();
+		for(let i = 0; i < points.length; i++){
+			let offset = points[i]; 
+			p.push();
+			p.translate(offset[0], offset[1], offset[2]);
+			p.sphere(0.1,4,4);
+			p.pop();
+		}
+		p.pop();
+	}
+}
+
+p5_lib_annotations = function(p){
+	p.createAnnotation = function(x, y, text){
+		let ann = document.createElement("div");
+		ann.innerText = text;
+		ann.setAttribute("class", "annotation");
+		ann.setAttribute("style", "left: "+x+"px; top: "+y+"px");
+		document.getElementById(p.canvas_id).appendChild(ann);
+		MathJax.Hub.Queue(["Typeset", MathJax.Hub, ann]);
+		return ann;
+	}
+	p.setAnnotationPos = function(ann, x, y){
+		ann.setAttribute("style", "left: "+x+"px; top: "+y+"px");
+	}
+	p.setAnnotationPos3 = function(ann, pos, offset = [0,0]){
+		let sp = p.worldToScreen(pos[0], pos[1], pos[2]);
+		ann.setAttribute("style", "left: "+(sp.x+offset[0])+"px; top: "+(sp.y+offset[1])+"px");
+	}
+}
+

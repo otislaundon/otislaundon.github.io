@@ -27,6 +27,13 @@ function mm_prod(A, B, k){
     return AB;
 }
 
+function m_trace(A, n){
+	let tr = 0;
+	for(let i = 0; i < n*n; i+= n+1)
+		tr += A[i];
+	return tr;
+}
+
 function vv_add(u, v){
   let n = u.length;
   let result = new Array(n);
@@ -110,32 +117,6 @@ function vv_cross(a, b){
 			a[0]*b[1] - a[1]*b[0]];
 }
 
-// rotates vector v about axis e by phi radians
-function rotate_vector(v, e, phi){
-	if(v_len_2(e) == 0 || phi == 0)
-		return v;
-	let cp = Math.cos(phi);
-	let sp = Math.sin(phi);
-	return vv_add(vs_prod(v, cp), vv_add(vs_prod(e, vv_dot(e, v) * (1-cp)), vs_prod(vv_cross(v, e),sp)));
-}
-
-function angleaxis_to_matrix(e, phi){
-	let e1 = rotate_vector([1,0,0], e, phi);
-	let e2 = rotate_vector([0,1,0], e, phi);
-	let e3 = rotate_vector([0,0,1], e, phi);
-	return [e1[0],e2[0],e3[0],
-			e1[1],e2[1],e3[1],
-			e1[2],e2[2],e3[2]];
-}
-
-function matrix_to_angleaxis(A){
-	let ax = v_normalise([A[7]-A[5], A[2]-A[6], A[3]-A[1]]);
-	let K = cross_matrix(ax);
-	let theta = Math.atan2(-m_trace(mm_prod(K,A,3),3), m_trace(A,3) - 1);
-	//let a = 1 / (2 * sin(Math.atan2(-m_trace(mm_prod(K, A)))));
-	return vs_prod(ax, theta);
-}
-
 function cross_matrix(v){
 	return [
 		0, -v[2], v[1],
@@ -171,9 +152,77 @@ function mat2_inv(a){
     ];
 }
 
-function m_trace(A, n){
-	let tr = 0;
-	for(let i = 0; i < n*n; i+= n+1)
-		tr += A[i];
-	return tr;
+// rotates vector v about axis e by phi radians
+function rotate_vector(v, e, phi){
+	if(v_len_2(e) == 0 || phi == 0)
+		return v;
+	let cp = Math.cos(phi);
+	let sp = Math.sin(phi);
+	return vv_add(vs_prod(v, cp), vv_add(vs_prod(e, vv_dot(e, v) * (1-cp)), vs_prod(vv_cross(v, e),sp)));
+}
+
+// converts a rotation in angle-axis representation to it's rotation matrix
+function angleaxis_to_matrix(e, phi){
+	let e1 = rotate_vector([1,0,0], e, phi);
+	let e2 = rotate_vector([0,1,0], e, phi);
+	let e3 = rotate_vector([0,0,1], e, phi);
+	return [e1[0],e2[0],e3[0],
+			e1[1],e2[1],e3[1],
+			e1[2],e2[2],e3[2]];
+}
+
+// converts a rotation matrix to it's angle-axis representation
+function matrix_to_angleaxis(A){
+	let ax = v_normalise([A[7]-A[5], A[2]-A[6], A[3]-A[1]]);
+	let K = cross_matrix(ax);
+	let theta = Math.atan2(-m_trace(mm_prod(K,A,3),3), m_trace(A,3) - 1);
+	//let a = 1 / (2 * sin(Math.atan2(-m_trace(mm_prod(K, A)))));
+	return vs_prod(ax, theta);
+}
+
+// takes a list of rotations R_1, R_2, ..., R_n in angle-axis representation and returns the composite R_1 R_2 ... R_n
+mult_so3 = function(...args){
+	let mats = args.map((a) => angleaxis_to_matrix(v_normalise(a), v_len(a))); // convert each argument to a rotation matrix
+	let prod = mats.reduce((p, m) => mm_prod(p, m, 3)); // compute product of all these matrices
+	return matrix_to_angleaxis(prod); // convert back to point
+}
+
+// takes unit quaternion [w, x, y, z] as input and returns a rotation matrix. This map is two-to-one.
+SU2_to_rot_matrix = function(u){
+	let w = u[0];
+	let x = u[1];
+	let y = u[2];
+	let z = u[3];
+	return [
+		1-2*(y**2 + z**2), 2*(x*y - z*w), 2*(x*z + y*w),
+		2*(x*y+ z*w), 1-2*(x**2 + z**2), 2*(y*z - x*w),
+		2*(x*z - y*w), 2*(y*z + x*w), 1-2*(x**2 + y**2)
+	];
+}
+
+// converts quaternion q to real 4x4 matrix, such that conversion followed by matrix multiplication is same as quaternion multiplication followed by conversion.
+quaternion_to_real_mat4 = function(q){
+	return [q[0], q[3],-q[1],-q[2],
+		   -q[3], q[0], q[2],-q[1],
+			q[1],-q[2], q[0],-q[3],
+			q[2], q[1], q[3], q[0]];
+}
+//inverts previous function.
+real_mat4_to_quaternion = function(m){
+	return [m[0], -m[2], -m[3], m[1]];
+}
+
+//takes point in ball of radius pi to a quaternion.
+//This is the quaternion exponential map.
+point_to_quaternion = function(a){
+	let h_len_w = v_len(a);
+	let fac = sin(h_len_w)/h_len_w;
+	return [cos(h_len_w), fac * a[0],fac * a[1],fac * a[2]];
+}
+
+// This is the right inverse of the above function.
+quaternion_to_point = function(q){
+	let im = [q[1], q[2], q[3]];
+	let theta = Math.atan2(v_len(im), q[0]);
+	return vs_prod(v_normalise(im), theta);
 }
