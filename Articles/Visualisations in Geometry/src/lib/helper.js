@@ -1,3 +1,4 @@
+const HALF_PI = 1.5707963267
 
 clamp = function(x,m,M){return Math.min(M, Math.max(x, m));}
 
@@ -188,9 +189,9 @@ let p5_lib_controls = function(p){
 }
 
 let p5_lib_axes = function(p){
-    p.draw_axes = function(scale){
+    p.draw_axes = function(scale, weight = 2){
       p.push();
-        p.strokeWeight(2);
+        p.strokeWeight(weight);
         //p.gl.disable(p.gl.DEPTH_TEST);
         p.stroke(255,0,0);
         p.line(0,0,0, scale,0,0);
@@ -213,7 +214,12 @@ let p5_lib_axes = function(p){
 }
 
 let p5_lib_arrows = function(p){
-  p.arrow = function(x0,y0,x1,y1,head_size,head_angle){
+  p.arrowHead = function(x, y, dir, head_size = 8){
+    let perp = [dir[1], -dir[0]];
+    p.line(x, y, x + (perp[0]-dir[0]) * head_size, y + (perp[1]-dir[1]) * head_size);
+    p.line(x, y, x + (-perp[0]-dir[0]) * head_size, y + (-perp[1]-dir[1]) * head_size);
+	}
+  p.arrow = function(x0,y0,x1,y1,head_size){
     let dir = v_normalise([x1 - x0, y1 - y0]);
     let perp = v_normalise([dir[1], -dir[0]]);
     p.line(x0, y0, x1, y1);
@@ -230,6 +236,12 @@ p5_lib_world_orientation_interaction = function(p, world_transform) {
 
     p.mouse_sensetivity = 0.01;
     p.clickStartedInCanvas = false;
+
+	p.setWorldRot = function(rot_xz, rot_yz){
+            p.world_transform.rot_xz = rot_xz;
+            p.world_transform.rot_yz = rot_yz;
+            p.world_transform.mat = mm_prod(rot4_xz_yw(p.world_transform.rot_xz, 0.0), rot4_xw_yz(0.0,p.world_transform.rot_yz), 4);
+	}
 
     p.interactOnPressed = function(){
         if(p.mouseX > 0 && p.mouseY > 0 && p.mouseX < p.width && p.mouseY < p.height)
@@ -249,6 +261,21 @@ p5_lib_world_orientation_interaction = function(p, world_transform) {
 	// p.mouseDragged = function(){p.interactOnDragged();}
 }
 
+p5_lib_rotation_selection = function(p){
+	p.handleRotationSelectionInput = function(){
+			p.v1_vec = p.screenToWorld(p.mouseX, p.height-p.mouseY, 0.8).sub(p.screenToWorld(p.mouseX, p.height-p.mouseY, 0.2));
+			p.v1 = v_normalise([p.v1_vec.x, p.v1_vec.y, p.v1_vec.z]);
+			if(p.v0 != undefined && p.mouseIsPressed && p.clickStartedOnRight){
+				p.v1xv0 = vv_cross(p.v1, p.v0);
+				let rot_mag = v_len(p.v1xv0) * 12;
+				let rot_change = angleaxis_to_matrix(v_normalise(p.v1xv0),rot_mag);
+				p.rot = mm_prod(p.rot, rot_change,3);
+				p.points_updated = false;
+			}
+			p.v0 = [p.v1[0], p.v1[1], p.v1[2]];
+	}
+}
+	
 // Functions for creating special mini-sketches to be used as inputs to other sketches
 input_square_creator = function(name, parent, width, height) {
     let input_container = document.createElement("div");
@@ -362,7 +389,7 @@ random_in_cube = function(n){
 	return v;
 }
 
-random_point_on_sphere = function(dim){
+random_point_on_sphere = function(dim = 3){
 	let v = random_in_cube(dim);
 
 	while(v_len(v) >= 1)
@@ -389,17 +416,12 @@ function p5_lib_so3_core(p){
 		p.background(255,255,255);
 	}
 
-	//Initialise Quaternions randomly
-	/*
-	p.quaternion_matrices = [];
-	p.n_points = 1000;
-	for(let i = 0; i < p.n_points; i++)
-		p.quaternion_matrices.push(p.quaternion_to_real_mat4(p.point_to_quaternion(random_point_in_ball(PI/2))));
-	*/
-
-	//p.quaternion_matrices.push(p.quaternion_to_real_mat4(p.point_to_quaternion([(i/res*PI-PI/2)*2,0,0])));
-	//p.quaternion_matrices.push(p.quaternion_to_real_mat4(p.point_to_quaternion([0,(i/res*PI-PI/2)*2,0])));
-	//p.quaternion_matrices.push(p.quaternion_to_real_mat4(p.point_to_quaternion([0,0,(i/res*PI-PI/2)*2])));
+	p.initialiseSO3PointsRandom = function(n){
+		p.points = [];
+		p.n_points = n;
+		for(let i = 0; i < p.n_points; i++)
+			p.points.push(matrix_to_angleaxis(SU2_to_rot_matrix(random_point_on_sphere(4))));
+	}
 
 	p.draw_outline_ball = function(r){
 		p.push();
@@ -410,15 +432,25 @@ function p5_lib_so3_core(p){
 
 			p.stroke(0,0,0,30);
 			p.strokeWeight(2);
-			p.rotateX(PI/2);
+			p.rotateX(HALF_PI);
 			p.ellipse(0,0,2,2,50);
+			p.gl.enable(p.gl.DEPTH_TEST);
 		p.pop();
 	}
 
 	p.draw_points = function(points){
 		p.beginShape(p.POINTS);
 		for(let i = 0; i < points.length; i++)
+		{
 			p.vertex(points[i][0], points[i][1], points[i][2]);
+		}
+		p.endShape();
+	}
+
+	p.draw_points_plane = function(points){
+		p.beginShape(p.POINTS);
+		for(let i = 0; i < points.length; i++)
+			p.vertex(points[i][0], PI, points[i][2]);
 		p.endShape();
 	}
 
@@ -433,24 +465,84 @@ function p5_lib_so3_core(p){
 		}
 		p.pop();
 	}
+	p.draw_angle_axis_markers = function(rotAxis, theta, lab_axis, lab_theta){
+		p.push();
+		p.noFill();
+		let rotaxis_to_u = v_normalise(vv_cross(rotAxis, [0,0,1]));
+		let rotangle_to_u = Math.acos(vv_dot(v_normalise(rotAxis), [0,0,1]));
+		let rotMat = angleaxis_to_matrix(rotaxis_to_u, -rotangle_to_u);
+
+		let angle_ref_vec = vv_cross(rotaxis_to_u, rotAxis);
+		let angle_start_vec = mv_prod(mat3_T(rotMat),[1,0,0]);
+
+		p.applyMatrix(mat3_to_mat4(rotMat));
+		p.setAnnotationPos3right(lab_axis, [0,0,3.7]);
+
+		// draw axis of rotation
+		p.stroke(0);
+		p.strokeWeight(2);
+		p.line(0,0,-3,   0,0,3);
+		p.push();
+			p.translate(0,0,3);
+			p.rotateX(PI/2);
+			p.cone(0.05,0.18);
+		p.pop();
+
+		// this keeps the starting point for the arc consistent as u changes
+		let arc_start = -Math.atan2(vv_dot(angle_start_vec, rotaxis_to_u),vv_dot(angle_start_vec, angle_ref_vec));
+
+		p.arc(0,0, 4,4, arc_start,arc_start+theta);
+
+		let arc_start_pos = [Math.cos(arc_start),Math.sin(arc_start)];
+		let arc_end_pos = [Math.cos(arc_start+theta),Math.sin(arc_start+theta)];
+		p.line(0,0, arc_start_pos[0]*2, arc_start_pos[1]*2);
+
+		// Right angle square
+		p.line(0,0,0.25, arc_start_pos[0]*0.25, arc_start_pos[1]*0.25,0.25);
+		p.line(arc_start_pos[0]*0.25, arc_start_pos[1]*0.25,0, arc_start_pos[0]*0.25, arc_start_pos[1]*0.25,0.25);
+
+		p.setAnnotationPos3right(lab_theta, [Math.cos(arc_start+theta)*2, Math.sin(arc_start+theta)*2, 0]);
+		p.translate(arc_end_pos[0]*2, arc_end_pos[1]*2);
+		p.rotateZ(arc_start+theta);
+		p.cone(0.05,0.18);
+		p.pop();
+	}
+
 }
 
 p5_lib_annotations = function(p){
-	p.createAnnotation = function(x, y, text){
+	p.createAnnotation = function(x, y, text, bg = false){
 		let ann = document.createElement("div");
 		ann.innerText = text;
 		ann.setAttribute("class", "annotation");
-		ann.setAttribute("style", "left: "+x+"px; top: "+y+"px");
+		ann.style.left = x+"px";
+		ann.style.top = y+"px";
+		ann.style.backgroundColor = (bg ? "white" : "");
+		ann.style.padding = (bg ? "0px 3px 0px 3px" : "0");
 		document.getElementById(p.canvas_id).appendChild(ann);
 		MathJax.Hub.Queue(["Typeset", MathJax.Hub, ann]);
 		return ann;
 	}
 	p.setAnnotationPos = function(ann, x, y){
-		ann.setAttribute("style", "left: "+x+"px; top: "+y+"px");
+		ann.style.left = x+"px";
+		ann.style.top = y+"px";
 	}
 	p.setAnnotationPos3 = function(ann, pos, offset = [0,0]){
 		let sp = p.worldToScreen(pos[0], pos[1], pos[2]);
-		ann.setAttribute("style", "left: "+(sp.x+offset[0])+"px; top: "+(sp.y+offset[1])+"px");
+		ann.style.left = (sp.x+offset[0])+"px";
+		ann.style.top = (sp.y+offset[1])+"px";
+	}
+
+	// these apply the necessary transformations when using framebuffers with half the width of the original frame. worldToScreen seems to still assume that the screen is the whole screen rather than the framebuffer.
+	p.setAnnotationPos3left = function(ann, pos, offset = [0,0]){
+		let sp = p.worldToScreen(pos[0], pos[1], pos[2]);
+		ann.style.left = (sp.x/2+offset[0])+"px";
+		ann.style.top = (p.height-sp.y+offset[1])+"px";
+	}
+	p.setAnnotationPos3right = function(ann, pos, offset = [0,0]){
+		let sp = p.worldToScreen(pos[0], pos[1], pos[2]);
+		ann.style.left = (sp.x/2+offset[0]+p.width/2)+"px";
+		ann.style.top = (p.height-sp.y+offset[1])+"px";
 	}
 }
 

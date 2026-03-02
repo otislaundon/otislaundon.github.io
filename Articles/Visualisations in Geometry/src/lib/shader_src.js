@@ -1,3 +1,227 @@
+const SO3_shader_hooks = {
+	'mat3 angleaxis_to_mat3': `(vec3 angleaxis){
+		vec3 axis = normalize(angleaxis);
+		float angle = length(angleaxis);
+		float s = sin(angle);
+		float c = cos(angle);
+		float oc = 1.0 - c;
+		return mat3(oc * axis.x * axis.x + c,           oc * axis.x * axis.y - axis.z * s,  oc * axis.z * axis.x + axis.y * s,
+					oc * axis.x * axis.y + axis.z * s,  oc * axis.y * axis.y + c,           oc * axis.y * axis.z - axis.x * s,
+					oc * axis.z * axis.x - axis.y * s,  oc * axis.y * axis.z + axis.x * s,  oc * axis.z * axis.z + c);
+	}` ,
+	'float trace': `(mat3 A){return A[0][0] + A[1][1] + A[2][2];}`,
+	'vec3 mat3_to_angleaxis': `(mat3 A){
+		vec3 ax = normalize(vec3(A[1][2]-A[2][1], A[2][0]-A[0][2], A[0][1]-A[1][0]));
+		mat3 K = mat3(0.,ax.z,-ax.y, -ax.z,0.,ax.x, ax.y,-ax.x,0.); // cross matrix
+		float theta = -atan(-trace(K * A), trace(A) - 1.);
+		return ax * theta;
+	}`,
+};
+
+const SO3_shader_funcs = `
+
+	mat3 angleaxis_to_mat3(vec3 angleaxis){
+		vec3 axis = normalize(angleaxis);
+		float angle = length(angleaxis);
+		float s = sin(angle);
+		float c = cos(angle);
+		float oc = 1.0 - c;
+		return mat3(oc * axis.x * axis.x + c,           oc * axis.x * axis.y - axis.z * s,  oc * axis.z * axis.x + axis.y * s,
+					oc * axis.x * axis.y + axis.z * s,  oc * axis.y * axis.y + c,           oc * axis.y * axis.z - axis.x * s,
+					oc * axis.z * axis.x - axis.y * s,  oc * axis.y * axis.z + axis.x * s,  oc * axis.z * axis.z + c);
+	}
+
+	float trace(mat3 A){return A[0][0] + A[1][1] + A[2][2];}
+
+	vec3 mat3_to_angleaxis(mat3 A){
+		vec3 ax = normalize(vec3(A[1][2]-A[2][1], A[2][0]-A[0][2], A[0][1]-A[1][0]));
+		mat3 K = mat3(0.,ax.z,-ax.y, -ax.z,0.,ax.x, ax.y,-ax.x,0.); // cross matrix
+		float theta = -atan(-trace(K * A), trace(A) - 1.);
+		return ax * theta;
+	}
+`;
+
+const SU2_shader_funcs = `
+	// takes unit quaternion [w, x, y, z] as input and returns a rotation matrix. This map is two-to-one.
+	mat3 Qspinor(vec4 u){
+		return mat3(1-2*(u.y**2 + u.z**2), 2*(u.x*u.y+ u.z*u.w), 2*(u.x*u.z - u.y*u.w),
+					2*(u.x*u.y - u.z*u.w), 1-2*(u.x**2 + u.z**2), 2*(u.y*u.z + u.x*u.w),
+					2*(u.x*u.z + u.y*u.w), 2*(u.y*u.z - u.x*u.w), 1-2*(u.x**2 + u.y**2));
+	}
+
+	// converts quaternion q to real 4x4 matrix, such that conversion followed by matrix multiplication is same as quaternion multiplication followed by conversion.
+	mat4 Q_to_mat4(vec4 q){
+		return mat4(q.x, -q.w, q.y, q.z,
+					q.w, q.x, -q.z, q.y,
+				   -q.y, q.z, q.x, q.w,
+				   -q.z, -q.y, -q.w, q.x);
+	}
+
+	//inverts previous function.
+    vec4 mat4_to_Q(mat4 m){
+		return vec4(m[0][0], -m[2][0], -m[3][0], m[1][0]);
+	}
+
+	//takes point in ball of radius pi to a quaternion.
+	//This is the quaternion exponential map.
+	vec4 point_to_quaternion(vec3 a){
+		float h_len_w = length(a);
+		float fac = -sin(h_len_w)/h_len_w; // TODO: WHY IS THIS NEGATIVE?
+		return vec4(cos(h_len_w), fac * a);
+	}
+
+	// This is the right inverse of the above function.
+	vec3 quaternion_to_point (vec4 q){
+		float theta = atan(v_len(q.xyz), q.x);
+		return normalize(q.xyz) * theta;
+	}
+`;
+
+const SU2_shader_hooks = {
+	'mat3 Qspinor':`(vec4 u){
+		return mat3(1.-2.*(u.y*u.y + u.z*u.z), 2.*(u.x*u.y+ u.z*u.w), 2.*(u.x*u.z - u.y*u.w),
+					2.*(u.x*u.y - u.z*u.w), 1.-2.*(u.x*u.x + u.z*u.z), 2.*(u.y*u.z + u.x*u.w),
+					2.*(u.x*u.z + u.y*u.w), 2.*(u.y*u.z - u.x*u.w), 1.-2.*(u.x*u.x + u.y*u.y));
+	}`,
+
+	'mat4 Q_to_mat4':`(vec4 q){
+		return mat4(q.x, -q.w, q.y, q.z,
+					q.w, q.x, -q.z, q.y,
+				   -q.y, q.z, q.x, q.w,
+				   -q.z, -q.y, -q.w, q.x);
+	}`,
+
+    'vec4 mat4_to_Q':`(mat4 m){
+		return vec4(m[0][0], -m[2][0], -m[3][0], m[1][0]);
+	}`,
+
+	'vec4 vec3_to_Q':`(vec3 a){
+		float h_len_w = length(a);
+		float fac = -sin(h_len_w)/h_len_w; // TODO: WHY IS THIS NEGATIVE?
+		return vec4(cos(h_len_w), fac * a);
+	}`,
+
+	'vec3 Q_to_vec3 ':`(vec4 q){
+		float theta = -atan(length(q.xyz), q.x);
+		return normalize(q.xyz) * theta;
+	}`
+};
+
+const src_vert_base = `
+precision highp float;
+uniform mat4 uModelViewMatrix;
+uniform mat4 uProjectionMatrix;
+uniform vec4 uBounds;
+
+attribute vec3 aPosition;
+attribute vec2 aTexCoord;
+
+void main() {
+  gl_Position = uProjectionMatrix * (uModelViewMatrix * vec4(aPosition,1.0));
+}
+`;
+
+src_vert_anti = `
+precision highp float;
+uniform mat4 uModelViewMatrix ;
+uniform mat4 uProjectionMatrix;
+
+attribute vec3 aPosition;
+
+uniform float uScale;
+
+varying vec3 vVertexPos;
+
+void main() {
+  vVertexPos = aPosition*uScale;
+  gl_Position = uProjectionMatrix * (uModelViewMatrix * vec4(aPosition,1.0));
+}
+`;
+
+src_frag_anti = `
+precision highp float;
+varying vec3 vVertexPos;
+
+vec3 dir_to_col(vec3 dir){
+	return vec3(dir * 0.5 + 0.5)*length(dir);
+}
+
+void main() {
+	gl_FragColor = vec4(dir_to_col(vVertexPos.xyz)*0.7 + vec3(0.3), 1.0);
+}
+`;
+
+src_vert_checkso3_world = `
+precision highp float;
+uniform mat3 uRotMat;
+uniform mat4 uModelViewMatrix ;
+uniform mat4 uProjectionMatrix;
+attribute vec3 aPosition;
+varying vec3 vVertexPos;
+varying vec3 vWorldPos;
+
+void main() {
+  gl_Position = uProjectionMatrix * (uModelViewMatrix * vec4(aPosition,1.0));
+  vVertexPos =  uRotMat * (aPosition.xyz - vec3(0.5,0.5,0.0))*2.0;
+  vWorldPos = aPosition.xyz;
+}
+`;
+
+src_frag_checkso3_world = `
+precision highp float;
+uniform float uCheckSize;
+varying vec3 vVertexPos;
+varying vec3 vWorldPos;
+
+vec3 dir_to_col(vec3 dir){
+	return vec3(dir * 0.5 + 0.5)*length(dir);
+}
+
+void main() {
+	vec3 col1 = dir_to_col(vVertexPos);
+	float r = length(vVertexPos);
+	vec3 col2 = mix(col1, dir_to_col(-vVertexPos), r);
+
+	float total = floor(vWorldPos.x * uCheckSize) + floor(vWorldPos.y*uCheckSize) + floor(vWorldPos.z*uCheckSize);
+	float blend = (mod(total, 2.0) == 0.0) ? 0.0 : 1.0;
+
+	vec3 col = mix(col1, col2, blend);
+
+	gl_FragColor = vec4(col*1.0 + vec3(0.0), 1.0);
+}
+`;
+
+src_vert_normal = `
+precision highp float;
+uniform mat4 uModelViewMatrix ;
+uniform mat4 uProjectionMatrix;
+
+attribute vec3 aPosition;
+attribute vec3 aNormal;
+
+varying vec3 vNormal;
+
+void main() {
+  vNormal = aNormal;
+  gl_Position = uProjectionMatrix * (uModelViewMatrix * vec4(aPosition,1.0));
+}
+
+`;
+
+src_frag_normal = `
+precision highp float;
+
+varying vec3 vNormal;
+
+vec3 dir_to_col(vec3 dir){
+	return vec3(dir.x, -dir.y, -dir.z) * 0.5 + 0.5;
+}
+
+void main() {
+	gl_FragColor = vec4(dir_to_col(vNormal), 0.9);
+}
+`
+
 const src_complex_base =`
 precision highp float;
 varying vec2 vComplexPos;

@@ -10,11 +10,12 @@ let sketch_SU2coverSO3 = new p5((p) => {
 		p.points_transformed_su2 = [];
 
 		for(let i = 0; i < quaternion_matrices.length; i++){
-			let q_new = real_mat4_to_quaternion(mm_prod(q_mat, quaternion_matrices[i], 4));
-			p.points_transformed_su2.push(vs_prod(quaternion_to_point(q_new),2.0)); 		// Double angle needed for the representations to line up
-			p.points_transformed_so3.push(matrix_to_angleaxis(SU2_to_rot_matrix(q_new)));
+			let q_new = mat4_to_Q(mm_prod(q_mat, quaternion_matrices[i], 4));
+			p.points_transformed_su2.push(Q_to_vec3(q_new));
+			p.points_transformed_so3.push(matrix_to_angleaxis(QSpinor(q_new)));
 		}
 	}
+
 
     p.setup = function(){
         p.canvas = p.createCanvas(720, 480,p.WEBGL);
@@ -32,9 +33,9 @@ let sketch_SU2coverSO3 = new p5((p) => {
 				p.quaternion_matrices.push(
 				mm_prod(
 					mm_prod(
-							quaternion_to_real_mat4(point_to_quaternion([(i/resi*PI-PI/2)*2.0,0,0])),
-							quaternion_to_real_mat4(point_to_quaternion([0,0,(j/resj*PI-PI/2)*2.0])),4),
-							quaternion_to_real_mat4(point_to_quaternion([0,PI/4,0])),4)
+							Q_to_mat4(vec3_to_Q([(i/resi*PI-PI/2)*2.0,0,0])),
+							Q_to_mat4(vec3_to_Q([0,0,(j/resj*PI-PI/2)*2.0])),4),
+							Q_to_mat4(vec3_to_Q([0,PI/4,0])),4)
 				);
 			}
 		p.n_points = p.quaternion_matrices.length;
@@ -45,7 +46,7 @@ let sketch_SU2coverSO3 = new p5((p) => {
 		if(!isVisibleInViewport(p.canvas.elt))
 			return;
 
-		p.compute_transformed_points(quaternion_to_real_mat4(point_to_quaternion([p.millis()/2000,0,0])), p.quaternion_matrices);
+		p.compute_transformed_points(Q_to_mat4(vec3_to_Q([p.millis()/2000,0,0])), p.quaternion_matrices);
 		p.clear();
 		p.fill(255,255,255,0);
 		p.noStroke();

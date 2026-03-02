@@ -91,12 +91,13 @@ let sketch_PathLiftNontrivial = new p5((p) => {
 			p.noStroke();
 			let atil_pos = vs_prod(p.path_1(p.t),2);
 			let a_pos = matrix_to_angleaxis(SU2_to_rot_matrix(point_to_quaternion(p.path_1(p.t))))
-			p.push();
+
+			p.push(); // draw a tilde
 				p.translate(atil_pos[0],atil_pos[1],atil_pos[2]);
 				p.fill(255,0,0,100);
 				p.sphere(0.2);
 			p.pop();
-			p.push();
+			p.push(); //draw a
 				p.translate(a_pos[0],a_pos[1],a_pos[2]);
 				p.fill(0,0,255,50);
 				p.sphere(0.2);

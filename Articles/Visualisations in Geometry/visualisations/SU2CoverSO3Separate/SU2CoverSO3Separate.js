@@ -10,12 +10,10 @@ let sketch_SU2CoverSO3Separate = new p5((p) => {
 		p.points_transformed_so3 = [];
 		p.points_transformed_su2 = [];
 
-		for(let i = 0; i < quaternion_matrices.length; i++)
-		{
-			let q_new = real_mat4_to_quaternion(mm_prod(q_mat, quaternion_matrices[i], 4));
-			//let q_new = p.real_mat4_to_quaternion(quaternion_matrices[i]);
-			p.points_transformed_su2.push(quaternion_to_point(q_new));
-			p.points_transformed_so3.push(matrix_to_angleaxis(SU2_to_rot_matrix(q_new)));
+		for(let i = 0; i < quaternion_matrices.length; i++){
+			let q_new = mat4_to_Q(mm_prod(q_mat, quaternion_matrices[i], 4));
+			p.points_transformed_su2.push(Q_to_vec3(q_new));
+			p.points_transformed_so3.push(matrix_to_angleaxis(QSpinor(q_new)));
 		}
 	}
 
@@ -27,7 +25,7 @@ let sketch_SU2CoverSO3Separate = new p5((p) => {
 		p.quaternion_matrices = [];
 
 		//initialise points
-		p.quaternion_matrices.push(quaternion_to_real_mat4(point_to_quaternion([0,PI/4,0])));
+		p.quaternion_matrices.push(Q_to_mat4(vec3_to_Q([0,PI/4,0])));
 		p.n_points = p.quaternion_matrices.length;
 
 		p.lab_so3 = p.createAnnotation(p.width/2 + 10,50,"\\( SO(3) \\)");
@@ -48,7 +46,7 @@ let sketch_SU2CoverSO3Separate = new p5((p) => {
 		if(!isVisibleInViewport(p.canvas.elt))
 			return;
 
-		p.compute_transformed_points(quaternion_to_real_mat4(point_to_quaternion([p.millis()/2000,0,0])), p.quaternion_matrices);
+		p.compute_transformed_points(Q_to_mat4(vec3_to_Q([p.millis()/2000,0,0])), p.quaternion_matrices);
 		p.clear();
 		p.fill(255,255,255,0);
 		p.noStroke();

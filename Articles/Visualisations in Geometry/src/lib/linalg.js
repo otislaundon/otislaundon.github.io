@@ -90,11 +90,25 @@ function rot4_xw_yz(theta, phi){
 function rot3_xy(theta){
     let ct = cos(theta);
     let st = sin(theta);
-    return [
-        ct, -st, 0,
-        st, ct, 0,
-        0,0,1
-    ]
+    return [ ct, -st, 0,
+			 st, ct, 0,
+			 0,0,1]
+}
+
+function rot3_yz(theta){
+    let ct = cos(theta);
+    let st = sin(theta);
+    return [ 1, 0, 0,
+			 0, ct, -st,
+			 0, st, ct];
+}
+
+function rot3_xz(theta){
+    let ct = cos(theta);
+    let st = sin(theta);
+    return [ ct, 0, -st,
+			 0, 1, 0,
+			 st,0,ct];
 }
 
 function standard_basis(n, i){
@@ -117,12 +131,12 @@ function vv_cross(a, b){
 			a[0]*b[1] - a[1]*b[0]];
 }
 
-function cross_matrix(v){
+function mat3_to_mat4(m){
 	return [
-		0, -v[2], v[1],
-		v[2], 0, -v[0],
-		-v[1], v[0], 0
-	];
+	m[0], m[1], m[2], 0.0,
+	m[3], m[4], m[5], 0.0,
+	m[6], m[7], m[8], 0.0,
+	0,0,0,1];
 }
 
 const mat4_id = [
@@ -137,6 +151,36 @@ const mat3_id = [
 	0,1,0,
 	0,0,1
 ];
+
+function mat3_det(m){
+	return m[0] * (m[4]*m[8] - m[7]*m[5]) + m[1]*(m[5]*m[6] - m[3]*m[8]) + m[2]*(m[3]*m[7] - m[6]*m[4]);
+}
+
+function mat3_cofac(m){
+	return [
+		m[4]*m[8]-m[5]*m[7], m[5]*m[6]-m[3]*m[8], m[3]*m[7]-m[4]*m[6],
+		m[7]*m[2]-m[1]*m[8], m[0]*m[8]-m[2]*m[6], m[6]*m[1]-m[0]*m[7],
+		m[1]*m[5]-m[2]*m[4], m[2]*m[3]-m[0]*m[5], m[0]*m[4]-m[1]*m[3]
+	];
+}
+
+function mat3_inv(m){
+	let d = mat3_det(m);
+	let minor = mat3_cofac(m);
+	return [
+		minor[0]/d, minor[3]/d, minor[6]/d,
+		minor[1]/d, minor[4]/d, minor[7]/d,
+		minor[2]/d, minor[5]/d, minor[8]/d
+	]
+}
+
+function mat3_T(m){
+	return [
+		m[0], m[3], m[6],
+		m[1], m[4], m[7],
+		m[2], m[5], m[8]
+	];
+}
 
 function vv_lerp(a, b, t){
     return vv_add(vs_mult(a, 1-t), vs_mult(b, t));
@@ -171,11 +215,18 @@ function angleaxis_to_matrix(e, phi){
 			e1[2],e2[2],e3[2]];
 }
 
+function cross_matrix(v){
+	return [
+		0, -v[2], v[1],
+		v[2], 0, -v[0],
+		-v[1], v[0], 0
+	];
+}
 // converts a rotation matrix to it's angle-axis representation
 function matrix_to_angleaxis(A){
 	let ax = v_normalise([A[7]-A[5], A[2]-A[6], A[3]-A[1]]);
 	let K = cross_matrix(ax);
-	let theta = Math.atan2(-m_trace(mm_prod(K,A,3),3), m_trace(A,3) - 1);
+	let theta = -Math.atan2(-m_trace(mm_prod(K,A,3),3), m_trace(A,3) - 1);
 	//let a = 1 / (2 * sin(Math.atan2(-m_trace(mm_prod(K, A)))));
 	return vs_prod(ax, theta);
 }
@@ -188,7 +239,7 @@ mult_so3 = function(...args){
 }
 
 // takes unit quaternion [w, x, y, z] as input and returns a rotation matrix. This map is two-to-one.
-SU2_to_rot_matrix = function(u){
+QSpinor = function(u){
 	let w = u[0];
 	let x = u[1];
 	let y = u[2];
@@ -201,27 +252,27 @@ SU2_to_rot_matrix = function(u){
 }
 
 // converts quaternion q to real 4x4 matrix, such that conversion followed by matrix multiplication is same as quaternion multiplication followed by conversion.
-quaternion_to_real_mat4 = function(q){
-	return [q[0], q[3],-q[1],-q[2],
-		   -q[3], q[0], q[2],-q[1],
-			q[1],-q[2], q[0],-q[3],
-			q[2], q[1], q[3], q[0]];
+Q_to_mat4 = function(q){
+	return [q[0], -q[1], -q[2], -q[3],
+		    q[1], q[0], -q[3], q[2],
+			q[2], q[3], q[0], -q[1],
+			q[3], -q[2], q[1], q[0]];
 }
 //inverts previous function.
-real_mat4_to_quaternion = function(m){
-	return [m[0], -m[2], -m[3], m[1]];
+mat4_to_Q = function(m){
+	return [m[0], m[4], m[8], m[12]];
 }
 
 //takes point in ball of radius pi to a quaternion.
 //This is the quaternion exponential map.
-point_to_quaternion = function(a){
+vec3_to_Q = function(a){
 	let h_len_w = v_len(a);
 	let fac = sin(h_len_w)/h_len_w;
 	return [cos(h_len_w), fac * a[0],fac * a[1],fac * a[2]];
 }
 
 // This is the right inverse of the above function.
-quaternion_to_point = function(q){
+Q_to_vec3 = function(q){
 	let im = [q[1], q[2], q[3]];
 	let theta = Math.atan2(v_len(im), q[0]);
 	return vs_prod(v_normalise(im), theta);

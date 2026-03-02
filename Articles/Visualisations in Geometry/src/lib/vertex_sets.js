@@ -3,6 +3,50 @@ let sin = Math.sin;
 let PI = Math.PI;
 let TWOPI = 2 * PI;
 
+spherical_coords = function(theta, phi){
+	return [Math.sin(theta) * Math.cos(phi), Math.sin(theta) * Math.sin(phi), Math.cos(theta)];
+}
+
+p5_lib_checker_sphere_mesh = function(p){
+	p.createCheckerSphere = function(resx, resy){
+		p.beginShape(p.QUADS);
+		for(let i = 0; i < resx; i++)
+		for(let k = 0; k < resy/2; k++)
+		{
+			let j = 2*k + (i+k)%2;
+			let a = spherical_coords(TWOPI*i/resx,     TWOPI*j/resy);
+			let b = spherical_coords(TWOPI*(i+1)/resx, TWOPI*j/resy);
+			let c = spherical_coords(TWOPI*i/resx,     TWOPI*(j+1)/resy);
+			let d = spherical_coords(TWOPI*(i+1)/resx, TWOPI*(j+1)/resy);
+			p.vertex(a[0],a[1],a[2]);
+			p.vertex(b[0],b[1],b[2]);
+			p.vertex(d[0],d[1],d[2]);
+			p.vertex(c[0],c[1],c[2]);
+		}
+		p.endShape();
+	}
+
+	p.createCheckerSpherePartial = function(resx, resy){
+		p.beginShape(p.QUADS);
+		for(let i = 0; i < resx; i++)
+		for(let k = 0; k < resy/2; k++)
+		{
+			let j = 2*k + (i+k)%2;
+			if(i >= resx*3/4 && j >= 3)
+				continue;
+			let a = spherical_coords(TWOPI*i/resx,     TWOPI*j/resy);
+			let b = spherical_coords(TWOPI*(i+1)/resx, TWOPI*j/resy);
+			let c = spherical_coords(TWOPI*i/resx,     TWOPI*(j+1)/resy);
+			let d = spherical_coords(TWOPI*(i+1)/resx, TWOPI*(j+1)/resy);
+			p.vertex(a[0],a[1],a[2]);
+			p.vertex(b[0],b[1],b[2]);
+			p.vertex(d[0],d[1],d[2]);
+			p.vertex(c[0],c[1],c[2]);
+		}
+		p.endShape();
+	}
+}
+
 function generate_hypercube_edgecolors(){
     let colors = [];
     // for each axis x, y, z, w, there are 8 edges aligned to it. We will enumerate these 8 edges for each axis and add them to the list of edges.
