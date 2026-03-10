@@ -94,6 +94,10 @@ let sketch_doubleColourSphere = new p5((p) => {
 		p.lab_k = p.createAnnotation(0,0,"\\(\\kappa\\)")
 		p.lab_ki = p.createAnnotation(0,0,"\\(\\kappa^{-1}\\)")
 		p.lab_kd = p.createAnnotation(0,0,"\\([\\kappa,\\kappa^{-1}]\\)")
+
+		p.margin = p.createMargin();
+		p.createTitle("Controls", p.margin);
+		p.createP("Drag with mouse to rotate the view.", p.margin);
 	}
 
     p.draw = function(){

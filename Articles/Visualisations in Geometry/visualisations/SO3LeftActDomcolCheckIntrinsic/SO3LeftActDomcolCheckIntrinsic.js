@@ -1,5 +1,5 @@
-let sketch_SO3LeftActDomcolInteractive = new p5((p) => {
-    p.canvas_id = "vis:SO3LeftActDomcolInteractive";
+let sketch_SO3LeftActDomcolCheckIntrinsic = new p5((p) => {
+    p.canvas_id = "vis:SO3LeftActDomcolCheckIntrinsic";
 
 	p5_lib_world_orientation_interaction(p);
 	p5_lib_rotation_selection(p);
@@ -8,7 +8,6 @@ let sketch_SO3LeftActDomcolInteractive = new p5((p) => {
 	p5_lib_checker_sphere_mesh(p);
 	p5_lib_so3_core(p);
 	p5_lib_controls(p);
-
 
 p.src_vert_anti = `
 precision highp float;
@@ -22,26 +21,8 @@ uniform float uScale;
 varying vec3 vVertexPos;
 
 void main() {
-  vVertexPos = aPosition*uScale;
+  vVertexPos = aPosition;
   gl_Position = uProjectionMatrix * (uModelViewMatrix * vec4(aPosition,1.0));
-}
-`;
-
-p.src_frag_anti = `
-precision highp float;
-uniform vec3 uRotVector;
-uniform float uScale;
-varying vec3 vVertexPos;
-
-`+SO3_shader_funcs+`
-
-vec3 dir_to_col(vec3 dir){
-	return vec3(dir * 0.5 + 0.5);
-}
-
-void main() {
-	vec3 pos = mat3_to_angleaxis(angleaxis_to_mat3(uRotVector) * angleaxis_to_mat3(uScale*vVertexPos*3.14159))/3.14159*uScale;
-	gl_FragColor = vec4(dir_to_col(pos)*0.85 + vec3(0.15), 1.0);
 }
 `;
 
@@ -63,6 +44,7 @@ void main() {
 
 p.src_frag_checkso3_world = `
 precision highp float;
+uniform float uBrightnessExtra;
 uniform float uCheckSize;
 uniform vec3 uRotVector;
 varying vec3 vVertexPos;
@@ -71,21 +53,32 @@ varying vec3 vWorldPos;
 `+SO3_shader_funcs+`
 
 vec3 dir_to_col(vec3 dir){
-	return vec3(dir * 0.5 + 0.5);
+	return vec3(dir * 0.5 + 0.5)*length(dir);
+}
+
+vec3 xyz_to_spherical(vec3 a){
+	float r = length(a);
+	return vec3(
+		r,
+		acos(a.z/r),
+		sign(a.y) * acos(a.x/length(a.xy))
+	);
 }
 
 void main() {
 	vec3 pos = mat3_to_angleaxis(angleaxis_to_mat3(uRotVector) * angleaxis_to_mat3(vVertexPos*3.14159))/3.14159;
+	vec3 pos_spherical = xyz_to_spherical(pos)/3.141592;
+
 	vec3 col1 = dir_to_col(pos);
 	float r = length(pos);
 	vec3 col2 = mix(col1, dir_to_col(-pos), r);
 
-	float total = floor(vWorldPos.x * uCheckSize) + floor(vWorldPos.y*uCheckSize) + floor(vWorldPos.z*uCheckSize);
+	float total = floor(pos_spherical.x * uCheckSize+0.5) + floor(pos_spherical.y*uCheckSize+0.5) + floor(pos_spherical.z*uCheckSize+0.5);
 	float blend = (mod(total, 2.0) == 0.0) ? 0.0 : 1.0;
 
 	vec3 col = mix(col1, col2, blend);
 
-	gl_FragColor = vec4(col*1.0 + vec3(0.0), 1.0);
+	gl_FragColor = vec4(col*(1.-uBrightnessExtra) + vec3(uBrightnessExtra), 1.0);
 }
 `;
 
@@ -96,16 +89,18 @@ void main() {
 
 		p.rot = angleaxis_to_matrix(v_normalise([0.5,1,0]), PI/2);
 
-		p.antipode_shader = p.createShader(p.src_vert_anti, p.src_frag_anti);
-		p.check_shader = p.createShader(p.src_vert_checkso3_world, p.src_frag_checkso3_world);
-		p.check_shader.setUniform("uCheckSize", 20);
+		p.outer_shader = p.createShader(p.src_vert_anti, p.src_frag_checkso3_world);
+		p.inner_shader = p.createShader(p.src_vert_checkso3_world, p.src_frag_checkso3_world);
+		p.outer_shader.setUniform("uCheckSize", 20);
+		p.outer_shader.setUniform("uBrightnessExtra", 0.15);
+		p.inner_shader.setUniform("uCheckSize", 20);
+		p.inner_shader.setUniform("uBrightnessExtra", 0);
 
 		p.normal_shader = p.createShader(src_vert_normal, src_frag_normal);
 		p.rot_yz_90 = rot3_yz(HALF_PI);
 		p.rot_xz_90 = rot3_xz(HALF_PI);
 	
-		p.sphere_geom_partialA = p.buildGeometry(() => p.createCheckerSpherePartial(24,100,0));
-		p.sphere_geom_partialB = p.buildGeometry(() => p.createCheckerSpherePartial(24,100,1));
+		p.sphere_geom = p.buildGeometry(() => p.createSpherePartial(24,100));
 
 		p.noStroke();
 		p.setWorldRot(-0.5,0.45);
@@ -128,7 +123,6 @@ void main() {
 		p.lab_right_u = p.createAnnotation(0, 0, "\\(\\mathbf{u}\\)");
 		p.lab_right_theta = p.createAnnotation(0, 0, "\\(\\theta\\)");
 
-		// create controls panel
 		p.animate = false;
 		p.margin = p.createMargin();
 		p.createTitle("Controls", p.margin);
@@ -139,15 +133,14 @@ void main() {
 	}
 
 	p.Animate = function(){
-		p.rot = mm_prod(angleaxis_to_matrix([1,1,1],p.deltaTime / 2000), p.rot, 3);
+		p.rot = mm_prod(angleaxis_to_matrix([1,0,0],p.deltaTime / 2000), p.rot, 3);
 	}
 
-	p.createCheckerSpherePartial = function(resx, resy, flip){
+	p.createSpherePartial = function(resx, resy){
 		p.beginShape(p.QUADS);
 		for(let i = 0; i < resx; i++)
-		for(let k = 0; k < resy/2; k++)
+		for(let j = 0; j < resy; j++)
 		{
-			let j = 2*k + (i+k+flip)%2;
 			if(i < resx/2 && j >= resy*3/4)
 				continue;
 			let a = spherical_coords(PI*i/resx,     TWOPI*j/resy);
@@ -161,6 +154,7 @@ void main() {
 		}
 		p.endShape();
 	}
+
 
     p.draw = function(){
 		// don't do any drawing if not visible
@@ -181,8 +175,8 @@ void main() {
 		p.line(0, -p.height/2,0,p.height/2); // Vertical centerline
 		p.noStroke();
 
-		p.antipode_shader.setUniform("uRotVector", rotVector);
-		p.check_shader.setUniform("uRotVector", rotVector);
+		p.outer_shader.setUniform("uRotVector", rotVector);
+		p.inner_shader.setUniform("uRotVector", rotVector);
 
 		// begin left framebuffer
 		p.left.begin();
@@ -194,23 +188,20 @@ void main() {
 
 			// draw checkered sphere
 			p.push();
-				p.shader(p.antipode_shader);
+				p.shader(p.outer_shader);
 				p.scale(PI);
-				p.antipode_shader.setUniform("uScale", 1);
-				p.model(p.sphere_geom_partialA);
-				p.antipode_shader.setUniform("uScale", -1);
-				p.model(p.sphere_geom_partialB);
+				p.model(p.sphere_geom);
 
-				p.shader(p.check_shader);
-				p.check_shader.setUniform("uRotMat", mat3_id);
+				p.shader(p.inner_shader);
+				p.inner_shader.setUniform("uRotMat", mat3_id);
 				p.ellipse(0,0,2,2,50);
 				p.push();
 				p.rotateX(-HALF_PI);
-				p.check_shader.setUniform("uRotMat", p.rot_yz_90);
+				p.inner_shader.setUniform("uRotMat", p.rot_yz_90);
 				p.ellipse(0,0,2,2,50);
 				p.pop();
 				p.rotateY(HALF_PI);
-				p.check_shader.setUniform("uRotMat", p.rot_xz_90);
+				p.inner_shader.setUniform("uRotMat", p.rot_xz_90);
 				p.ellipse(0,0,2,2,50);
 			p.pop();
 
@@ -296,5 +287,6 @@ void main() {
 		if(!p.clickStartedOnRight)
 			p.interactOnDragged();
 	}
+
 })
 

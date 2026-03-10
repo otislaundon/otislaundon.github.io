@@ -150,6 +150,10 @@ let sketch_doubleColourVersions = new p5((p) => {
 		p.lab_1 = p.createAnnotation(0,0,"\\(S^2\\) checkerboard");
 		p.lab_2 = p.createAnnotation(0,0,"\\(\\mathbb R^3\\) checkerboard");
 		p.lab_3 = p.createAnnotation(0,0,"\\(I\\times I\\) checkerboard");
+
+		p.margin = p.createMargin();
+		p.createTitle("Controls", p.margin);
+		p.createP("Drag with mouse to rotate the view.", p.margin);
 	}
 
     p.draw = function(){

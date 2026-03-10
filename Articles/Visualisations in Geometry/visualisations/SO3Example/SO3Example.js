@@ -7,6 +7,7 @@ let sketch_SO3Example = new p5((p) => {
 	p5_lib_annotations(p);
 	p5_lib_axes(p);
 	p5_lib_checker_sphere_mesh(p);
+	p5_lib_controls(p);
 
     p.setup = function(){
         p.canvas = p.createCanvas(720, 480, p.WEBGL);
@@ -40,12 +41,28 @@ let sketch_SO3Example = new p5((p) => {
 		p.lab_right_z = p.createAnnotation(0, 0, "\\(z\\)");
 		p.lab_right_u = p.createAnnotation(0, 0, "\\(\\mathbf{u}\\)");
 		p.lab_right_theta = p.createAnnotation(0, 0, "\\(\\theta\\)");
+
+		p.animate = false;
+		p.margin = p.createMargin();
+		p.createTitle("Controls", p.margin);
+		p.createButton("Reset \\(\\theta\\mathbf{u}\\) to identity", ()=> {p.rot = mat3_id}, p.margin);
+		p.createBr(p.margin);
+		p.createButton("Start/Stop Animation", () => {p.animate = !p.animate}, p.margin);
+		p.createP("Drag with mouse on left hand side to rotate the view. Drag with mouse on the right hand side to change \\(\\theta \\mathbf{u}\\).", p.margin);
+
+	}
+
+	p.Animate = function(){
+		p.rot = mm_prod(angleaxis_to_matrix([1,0,0],p.deltaTime / 2000), p.rot, 3);
 	}
 
     p.draw = function(){
 		// don't do any drawing if not visible
 		if(!isVisibleInViewport(p.canvas.elt))
 			return;
+
+		if(p.animate)
+			p.Animate();
 
 		p.clear();
 		//p.rot = angleaxis_to_matrix(v_normalise([0.5,1,-0.1]), p.millis()/1000);

@@ -224,7 +224,10 @@ function cross_matrix(v){
 }
 // converts a rotation matrix to it's angle-axis representation
 function matrix_to_angleaxis(A){
-	let ax = v_normalise([A[7]-A[5], A[2]-A[6], A[3]-A[1]]);
+	let ax = [A[7]-A[5], A[2]-A[6], A[3]-A[1]];
+	if(v_len(ax) == 0)
+		return ax;
+	ax = v_normalise(ax);
 	let K = cross_matrix(ax);
 	let theta = -Math.atan2(-m_trace(mm_prod(K,A,3),3), m_trace(A,3) - 1);
 	//let a = 1 / (2 * sin(Math.atan2(-m_trace(mm_prod(K, A)))));
@@ -267,8 +270,12 @@ mat4_to_Q = function(m){
 //This is the quaternion exponential map.
 vec3_to_Q = function(a){
 	let h_len_w = v_len(a);
-	let fac = sin(h_len_w)/h_len_w;
+	let fac = -sin(h_len_w)/h_len_w;
 	return [cos(h_len_w), fac * a[0],fac * a[1],fac * a[2]];
+}
+
+angleaxis_to_Q = function(a){
+	return vec3_to_Q(vs_prod(a, 0.5));
 }
 
 // This is the right inverse of the above function.

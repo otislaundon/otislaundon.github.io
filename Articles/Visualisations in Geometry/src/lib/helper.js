@@ -177,6 +177,29 @@ let p5_lib_surfaceparam = function(p){
 }
 
 let p5_lib_controls = function(p){
+  p.createMargin = function(text, onclick, parent){
+	let margin = document.createElement("div");
+    margin.setAttribute("class", "sidenote");
+    document.getElementById(p.canvas_id).appendChild(margin);
+	return margin;
+  }
+	p.createBr = function(parent){
+		let br = document.createElement("br");
+		parent.appendChild(br);
+		return br;
+	}
+	p.createP = function(text, parent){
+		let par = document.createElement("p");
+		par.innerHTML = text;
+		parent.appendChild(par);
+		return par;
+	}
+	p.createTitle = function(text, parent){
+		let title = document.createElement("h3");
+		title.innerHTML = text;
+		parent.appendChild(title);
+		return title;
+	}
   p.createSlider = function(){
     let sl = document.createElement("input");
     sl.type="range";
@@ -185,6 +208,13 @@ let p5_lib_controls = function(p){
     sl.step = 0.01;
     document.getElementById(p.canvas_id).appendChild(sl);
     return sl;
+  }
+  p.createButton = function(text, onclick, parent){
+	let button = document.createElement("button");
+	button.innerHTML = text;
+	button.onclick = onclick;
+    parent.appendChild(button);
+    return button;
   }
 }
 
@@ -253,6 +283,7 @@ p5_lib_world_orientation_interaction = function(p, world_transform) {
         if(p.clickStartedInCanvas){
             p.world_transform.rot_xz += (p.mouseX - p.pmouseX) * p.mouse_sensetivity;
             p.world_transform.rot_yz += (p.mouseY - p.pmouseY) * p.mouse_sensetivity;
+			p.world_transform.rot_yz = Math.max(Math.min(p.world_transform.rot_yz,PI/2),-PI/2);
             p.world_transform.mat = mm_prod(rot4_xz_yw(p.world_transform.rot_xz, 0.0), rot4_xw_yz(0.0,p.world_transform.rot_yz), 4);
         }
     }
@@ -391,7 +422,6 @@ random_in_cube = function(n){
 
 random_point_on_sphere = function(dim = 3){
 	let v = random_in_cube(dim);
-
 	while(v_len(v) >= 1)
 		v = random_in_cube(dim);
 	return v_normalise(v);

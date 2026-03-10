@@ -7,14 +7,12 @@ let sketch_SO3ConjActInteractive = new p5((p) => {
 	p5_lib_annotations(p);
 	p5_lib_axes(p);
 	p5_lib_checker_sphere_mesh(p);
+	p5_lib_controls(p);
 
     p.setup = function(){
         p.canvas = p.createCanvas(720, 480, p.WEBGL);
         p.canvas.parent(p.canvas_id);
 		p.gl = p._renderer.GL;
-
-		console.log(p.baseStrokeShader().inspectHooks())
-		console.log(p.baseStrokeShader());
 
 		p.rot = angleaxis_to_matrix(v_normalise([0,1,0]), 0.001);
 
@@ -59,9 +57,6 @@ let sketch_SO3ConjActInteractive = new p5((p) => {
 			for(let i = 0; i < ppr*r*r; i++)
 				p.points.push(vs_prod(random_point_on_sphere(),r*0.999));
 		p.n_points = p.points.length;
-		console.log(p.points);
-
-		//p.points = p.points.map(p => vs_prod(v_normalise(p), Math.floor(Math.random() * 4 + 1)/4 * PI*0.999));
 
 		p.noStroke();
 		p.setWorldRot(-0.5,0.45);
@@ -70,7 +65,7 @@ let sketch_SO3ConjActInteractive = new p5((p) => {
 		p.right = p.createFramebuffer({width: p.width/2, height: p.height});	
 
 		// create labels
-		p.lab_left_title = p.createAnnotation(10,10, "\\(C_b: \\text{SO}(3) \\rightarrow \\text{SO}(3) \\)");
+		p.lab_left_title = p.createAnnotation(10,10, "\\(C_{b^{-1}}: \\text{SO}(3) \\rightarrow \\text{SO}(3) \\)");
 		p.lab_left_x = p.createAnnotation(0, 0, "\\(x\\)", true);
 		p.lab_left_y = p.createAnnotation(0, 0, "\\(y\\)", true);
 		p.lab_left_z = p.createAnnotation(0, 0, "\\(z\\)", true);
@@ -82,12 +77,28 @@ let sketch_SO3ConjActInteractive = new p5((p) => {
 		p.lab_right_z = p.createAnnotation(0, 0, "\\(z\\)");
 		p.lab_right_u = p.createAnnotation(0, 0, "\\(\\mathbf{u}\\)");
 		p.lab_right_theta = p.createAnnotation(0, 0, "\\(\\theta\\)");
+
+		// create controls panel
+		p.animate = false;
+		p.margin = p.createMargin();
+		p.createTitle("Controls", p.margin);
+		p.createButton("Reset b to identity", ()=> {p.rot = mat3_id}, p.margin);
+		p.createBr(p.margin);
+		p.createButton("Start/Stop Animation", () => {p.animate = !p.animate}, p.margin);
+		p.createP("Drag with mouse on left hand side to rotate the view. Drag with mouse on the right hand side to change \\(b\\).", p.margin);
+	}
+
+	p.Animate = function(){
+		p.rot = mm_prod(angleaxis_to_matrix([1,0,0],p.deltaTime / 2000), p.rot, 3);
 	}
 
     p.draw = function(){
 		// don't do any drawing if not visible
 		if(!isVisibleInViewport(p.canvas.elt))
 			return;
+
+		if(p.animate)
+			p.Animate();
 
 		p.clear();
 		let rotVector = matrix_to_angleaxis(p.rot);

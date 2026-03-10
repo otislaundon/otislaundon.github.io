@@ -4,6 +4,7 @@ let sketch_DiskWrapSphere = new p5((p) => {
 	p5_lib_world_orientation_interaction(p);
 	p5_lib_annotations(p);
 	p5_lib_axes(p);
+	p5_lib_controls(p);
 
     p.setup = function(){
         p.canvas = p.createCanvas(640, 640, p.WEBGL);
@@ -51,7 +52,14 @@ let sketch_DiskWrapSphere = new p5((p) => {
 			}`,
 		});
 
-    }
+		// create controls panel
+		p.animate = false;
+		p.margin = p.createMargin();
+		p.createTitle("Controls", p.margin);
+		//p.createButton("Reset view", ()=> {p.setWorldRot(0,0)}, p.margin);
+		//p.createBr(p.margin);
+		p.createP("Drag with mouse to rotate the view.", p.margin);
+	}
 
     p.draw = function(){
 		// don't do any drawing if not visible

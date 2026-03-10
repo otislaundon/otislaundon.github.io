@@ -5,6 +5,7 @@ let sketch_doubleColourSchemeBall = new p5((p) => {
 	p5_lib_rotation_selection(p);
 	p5_lib_annotations(p);
 	p5_lib_checker_sphere_mesh(p);
+	p5_lib_controls(p);
 
     p.setup = function(){
         p.canvas = p.createCanvas(720, 480, p.WEBGL);
@@ -35,6 +36,10 @@ let sketch_doubleColourSchemeBall = new p5((p) => {
 		p.lab_left_z = p.createAnnotation(0, 0, "\\(z\\)");
 
 		p.lab_right_title = p.createAnnotation(p.width/2+10, 10, "\\(\\tau\\) applied to cross-section of \\( \\text{SO}(3) \\)");
+
+		p.margin = p.createMargin();
+		p.createTitle("Controls", p.margin);
+		p.createP("Drag with mouse on left hand side to rotate the view. Drag with mouse on the right hand side to rotate the cross section.", p.margin);
 
 	}
 
