@@ -29,7 +29,7 @@ let sketch_doubleColourSphere = new p5((p) => {
 	uniform float uDirScale;
 
 	vec3 dir_to_col(vec3 dir){
-		dir = vec3(dir.x, dir.y, -dir.z);
+		dir = vec3(dir.x, -dir.y, dir.z);
 		return vec3(dir * 0.5 + 0.5);
 	}
 
@@ -86,15 +86,13 @@ let sketch_doubleColourSphere = new p5((p) => {
 		p.gl.cullFace(p.gl.BACK); 
 		p.antipode_shader = p.createShader(p.src_vert, p.src_frag_anti);
 
-		p.example_rot_angleaxis =[1,-0.5,2];
-
 		p.sphere_geom = p.buildGeometry(() => p.createCheckerSphere(50,100,1));
 
 		p.noStroke(); 
 
 		p.lab_k = p.createAnnotation(0,0,"\\(\\kappa\\)")
-		p.lab_ki = p.createAnnotation(0,0,"\\(\\kappa^{-1}\\)")
-		p.lab_kd = p.createAnnotation(0,0,"\\([\\kappa,\\kappa^{-1}]\\)")
+		p.lab_ki = p.createAnnotation(0,0,"\\(\\kappa^{-}\\)")
+		p.lab_kd = p.createAnnotation(0,0,"\\([\\kappa,\\kappa^{-}]\\)")
 
 		p.margin = p.createMargin();
 		p.createTitle("Controls", p.margin);
@@ -115,10 +113,10 @@ let sketch_doubleColourSphere = new p5((p) => {
 			p.scale(30);
 
 			p.scale(PI);
-			p.antipode_shader.setUniform("uDirScale", -1);
+			p.antipode_shader.setUniform("uDirScale", 1);
 			p.model(p.sphere_geom);
 			p.scale(-1);
-			p.antipode_shader.setUniform("uDirScale", 1);
+			p.antipode_shader.setUniform("uDirScale", -1);
 			p.model(p.sphere_geom);
 		p.pop(); 
 
@@ -127,10 +125,10 @@ let sketch_doubleColourSphere = new p5((p) => {
 			p.scale(30);
 
 			p.scale(PI);
-			p.antipode_shader.setUniform("uDirScale", 1);
+			p.antipode_shader.setUniform("uDirScale", -1);
 			p.model(p.sphere_geom);
 			p.scale(-1);
-			p.antipode_shader.setUniform("uDirScale", -1);
+			p.antipode_shader.setUniform("uDirScale", 1);
 			p.model(p.sphere_geom);
 		p.pop();
 	

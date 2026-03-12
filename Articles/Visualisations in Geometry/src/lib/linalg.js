@@ -207,6 +207,7 @@ function rotate_vector(v, e, phi){
 
 // converts a rotation in angle-axis representation to it's rotation matrix
 
+/*
 function angleaxis_to_matrix(v){
 	let e = v_normalise(v);
 	let phi = -v_len(v); // This minus sign comes from the non-standard orientation being used
@@ -217,23 +218,23 @@ function angleaxis_to_matrix(v){
 			e1[1],e2[1],e3[1],
 			e1[2],e2[2],e3[2]];
 }
+*/
 
-
-/*
-function angleaxis_to_matrix(e, phi){
-		let axis = v_normalise(e);
+function angleaxis_to_matrix(a){
+		let axis = v_normalise(a);
+		let phi = v_len(a);
 		if(phi==0)
 			return mat3_id;
 		let s = sin(phi);
 		let c = cos(phi);
 		let oc = 1 - c;
 	return [
-		oc * axis[0] * axis[0] + c,           oc * axis[0] * axis[1] + axis[2] * s ,oc * axis[2] * axis[0] - axis[1] * s,
-		oc * axis[0] * axis[1] - axis[2] * s,  oc * axis[1] * axis[1] + c          ,oc * axis[1] * axis[2] + axis[0] * s,
-		oc * axis[2] * axis[0] + axis[1] * s,  oc * axis[1] * axis[2] - axis[0] * s, oc * axis[2] * axis[2] + c
+		oc * axis[0] * axis[0] + c,           oc * axis[0] * axis[1] - axis[2] * s ,oc * axis[2] * axis[0] + axis[1] * s,
+		oc * axis[0] * axis[1] + axis[2] * s,  oc * axis[1] * axis[1] + c          ,oc * axis[1] * axis[2] - axis[0] * s,
+		oc * axis[2] * axis[0] - axis[1] * s,  oc * axis[1] * axis[2] + axis[0] * s, oc * axis[2] * axis[2] + c
 	];
 }
-*/
+
 
 function cross_matrix(v){
 	return [
@@ -297,7 +298,7 @@ vec3_to_Q = function(a){
 }
 
 angleaxis_to_Q = function(a){
-	return vec3_to_Q(a);
+	return vec3_to_Q(vs_prod(a, 0.5));
 }
 
 // This is the right inverse of the above function.

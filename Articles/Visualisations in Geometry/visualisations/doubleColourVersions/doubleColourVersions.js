@@ -29,7 +29,7 @@ let sketch_doubleColourVersions = new p5((p) => {
 	uniform float uDirScale;
 
 	vec3 dir_to_col(vec3 dir){
-		dir = vec3(dir.x, dir.y, -dir.z);
+		dir = vec3(dir.x, -dir.y, dir.z);
 		return vec3(dir * 0.5 + 0.5);
 	}
 
@@ -45,7 +45,7 @@ let sketch_doubleColourVersions = new p5((p) => {
 	varying vec3 vVertexPos;
 
 	vec3 dir_to_col(vec3 dir){
-		dir = vec3(dir.x, dir.y, -dir.z);
+		dir = vec3(dir.x, -dir.y, dir.z);
 		return vec3(dir * 0.5 + 0.5);
 	}
 
@@ -63,7 +63,7 @@ let sketch_doubleColourVersions = new p5((p) => {
 	varying vec3 vVertexPos;
 
 	vec3 dir_to_col(vec3 dir){
-		dir = vec3(dir.x, dir.y, -dir.z);
+		dir = vec3(dir.x, -dir.y, dir.z);
 		return vec3(dir * 0.5 + 0.5);
 	}
 
@@ -175,7 +175,7 @@ let sketch_doubleColourVersions = new p5((p) => {
 			p.scale(PI);
 
 			p.sphere_axes();
-			p.antipode_shader.setUniform("uDirScale", 1);
+			p.antipode_shader.setUniform("uDirScale", -1);
 			p.model(p.sphere_checker_geom);
 			p.scale(-1);
 			p.model(p.sphere_checker_geom);

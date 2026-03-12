@@ -539,7 +539,6 @@ function p5_lib_so3_core(p){
 		p.cone(0.05,0.18);
 		p.pop();
 	}
-
 }
 
 p5_lib_annotations = function(p){

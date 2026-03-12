@@ -125,10 +125,6 @@ let sketch_SU2LeftActInteractive = new p5((p) => {
 		//p.rot = mm_prod(angleaxis_to_matrix([1,0,0],p.deltaTime / 2000), p.rot, 3);
 	}
 
-	angleaxis_to_Q = function(a){
-		return vec3_to_Q(vs_prod(a,0.5));
-	}
-
 	p.multleftBLift = function(a){
 		if(v_len(a) == 0)
 			return;

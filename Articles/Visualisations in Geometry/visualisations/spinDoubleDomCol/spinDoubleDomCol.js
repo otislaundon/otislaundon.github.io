@@ -1,7 +1,6 @@
 let sketch_spinDoubleDomCol = new p5((p) => {
     p.canvas_id = "vis:spinDoubleDomCol";
 
-
 	p5_lib_world_orientation_interaction(p);
 	p5_lib_rotation_selection(p);
 	p5_lib_annotations(p);
@@ -92,64 +91,27 @@ void main() {
         p.canvas.parent(p.canvas_id);
 		p.gl = p._renderer.GL;
 
-		p.rot = angleaxis_to_matrix([0.5,1,0]);
+		p.rot = angleaxis_to_matrix([0,0,0]);
 
-		p.outer_shader = p.createShader(p.src_vert_anti, p.src_frag_checkso3_world);
 		p.inner_shader = p.createShader(p.src_vert_checkso3_world, p.src_frag_checkso3_world);
-		p.outer_shader.setUniform("uCheckSize", 21);
-		p.outer_shader.setUniform("uBrightnessExtra", 0.15);
 		p.inner_shader.setUniform("uCheckSize", 21);
 		p.inner_shader.setUniform("uBrightnessExtra", 0);
 
-		p.normal_shader = p.createShader(src_vert_normal, src_frag_normal);
 		p.rot_yz_90 = rot3_yz(HALF_PI);
 		p.rot_xz_90 = rot3_xz(HALF_PI);
 	
-		p.sphere_geom = p.buildGeometry(() => p.createSpherePartial(24,100));
-
 		p.noStroke();
 		p.setWorldRot(-0.5,0.45);
 
-		p.left = p.createFramebuffer({width: p.width/2, height: p.height});	
-		p.right = p.createFramebuffer({width: p.width/2, height: p.height});	
-
 		// create labels
-		p.lab_left_title = p.createAnnotation(10,10, "Double domain colouring for \\(L_b \\)");
-		p.lab_left_x = p.createAnnotation(0, 0, "\\(x\\)");
-		p.lab_left_y = p.createAnnotation(0, 0, "\\(y\\)");
-		p.lab_left_z = p.createAnnotation(0, 0, "\\(z\\)");
-
-		p.lab_right_title = p.createAnnotation(p.width/2+10, 10, "\\(b = \\theta \\mathbf{u} \\in \\text{SO}(3) \\) acting on \\( \\mathbb{R}^3 \\)");
-		p.lab_right_x = p.createAnnotation(0, 0, "\\(x\\)");
-		p.lab_right_y = p.createAnnotation(0, 0, "\\(y\\)");
-		p.lab_right_z = p.createAnnotation(0, 0, "\\(z\\)");
+		p.lab_left_x = p.createAnnotation(0, 0, "\\(x\\)", true);
+		p.lab_left_y = p.createAnnotation(0, 0, "\\(y\\)", true);
+		p.lab_left_z = p.createAnnotation(0, 0, "\\(z\\)", true);
 
 		p.margin = p.createMargin();
 		p.createTitle("Controls", p.margin);
-		p.createButton("Reset b to identity", ()=> {p.rot = mat3_id}, p.margin);
-		p.createBr(p.margin);
-		p.createP("Drag with mouse on left hand side to rotate the view. Drag with mouse on the right hand side to change \\(b\\).", p.margin);
+		p.createP("Drag with mouse to rotate the view.", p.margin);
 	}
-
-	p.createSpherePartial = function(resx, resy){
-		p.beginShape(p.QUADS);
-		for(let i = 0; i < resx; i++)
-		for(let j = 0; j < resy; j++)
-		{
-			if(i < resx/2 && j >= resy*3/4)
-				continue;
-			let a = spherical_coords(PI*i/resx,     TWOPI*j/resy);
-			let b = spherical_coords(PI*(i+1)/resx, TWOPI*j/resy);
-			let c = spherical_coords(PI*i/resx,     TWOPI*(j+1)/resy);
-			let d = spherical_coords(PI*(i+1)/resx, TWOPI*(j+1)/resy);
-			p.vertex(a[0],a[1],a[2]);
-			p.vertex(b[0],b[1],b[2]);
-			p.vertex(d[0],d[1],d[2]);
-			p.vertex(c[0],c[1],c[2]);
-		}
-		p.endShape();
-	}
-
 
     p.draw = function(){
 		// don't do any drawing if not visible
@@ -157,97 +119,47 @@ void main() {
 			return;
 
 		p.clear();
+
 		let rotVector = matrix_to_angleaxis(p.rot);
 		let theta = v_len(rotVector);
 		let rotAxis = v_normalise(rotVector);
 
 		p.strokeWeight(2);
 		p.stroke(50);
-		p.line(0, -p.height/2,0,p.height/2); // Vertical centerline
 		p.noStroke();
 
-		p.outer_shader.setUniform("uBVec", rotVector);
 		p.inner_shader.setUniform("uBVec", rotVector);
 
-		// begin left framebuffer
-		p.left.begin();
-			p.clear();
-			p.applyMatrix(p.world_transform.mat);
-			p.scale(50);
+		p.clear();
+		p.applyMatrix(p.world_transform.mat);
+		p.scale(50);
 
-			p.handleRotationSelectionInput();
-
-			// draw checkered sphere
+		p.push();
+			p.scale(PI);
+			p.shader(p.inner_shader);
+			p.inner_shader.setUniform("uRotMat", mat3_id);
+			p.ellipse(0,0,2,2,50);
 			p.push();
-				//p.shader(p.outer_shader);
-				p.scale(PI);
-				//p.model(p.sphere_geom);
-
-				p.shader(p.inner_shader);
-				p.inner_shader.setUniform("uRotMat", mat3_id);
-				p.ellipse(0,0,2,2,50);
-				p.push();
-				p.rotateX(-HALF_PI);
-				p.inner_shader.setUniform("uRotMat", p.rot_yz_90);
-				p.ellipse(0,0,2,2,50);
-				p.pop();
-				p.rotateY(HALF_PI);
-				p.inner_shader.setUniform("uRotMat", p.rot_xz_90);
-				p.ellipse(0,0,2,2,50);
+			p.rotateX(-HALF_PI);
+			p.inner_shader.setUniform("uRotMat", p.rot_yz_90);
+			p.ellipse(0,0,2,2,50);
 			p.pop();
+			p.rotateY(HALF_PI);
+			p.inner_shader.setUniform("uRotMat", p.rot_xz_90);
+			p.ellipse(0,0,2,2,50);
+		p.pop();
 
-			// set annotation positions
-			p.setAnnotationPos3left(p.lab_left_x, [3.4,0,0]);
-			p.setAnnotationPos3left(p.lab_left_y, [0,-3.8,0]);
-			p.setAnnotationPos3left(p.lab_left_z, [0,0,-PI]);
+		// set annotation positions
+		p.setAnnotationPos3(p.lab_left_x, [3.4,0,0]);
+		p.setAnnotationPos3(p.lab_left_y, [0,-3.8,0]);
+		p.setAnnotationPos3(p.lab_left_z, [0,0,3.8]);
 
-			// draw axes
-			p.clearDepth();
-			p.draw_axes(PI,2);
-			
-		p.left.end();
-
-		// begin right framebuffer
-		p.right.begin();
-			p.clear();
-			p.applyMatrix(p.world_transform.mat);
-			p.scale(50);
-
-			p.strokeWeight(4);
-			p.draw_axes(PI);
-
-			// set axis annotation positions
-			p.setAnnotationPos3right(p.lab_right_x, [PI,0,0]);
-			p.setAnnotationPos3right(p.lab_right_y, [0,-PI,0]);
-			p.setAnnotationPos3right(p.lab_right_z, [0,0,-PI]);
-
-			p.handleRotationSelectionInput();
-			
-			p.applyMatrix(mat3_to_mat4(p.rot));
-
-			// draw cube with rotation theta u
-			p.lights();
-			p.noStroke();
-			p.fill(255);
-			p.shader(p.normal_shader);
-			p.box(2);
-		p.right.end();
-		
-		// draw frame buffers to screen
-		p.image(p.left, -p.width/2, -p.height/2);
-		p.image(p.right, 0, -p.height/2);
+		// draw axes
+		p.clearDepth();
+		p.draw_axes(PI,2);
     }
 
 	p.mousePressed = function(){
-        if(p.mouseX > 0 && p.mouseY > 0 && p.mouseX < p.width && p.mouseY < p.height){
-			p.clickStartedInCanvas = true;
-			p.clickStartedOnRight = (p.mouseX > p.width/2);
-		}
-		else{
-			p.clickStartedOnRight = false; 
-			p.clickStartedInCanvas = false;
-		}
-
 		p.interactOnPressed();
 	}
 	p.mouseDragged = function(){

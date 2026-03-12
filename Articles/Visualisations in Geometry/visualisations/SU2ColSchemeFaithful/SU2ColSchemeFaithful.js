@@ -62,9 +62,11 @@ vec3 hsv2rgb( vec3 c ){
 }
 
 void main() {
+
 	vec3 pos = vVertexPos;
-	pos.z=-pos.z;
 	pos.y=-pos.y;
+
+	vec4 pos4 = vec3_to_Q(pos * 3.141593);
 
 	vec3 pos_spherical = xyz_to_spherical(pos);	
 	float r = pos_spherical.x;
@@ -74,13 +76,15 @@ void main() {
                   floor(pos_spherical.z * uCheckSize+0.5);
 	float blend = (mod(total, 2.0) == 0.0) ? 0.0 : 1.0;
 
-	float h = (1. + pos.x)*0.5;
-	float s = 4. * r*(1.-r);
-	float v = r;
-	float dh = (1.+pos.z)/8.;
-	float dv = r*(1.-r) * (pos.y+1.)/2.;
-	vec3 col1 = hsv2rgb(vec3(fract(h + dh), s, v + dv));
-	vec3 col2 = hsv2rgb(vec3(fract(h - dh), s, v - dv));
+
+	float h = (pos4.y + 1.)*0.25;
+	float s = (pos4.z + 1.)*0.5*(1.-pow((1.-pos4.x)/2., 4.));
+	float v = (1.-pos4.x)*0.5;
+	vec3 hsv = vec3(h,s,v);
+	vec3 dhsv = vec3((pos4.w+1.)/9., 0., 0.);
+
+	vec3 col1 = hsv2rgb(fract(hsv + dhsv));
+	vec3 col2 = hsv2rgb(fract(hsv - dhsv));
 
 	vec3 col = mix(col1, col2, blend);
 
