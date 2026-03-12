@@ -1,7 +1,6 @@
 let sketch_PathLiftNontrivial = new p5((p) => {
     p.canvas_id = "vis:PathLiftNontrivial";
 
-
 	p5_lib_world_orientation_interaction(p);
 	p5_lib_controls (p);
 	p5_lib_so3_core(p);

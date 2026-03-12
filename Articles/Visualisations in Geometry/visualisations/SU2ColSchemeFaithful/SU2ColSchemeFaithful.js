@@ -55,31 +55,34 @@ vec3 xyz_to_spherical(vec3 a){
 	);
 }
 
-vec3 tau4_left(vec4 a){
-	return vec3(a.x, a.y, 0.);
-}
-vec3 tau4_right(vec4 a){
-	return vec3(a.z, a.w, (a.z+a.w)*0.5);
-}
-
-vec4 f(vec4 a){
-return (a + vec4(1.))*0.5;
+vec3 hsv2rgb( vec3 c ){
+	vec3 rgb = clamp( abs(mod(c.x*6.0+vec3(0.0,4.0,2.0),6.0)-3.0)-1.0, 0.0, 1.0);
+	rgb = c.z * mix(vec3(1.0), rgb, c.y);
+	return rgb;
 }
 
 void main() {
 	vec3 pos = vVertexPos;
 	pos.z=-pos.z;
+	pos.y=-pos.y;
+
 	vec3 pos_spherical = xyz_to_spherical(pos);	
-	float r = length(pos);
-	vec4 pos4 = f(vec3_to_Q(pos*3.141593));
+	float r = pos_spherical.x;
 
 	float total = floor(pos_spherical.x * uCheckSize+0.0) + 
                   floor(pos_spherical.y * uCheckSize+0.5) + 
                   floor(pos_spherical.z * uCheckSize+0.5);
 	float blend = (mod(total, 2.0) == 0.0) ? 0.0 : 1.0;
-	
-	vec3 col = mix(tau4_left(pos4), tau4_right(pos4), blend);
-	//col = tau4_right(pos4);
+
+	float h = (1. + pos.x)*0.5;
+	float s = 4. * r*(1.-r);
+	float v = r;
+	float dh = (1.+pos.z)/8.;
+	float dv = r*(1.-r) * (pos.y+1.)/2.;
+	vec3 col1 = hsv2rgb(vec3(fract(h + dh), s, v + dv));
+	vec3 col2 = hsv2rgb(vec3(fract(h - dh), s, v - dv));
+
+	vec3 col = mix(col1, col2, blend);
 
 	gl_FragColor = vec4(col, 1.0);
 }
@@ -90,7 +93,7 @@ void main() {
         p.canvas.parent(p.canvas_id);
 		p.gl = p._renderer.GL;
 
-		p.rot = angleaxis_to_matrix(v_normalise([0.5,1,0]), PI/2);
+		p.rot = angleaxis_to_matrix([0.5,1,0]);
 
 		p.inner_shader = p.createShader(p.src_vert_checkso3_world, p.src_frag_checkso3_world);
 		p.inner_shader.setUniform("uCheckSize", 15);
@@ -153,7 +156,7 @@ void main() {
 		// set annotation positions
 		p.setAnnotationPos3(p.lab_left_x, [3.4,0,0]);
 		p.setAnnotationPos3(p.lab_left_y, [0,-3.8,0]);
-		p.setAnnotationPos3(p.lab_left_z, [0,0,-PI]);
+		p.setAnnotationPos3(p.lab_left_z, [0,0,PI]);
 
 		// draw axes
 		p.clearDepth();

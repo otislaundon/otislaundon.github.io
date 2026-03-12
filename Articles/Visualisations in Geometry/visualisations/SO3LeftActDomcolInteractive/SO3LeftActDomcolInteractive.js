@@ -36,12 +36,14 @@ varying vec3 vVertexPos;
 `+SO3_shader_funcs+`
 
 vec3 dir_to_col(vec3 dir){
+	dir = vec3(dir.x, dir.y, -dir.z);
 	return vec3(dir * 0.5 + 0.5);
 }
 
 void main() {
 	vec3 pos = mat3_to_angleaxis(angleaxis_to_mat3(uRotVector) * angleaxis_to_mat3(uScale*vVertexPos*3.14159))/3.14159*uScale;
-	gl_FragColor = vec4(dir_to_col(pos)*0.85 + vec3(0.15), 1.0);
+	float r = length(pos);
+	gl_FragColor = vec4(r*dir_to_col(pos)*0.85 + vec3(0.15), 1.0);
 }
 `;
 
@@ -71,6 +73,7 @@ varying vec3 vWorldPos;
 `+SO3_shader_funcs+`
 
 vec3 dir_to_col(vec3 dir){
+	dir = vec3(dir.x, dir.y, -dir.z);
 	return vec3(dir * 0.5 + 0.5);
 }
 
@@ -83,7 +86,7 @@ void main() {
 	float total = floor(vWorldPos.x * uCheckSize) + floor(vWorldPos.y*uCheckSize) + floor(vWorldPos.z*uCheckSize);
 	float blend = (mod(total, 2.0) == 0.0) ? 0.0 : 1.0;
 
-	vec3 col = mix(col1, col2, blend);
+	vec3 col = r*mix(col1, col2, blend);
 
 	gl_FragColor = vec4(col*1.0 + vec3(0.0), 1.0);
 }
@@ -94,7 +97,7 @@ void main() {
         p.canvas.parent(p.canvas_id);
 		p.gl = p._renderer.GL;
 
-		p.rot = angleaxis_to_matrix(v_normalise([0.5,1,0]), PI/2);
+		p.rot = angleaxis_to_matrix([0.5,1,0]);
 
 		p.antipode_shader = p.createShader(p.src_vert_anti, p.src_frag_anti);
 		p.check_shader = p.createShader(p.src_vert_checkso3_world, p.src_frag_checkso3_world);
@@ -139,7 +142,7 @@ void main() {
 	}
 
 	p.Animate = function(){
-		p.rot = mm_prod(angleaxis_to_matrix([1,1,1],p.deltaTime / 2000), p.rot, 3);
+		p.rot = mm_prod(angleaxis_to_matrix([p.deltaTime / 2000,p.deltaTime / 2000,p.deltaTime / 2000]), p.rot, 3);
 	}
 
 	p.createCheckerSpherePartial = function(resx, resy, flip){
@@ -171,7 +174,6 @@ void main() {
 			p.Animate();
 
 		p.clear();
-		//p.rot = angleaxis_to_matrix(v_normalise([0.5,1,-0.1]), p.millis()/1000);
 		let rotVector = matrix_to_angleaxis(p.rot);
 		let theta = v_len(rotVector);
 		let rotAxis = v_normalise(rotVector);
@@ -217,7 +219,7 @@ void main() {
 			// set annotation positions
 			p.setAnnotationPos3left(p.lab_left_x, [3.4,0,0]);
 			p.setAnnotationPos3left(p.lab_left_y, [0,-3.8,0]);
-			p.setAnnotationPos3left(p.lab_left_z, [0,0,-PI]);
+			p.setAnnotationPos3left(p.lab_left_z, [0,0,PI]);
 			p.setAnnotationPos3left(p.lab_left_b, rotVector);
 			p.setAnnotationPos3left(p.lab_left_binv, vs_prod(rotVector,-1));
 
@@ -259,7 +261,7 @@ void main() {
 			// set axis annotation positions
 			p.setAnnotationPos3right(p.lab_right_x, [PI,0,0]);
 			p.setAnnotationPos3right(p.lab_right_y, [0,-PI,0]);
-			p.setAnnotationPos3right(p.lab_right_z, [0,0,-PI]);
+			p.setAnnotationPos3right(p.lab_right_z, [0,0,PI]);
 
 			p.handleRotationSelectionInput();
 			

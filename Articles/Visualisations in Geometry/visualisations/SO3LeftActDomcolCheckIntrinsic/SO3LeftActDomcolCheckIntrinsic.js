@@ -87,7 +87,7 @@ void main() {
         p.canvas.parent(p.canvas_id);
 		p.gl = p._renderer.GL;
 
-		p.rot = angleaxis_to_matrix(v_normalise([0.5,1,0]), PI/2);
+		p.rot = angleaxis_to_matrix([0.5,1,0]);
 
 		p.outer_shader = p.createShader(p.src_vert_anti, p.src_frag_checkso3_world);
 		p.inner_shader = p.createShader(p.src_vert_checkso3_world, p.src_frag_checkso3_world);
@@ -133,7 +133,7 @@ void main() {
 	}
 
 	p.Animate = function(){
-		p.rot = mm_prod(angleaxis_to_matrix([1,0,0],p.deltaTime / 2000), p.rot, 3);
+		p.rot = mm_prod(angleaxis_to_matrix([p.deltaTime / 2000,0,0]), p.rot, 3);
 	}
 
 	p.createSpherePartial = function(resx, resy){
@@ -165,7 +165,6 @@ void main() {
 			p.Animate();
 
 		p.clear();
-		//p.rot = angleaxis_to_matrix(v_normalise([0.5,1,-0.1]), p.millis()/1000);
 		let rotVector = matrix_to_angleaxis(p.rot);
 		let theta = v_len(rotVector);
 		let rotAxis = v_normalise(rotVector);
@@ -208,7 +207,7 @@ void main() {
 			// set annotation positions
 			p.setAnnotationPos3left(p.lab_left_x, [3.4,0,0]);
 			p.setAnnotationPos3left(p.lab_left_y, [0,-3.8,0]);
-			p.setAnnotationPos3left(p.lab_left_z, [0,0,-PI]);
+			p.setAnnotationPos3left(p.lab_left_z, [0,0,PI]);
 			p.setAnnotationPos3left(p.lab_left_b, rotVector);
 			p.setAnnotationPos3left(p.lab_left_binv, vs_prod(rotVector,-1));
 
@@ -250,7 +249,7 @@ void main() {
 			// set axis annotation positions
 			p.setAnnotationPos3right(p.lab_right_x, [PI,0,0]);
 			p.setAnnotationPos3right(p.lab_right_y, [0,-PI,0]);
-			p.setAnnotationPos3right(p.lab_right_z, [0,0,-PI]);
+			p.setAnnotationPos3right(p.lab_right_z, [0,0,PI]);
 
 			p.handleRotationSelectionInput();
 			

@@ -177,7 +177,7 @@ let p5_lib_surfaceparam = function(p){
 }
 
 let p5_lib_controls = function(p){
-  p.createMargin = function(text, onclick, parent){
+  p.createMargin = function(){
 	let margin = document.createElement("div");
     margin.setAttribute("class", "sidenote");
     document.getElementById(p.canvas_id).appendChild(margin);
@@ -192,12 +192,14 @@ let p5_lib_controls = function(p){
 		let par = document.createElement("p");
 		par.innerHTML = text;
 		parent.appendChild(par);
+		MathJax.Hub.Queue(["Typeset", MathJax.Hub, par]);
 		return par;
 	}
 	p.createTitle = function(text, parent){
 		let title = document.createElement("h3");
 		title.innerHTML = text;
 		parent.appendChild(title);
+		MathJax.Hub.Queue(["Typeset", MathJax.Hub, title]);
 		return title;
 	}
   p.createSlider = function(){
@@ -214,6 +216,7 @@ let p5_lib_controls = function(p){
 	button.innerHTML = text;
 	button.onclick = onclick;
     parent.appendChild(button);
+	MathJax.Hub.Queue(["Typeset", MathJax.Hub, button]);
     return button;
   }
 }
@@ -228,7 +231,7 @@ let p5_lib_axes = function(p){
         p.stroke(0,255,0);
         p.line(0,0,0, 0,-scale,0);
         p.stroke(0,0,255);
-        p.line(0,0,0, 0,0,-scale);
+        p.line(0,0,0, 0,0,scale);
     p.pop();
     }
     p.draw_ground = function(){
@@ -297,9 +300,8 @@ p5_lib_rotation_selection = function(p){
 			p.v1_vec = p.screenToWorld(p.mouseX, p.height-p.mouseY, 0.8).sub(p.screenToWorld(p.mouseX, p.height-p.mouseY, 0.2));
 			p.v1 = v_normalise([p.v1_vec.x, p.v1_vec.y, p.v1_vec.z]);
 			if(p.v0 != undefined && p.mouseIsPressed && p.clickStartedOnRight){
-				p.v1xv0 = vv_cross(p.v1, p.v0);
-				let rot_mag = v_len(p.v1xv0) * 12;
-				let rot_change = angleaxis_to_matrix(v_normalise(p.v1xv0),rot_mag);
+				p.v0xv1 = vv_cross(p.v0, p.v1);
+				let rot_change = angleaxis_to_matrix(vs_prod(p.v0xv1,12));
 				p.rot = mm_prod(p.rot, rot_change,3);
 				p.points_updated = false;
 			}
@@ -500,7 +502,7 @@ function p5_lib_so3_core(p){
 		p.noFill();
 		let rotaxis_to_u = v_normalise(vv_cross(rotAxis, [0,0,1]));
 		let rotangle_to_u = Math.acos(vv_dot(v_normalise(rotAxis), [0,0,1]));
-		let rotMat = angleaxis_to_matrix(rotaxis_to_u, -rotangle_to_u);
+		let rotMat = angleaxis_to_matrix(vs_prod(rotaxis_to_u, rotangle_to_u));
 
 		let angle_ref_vec = vv_cross(rotaxis_to_u, rotAxis);
 		let angle_start_vec = mv_prod(mat3_T(rotMat),[1,0,0]);
@@ -514,26 +516,26 @@ function p5_lib_so3_core(p){
 		p.line(0,0,-3,   0,0,3);
 		p.push();
 			p.translate(0,0,3);
-			p.rotateX(PI/2);
+			p.rotateX(HALF_PI);
 			p.cone(0.05,0.18);
 		p.pop();
 
 		// this keeps the starting point for the arc consistent as u changes
-		let arc_start = -Math.atan2(vv_dot(angle_start_vec, rotaxis_to_u),vv_dot(angle_start_vec, angle_ref_vec));
+		let arc_start = Math.atan2(vv_dot(angle_start_vec, rotaxis_to_u), vv_dot(angle_start_vec, angle_ref_vec));
 
-		p.arc(0,0, 4,4, arc_start,arc_start+theta);
+		p.arc(0,0, 4,4, arc_start-theta,arc_start);
 
 		let arc_start_pos = [Math.cos(arc_start),Math.sin(arc_start)];
-		let arc_end_pos = [Math.cos(arc_start+theta),Math.sin(arc_start+theta)];
+		let arc_end_pos = [Math.cos(arc_start-theta),Math.sin(arc_start-theta)];
 		p.line(0,0, arc_start_pos[0]*2, arc_start_pos[1]*2);
 
 		// Right angle square
 		p.line(0,0,0.25, arc_start_pos[0]*0.25, arc_start_pos[1]*0.25,0.25);
 		p.line(arc_start_pos[0]*0.25, arc_start_pos[1]*0.25,0, arc_start_pos[0]*0.25, arc_start_pos[1]*0.25,0.25);
 
-		p.setAnnotationPos3right(lab_theta, [Math.cos(arc_start+theta)*2, Math.sin(arc_start+theta)*2, 0]);
+		p.setAnnotationPos3right(lab_theta, [Math.cos(arc_start - theta)*2, Math.sin(arc_start - theta)*2, 0]);
 		p.translate(arc_end_pos[0]*2, arc_end_pos[1]*2);
-		p.rotateZ(arc_start+theta);
+		p.rotateZ(arc_start-theta+PI);
 		p.cone(0.05,0.18);
 		p.pop();
 	}

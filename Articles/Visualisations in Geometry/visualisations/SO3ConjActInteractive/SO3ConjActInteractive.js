@@ -14,7 +14,7 @@ let sketch_SO3ConjActInteractive = new p5((p) => {
         p.canvas.parent(p.canvas_id);
 		p.gl = p._renderer.GL;
 
-		p.rot = angleaxis_to_matrix(v_normalise([0,1,0]), 0.001);
+		p.rot = angleaxis_to_matrix([0,0,0]);
 
 		p.dotsShader = p.baseStrokeShader().modify(SO3_shader_hooks).modify({
 			uniforms: {
@@ -26,7 +26,7 @@ let sketch_SO3ConjActInteractive = new p5((p) => {
 				vVertexPos = aPosition.xyz/3.1415927;
 			} `,
 			'StrokeVertex getObjectInputs': `(StrokeVertex inputs){
-				inputs.position.xyz = mat3_to_angleaxis(inverse(angleaxis_to_mat3(rot_element)) * angleaxis_to_mat3(inputs.position.xyz) * (angleaxis_to_mat3(rot_element)));
+				inputs.position.xyz = mat3_to_angleaxis(angleaxis_to_mat3(rot_element) * angleaxis_to_mat3(inputs.position.xyz) * inverse(angleaxis_to_mat3(rot_element)));
 				return inputs;
 			}`,
 			'vec3 dir_to_col': `(vec3 dir){
@@ -65,7 +65,7 @@ let sketch_SO3ConjActInteractive = new p5((p) => {
 		p.right = p.createFramebuffer({width: p.width/2, height: p.height});	
 
 		// create labels
-		p.lab_left_title = p.createAnnotation(10,10, "\\(C_{b^{-1}}: \\text{SO}(3) \\rightarrow \\text{SO}(3) \\)");
+		p.lab_left_title = p.createAnnotation(10,10, "\\(C_b: \\text{SO}(3) \\rightarrow \\text{SO}(3) \\)");
 		p.lab_left_x = p.createAnnotation(0, 0, "\\(x\\)", true);
 		p.lab_left_y = p.createAnnotation(0, 0, "\\(y\\)", true);
 		p.lab_left_z = p.createAnnotation(0, 0, "\\(z\\)", true);
@@ -89,7 +89,7 @@ let sketch_SO3ConjActInteractive = new p5((p) => {
 	}
 
 	p.Animate = function(){
-		p.rot = mm_prod(angleaxis_to_matrix([1,0,0],p.deltaTime / 2000), p.rot, 3);
+		p.rot = mm_prod(angleaxis_to_matrix([p.deltaTime / 2000,0,0]), p.rot, 3);
 	}
 
     p.draw = function(){

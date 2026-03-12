@@ -1,5 +1,5 @@
-let sketch_SO3RightActInteractive = new p5((p) => {
-    p.canvas_id = "vis:SO3RightActInteractive";
+let sketch_SU2ConjActInteractive = new p5((p) => {
+    p.canvas_id = "vis:SU2ConjActInteractive";
 
 	p5_lib_world_orientation_interaction(p);
 	p5_lib_rotation_selection(p);
@@ -9,56 +9,84 @@ let sketch_SO3RightActInteractive = new p5((p) => {
 	p5_lib_checker_sphere_mesh(p);
 	p5_lib_controls(p);
 
-    p.setup = function(){
+	p.setup = function(){
         p.canvas = p.createCanvas(720, 480, p.WEBGL);
         p.canvas.parent(p.canvas_id);
 		p.gl = p._renderer.GL;
 
 		p.rot = angleaxis_to_matrix([0,0,0]);
+		p.tildeB = vec3_to_Q(matrix_to_angleaxis(p.rot));
 
-		p.dotsShader = p.baseStrokeShader().modify(SO3_shader_hooks).modify({
+		p.dotsShader = p.baseStrokeShader().modify(SO3_shader_hooks).modify(SU2_shader_hooks).modify({
 			uniforms: {
 				'float uCheckSize': 6,
-				'vec3 rot_element': () => matrix_to_angleaxis(p.rot),
+				'vec4 elemB': () => p.tildeB,
 			},
 			varyingVariables: ['vec3 vVertexPos'],
 			'void afterVertex': `(){
 				vVertexPos = aPosition.xyz/3.1415927;
 			} `,
 			'StrokeVertex getObjectInputs': `(StrokeVertex inputs){
-				inputs.position.xyz = mat3_to_angleaxis(angleaxis_to_mat3(inputs.position.xyz) * angleaxis_to_mat3(rot_element));
+				inputs.position.xyz = Q_to_vec3(mat4_to_Q(Q_to_mat4(elemB) * Q_to_mat4(vec3_to_Q(inputs.position.xyz)) * inverse(Q_to_mat4(elemB))));
 				return inputs;
 			}`,
-			'vec3 dir_to_col': `(vec3 dir){
-				return vec3(dir * 0.5 + 0.5)*length(dir);
+			'vec3 xyz_to_spherical': `(vec3 a){
+				float r = length(a);
+				return vec3(
+					r,
+					acos(a.z/r),
+					sign(a.y) * acos(a.x/length(a.xy))
+				);
+			}`,
+			'vec3 hsv2rgb': `( vec3 c ){
+				vec3 rgb = clamp( abs(mod(c.x*6.0+vec3(0.0,4.0,2.0),6.0)-3.0)-1.0, 0.0, 1.0);
+				rgb = c.z * mix(vec3(1.0), rgb, c.y);
+				return rgb;
 			}`,
 			'Inputs getPixelInputs': `(Inputs inputs) {
-				vec3 col1 = dir_to_col(vVertexPos);
-				float r = length(vVertexPos);
-				vec3 col2 = mix(col1, dir_to_col(-vVertexPos), r);
+				vec3 pos = vVertexPos;
+				//pos.z=-pos.z;
+				//pos.y=-pos.y;
+
+				vec3 pos_spherical = xyz_to_spherical(pos);	
+				float r = pos_spherical.x;
+
 				vec2 screenPosRel = (inputs.position.xy - inputs.center.xy);
 				float total = floor(screenPosRel.x / uCheckSize) + floor(screenPosRel.y / uCheckSize);
 				float blend = (mod(total, 2.0) == 0.0) ? 0.0 : 1.0;
 
-				inputs.color.xyz = mix(col1, col2, blend);
+				float h = (1. + pos.x)*0.5;
+				float s = 4. * r*(1.-r);
+				float v = r;
+				float dh = (1.+pos.z)/8.;
+				float dv = r*(1.-r) * (pos.y+1.)/2.;
+				vec3 col1 = hsv2rgb(vec3(fract(h + dh), s, v + dv));
+				vec3 col2 = hsv2rgb(vec3(fract(h - dh), s, v - dv));
+
+				vec3 col = mix(col1, col2, blend);
+
+				inputs.color.xyz = col;
 				inputs.color.a = 1.0;
+
 				return inputs;
 			}`
 		});
 
 		p.dotsShader.setUniform("uCheckSize", 6)
 		p.normal_shader = p.createShader(src_vert_normal, src_frag_normal);
-		p.sphere_geom = p.buildGeometry(() => p.createCheckerSphere(50,100,1));
 
-		//p.initialiseSO3PointsRandom(1000);
 		p.points = [];
-		let ppr = 40;
-		for(let r = 0; r <= PI; r+= PI/4)
-			for(let i = 0; i < ppr*r*r; i++)
-				p.points.push(vs_prod(random_point_on_sphere(),r*0.999));
+		let ppr = 200;
+		let n_layers = 5
+		for(let j = 0; j < n_layers; j+= 1){
+			let psi = (j+0.5) * PI / (n_layers);
+			for(let i = 0; i < ppr*Math.sin(psi)**2; i++){
+				let Q_ijk = vs_prod(random_point_on_sphere(3),Math.sin(psi));
+				p.points.push(Q_to_vec3([Math.cos(psi), Q_ijk[0], Q_ijk[1], Q_ijk[2]]));
+			}
+		}
+			
 		p.n_points = p.points.length;
-
-		//p.points = p.points.map(p => vs_prod(v_normalise(p), Math.floor(Math.random() * 4 + 1)/4 * PI*0.999));
 
 		p.noStroke();
 		p.setWorldRot(-0.5,0.45);
@@ -67,11 +95,12 @@ let sketch_SO3RightActInteractive = new p5((p) => {
 		p.right = p.createFramebuffer({width: p.width/2, height: p.height});	
 
 		// create labels
-		p.lab_left_title = p.createAnnotation(10,10, "\\(R_b: \\text{SO}(3) \\rightarrow \\text{SO}(3) \\)");
+		p.lab_left_title = p.createAnnotation(10,10, "\\(C_\\tilde{b}: \\text{SU}(2) \\rightarrow \\text{SU}(2) \\)");
 		p.lab_left_x = p.createAnnotation(0, 0, "\\(x\\)", true);
 		p.lab_left_y = p.createAnnotation(0, 0, "\\(y\\)", true);
 		p.lab_left_z = p.createAnnotation(0, 0, "\\(z\\)", true);
 		p.lab_left_b = p.createAnnotation(0, 0,"\\(b\\)",true);
+		p.lab_left_tb = p.createAnnotation(0, 0,"\\(\\tilde{b}\\)",true);
 
 		p.lab_right_title = p.createAnnotation(p.width/2+10, 10, "\\( b = \\theta \\mathbf{u} \\in \\text{SO}(3) \\) acting on \\( \\mathbb{R}^3 \\)");
 		p.lab_right_x = p.createAnnotation(0, 0, "\\(x\\)");
@@ -84,14 +113,53 @@ let sketch_SO3RightActInteractive = new p5((p) => {
 		p.animate = false;
 		p.margin = p.createMargin();
 		p.createTitle("Controls", p.margin);
-		p.createButton("Reset b to identity", ()=> {p.rot = mat3_id}, p.margin);
+		p.createButton("Reset b to identity", ()=> {p.rot = mat3_id; p.tildeB = [1,0,0,0];}, p.margin);
 		p.createBr(p.margin);
 		p.createButton("Start/Stop Animation", () => {p.animate = !p.animate}, p.margin);
 		p.createP("Drag with mouse on left hand side to rotate the view. Drag with mouse on the right hand side to change \\(b\\).", p.margin);
 	}
 
 	p.Animate = function(){
-		p.rot = mm_prod(angleaxis_to_matrix([1,0,0],p.deltaTime / 2000), p.rot, 3);
+		p.multleftBLift([p.deltaTime/1000,0,0]);
+		//p.rot = mm_prod(angleaxis_to_matrix([1,0,0],p.deltaTime / 2000), p.rot, 3);
+	}
+
+	angleaxis_to_Q = function(a){
+		return vec3_to_Q(vs_prod(a,0.5));
+	}
+
+	p.multleftBLift = function(a){
+		if(v_len(a) == 0)
+			return;
+		// turn small rotation into quaternion.
+		let q = angleaxis_to_Q(a);
+		// apply a to b
+		p.rot = mm_prod(angleaxis_to_matrix(a), p.rot, 3);
+		// apply this quaternion to tildeB.
+		p.tildeB = mat4_to_Q(mm_prod(Q_to_mat4(q),Q_to_mat4(p.tildeB),4));
+	}
+
+	p.multrightBLift = function(a){
+		if(v_len(a) == 0)
+			return;
+		// turn small rotation into quaternion.
+		let q = angleaxis_to_Q(a);
+		// apply a to b
+		p.rot = mm_prod(p.rot, angleaxis_to_matrix(a), 3);
+		// apply this quaternion to tildeB.
+		p.tildeB = mat4_to_Q(mm_prod(Q_to_mat4(p.tildeB), Q_to_mat4(q), 4));
+	}
+
+	p.handleRotationSelectionInput = function(){
+			p.v1_vec = p.screenToWorld(p.mouseX, p.height-p.mouseY, 0.8).sub(p.screenToWorld(p.mouseX, p.height-p.mouseY, 0.2));
+			p.v1 = v_normalise([p.v1_vec.x, p.v1_vec.y, p.v1_vec.z]);
+			if(p.v0 != undefined && p.mouseIsPressed && p.clickStartedOnRight){
+				p.v0xv1 = vv_cross(p.v0, p.v1);
+				let rot_change = angleaxis_to_matrix(vs_prod(p.v0xv1,12));
+				p.multrightBLift(matrix_to_angleaxis(rot_change));
+				p.points_updated = false;
+			}
+			p.v0 = [p.v1[0], p.v1[1], p.v1[2]];
 	}
 
     p.draw = function(){
@@ -107,9 +175,11 @@ let sketch_SO3RightActInteractive = new p5((p) => {
 		let theta = v_len(rotVector);
 		let rotAxis = v_normalise(rotVector);
 
+		let tildeBVec = Q_to_vec3(p.tildeB);
+
 		p.strokeWeight(2);
 		p.stroke(50);
-		p.line(0, -p.height/2,0,p.height/2); // Vertical centerline
+		p.line(0,-p.height/2,0,p.height/2); // Vertical centerline
 		p.noStroke();
 
 		// begin left framebuffer
@@ -126,38 +196,42 @@ let sketch_SO3RightActInteractive = new p5((p) => {
 			p.clearDepth();
 
 			// draw points with action applied to them
-			p.strokeWeight(12);
+			p.strokeWeight(10);
 			p.stroke(0,0,0,100);
 			p.push();
 			p.strokeShader(p.dotsShader);
 			p.draw_points(p.points);
 			p.pop();
 
+			// draw tildeB
+			p.stroke(255,0,0);
+			p.strokeWeight(16);
+			p.beginShape(p.POINTS);
+				p.vertex(tildeBVec[0], tildeBVec[1], tildeBVec[2]);
+			p.endShape();
+			p.setAnnotationPos3left(p.lab_left_tb, tildeBVec, [0,2]);
+
 			// set annotation positions
 			p.setAnnotationPos3left(p.lab_left_x, [PI,0,0]);
 			p.setAnnotationPos3left(p.lab_left_y, [0,-PI,0]);
 			p.setAnnotationPos3left(p.lab_left_z, [0,0,PI]);
-			p.setAnnotationPos3left(p.lab_left_b, vv_add(rotVector, [0,-0.6,0]));
 
 			// draw axes
 			p.clearDepth();
 			p.draw_axes(PI,2);
-			// draw line through theta u
-			p.strokeWeight(2);
-			p.stroke(0);
-			p.line(0, 0,0,rotAxis[0]*PI, rotAxis[1]*PI, rotAxis[2]*PI);
+
+			p.push();
+			p.scale(0.5);
+			p.draw_outline_ball(PI);
+			p.setAnnotationPos3left(p.lab_left_b, rotVector, [0,-25]);
 			// draw theta u
-			p.stroke(0);
+			p.stroke(0,0,255);
 			p.strokeWeight(16);
 			p.beginShape(p.POINTS);
 				p.vertex(rotVector[0], rotVector[1], rotVector[2]);
 			p.endShape();
-			// draw box with corners at theta u and 0
-			p.noFill();
-			p.strokeWeight(2);
-			p.stroke(0,0,0,100);
-			p.translate(rotVector[0]/2, rotVector[1]/2, rotVector[2]/2);
-			p.box(rotVector[0], rotVector[1], rotVector[2]);
+
+			p.pop();
 		p.left.end();
 
 		// begin right framebuffer
@@ -208,6 +282,7 @@ let sketch_SO3RightActInteractive = new p5((p) => {
 		if(!p.clickStartedOnRight)
 			p.interactOnDragged();
 	}
+
 
 })
 

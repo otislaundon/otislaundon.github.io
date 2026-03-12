@@ -14,7 +14,7 @@ let sketch_SO3LeftActInteractive = new p5((p) => {
         p.canvas.parent(p.canvas_id);
 		p.gl = p._renderer.GL;
 
-		p.rot = angleaxis_to_matrix(v_normalise([0,1,0]), 0.001);
+		p.rot = angleaxis_to_matrix([0,0.001,0]);
 
 		p.dotsShader = p.baseStrokeShader().modify(SO3_shader_hooks).modify({
 			uniforms: {
@@ -30,6 +30,7 @@ let sketch_SO3LeftActInteractive = new p5((p) => {
 				return inputs;
 			}`,
 			'vec3 dir_to_col': `(vec3 dir){
+				dir = vec3(dir.x, dir.y, -dir.z);
 				return vec3(dir * 0.5 + 0.5);
 			}`,
 			'Inputs getPixelInputs': `(Inputs inputs) {
@@ -40,7 +41,7 @@ let sketch_SO3LeftActInteractive = new p5((p) => {
 				float total = floor(screenPosRel.x / uCheckSize) + floor(screenPosRel.y / uCheckSize);
 				float blend = (mod(total, 2.0) == 0.0) ? 0.0 : 1.0;
 
-				inputs.color.xyz = mix(col1, col2, blend);
+				inputs.color.xyz = r * mix(col1, col2, blend);
 				inputs.color.a = 1.0;
 				return inputs;
 			}`
@@ -91,7 +92,7 @@ let sketch_SO3LeftActInteractive = new p5((p) => {
 	}
 
 	p.Animate = function(){
-		p.rot = mm_prod(angleaxis_to_matrix([1,0,0],p.deltaTime / 2000), p.rot, 3);
+		p.rot = mm_prod(angleaxis_to_matrix([p.deltaTime / 2000,0,0]), p.rot, 3);
 	}
 
     p.draw = function(){
@@ -136,7 +137,7 @@ let sketch_SO3LeftActInteractive = new p5((p) => {
 			// set annotation positions
 			p.setAnnotationPos3left(p.lab_left_x, [PI,0,0]);
 			p.setAnnotationPos3left(p.lab_left_y, [0,-PI,0]);
-			p.setAnnotationPos3left(p.lab_left_z, [0,0,-PI]);
+			p.setAnnotationPos3left(p.lab_left_z, [0,0,PI]);
 			p.setAnnotationPos3left(p.lab_left_b, vv_add(rotVector, [0,-0.6,0]));
 
 			// draw axes
@@ -171,7 +172,7 @@ let sketch_SO3LeftActInteractive = new p5((p) => {
 			// set axis annotation positions
 			p.setAnnotationPos3right(p.lab_right_x, [PI,0,0]);
 			p.setAnnotationPos3right(p.lab_right_y, [0,-PI,0]);
-			p.setAnnotationPos3right(p.lab_right_z, [0,0,-PI]);
+			p.setAnnotationPos3right(p.lab_right_z, [0,0,PI]);
 
 			p.handleRotationSelectionInput();
 			

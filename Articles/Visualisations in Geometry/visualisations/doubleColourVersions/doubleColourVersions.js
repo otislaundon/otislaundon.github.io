@@ -29,6 +29,7 @@ let sketch_doubleColourVersions = new p5((p) => {
 	uniform float uDirScale;
 
 	vec3 dir_to_col(vec3 dir){
+		dir = vec3(dir.x, dir.y, -dir.z);
 		return vec3(dir * 0.5 + 0.5);
 	}
 
@@ -44,6 +45,7 @@ let sketch_doubleColourVersions = new p5((p) => {
 	varying vec3 vVertexPos;
 
 	vec3 dir_to_col(vec3 dir){
+		dir = vec3(dir.x, dir.y, -dir.z);
 		return vec3(dir * 0.5 + 0.5);
 	}
 
@@ -61,6 +63,7 @@ let sketch_doubleColourVersions = new p5((p) => {
 	varying vec3 vVertexPos;
 
 	vec3 dir_to_col(vec3 dir){
+		dir = vec3(dir.x, dir.y, -dir.z);
 		return vec3(dir * 0.5 + 0.5);
 	}
 

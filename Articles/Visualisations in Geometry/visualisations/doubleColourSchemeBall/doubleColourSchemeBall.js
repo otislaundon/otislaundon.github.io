@@ -21,7 +21,7 @@ let sketch_doubleColourSchemeBall = new p5((p) => {
 		p.sphere_geom_partialA = p.buildGeometry(() => p.createCheckerSpherePartial(24,100,0));
 		p.sphere_geom_partialB = p.buildGeometry(() => p.createCheckerSpherePartial(24,100,1));
 
-		p.rot = angleaxis_to_matrix(v_normalise([0.5,1,0]), PI/2);
+		p.rot = angleaxis_to_matrix([0.5,1,0]);
 
 		p.noStroke();
 		p.setWorldRot(-0.5,0.45);
@@ -30,12 +30,12 @@ let sketch_doubleColourSchemeBall = new p5((p) => {
 		p.right = p.createFramebuffer({width: p.width/2, height: p.height});	
 
 		// create labels
-		p.lab_left_title = p.createAnnotation(10,10, "Double colour scheme \\( \\tau: \\text{SO}(3) \\rightarrow \\text{Col}\\)");
+		p.lab_left_title = p.createAnnotation(10,10, "Double colour scheme \\( \\tau_0: \\text{SO}(3) \\rightarrow \\text{Col}\\)");
 		p.lab_left_x = p.createAnnotation(0, 0, "\\(x\\)");
 		p.lab_left_y = p.createAnnotation(0, 0, "\\(y\\)");
 		p.lab_left_z = p.createAnnotation(0, 0, "\\(z\\)");
 
-		p.lab_right_title = p.createAnnotation(p.width/2+10, 10, "\\(\\tau\\) applied to cross-section of \\( \\text{SO}(3) \\)");
+		p.lab_right_title = p.createAnnotation(p.width/2+10, 10, "\\(\\tau_0\\) applied to cross-section of \\( \\text{SO}(3) \\)");
 
 		p.margin = p.createMargin();
 		p.createTitle("Controls", p.margin);
@@ -70,7 +70,6 @@ let sketch_doubleColourSchemeBall = new p5((p) => {
 			return;
 
 		p.clear();
-		//p.rot = angleaxis_to_matrix(v_normalise([0.5,1,-0.1]), p.millis()/1000);
 		let rotVector = matrix_to_angleaxis(p.rot);
 		let theta = v_len(rotVector);
 		let rotAxis = v_normalise(rotVector);
@@ -113,7 +112,7 @@ let sketch_doubleColourSchemeBall = new p5((p) => {
 			// set annotation positions
 			p.setAnnotationPos3left(p.lab_left_x, [3.4,0,0]);
 			p.setAnnotationPos3left(p.lab_left_y, [0,-3.8,0]);
-			p.setAnnotationPos3left(p.lab_left_z, [0,0,-PI]);
+			p.setAnnotationPos3left(p.lab_left_z, [0,0,PI]);
 
 			p.applyMatrix(mat3_to_mat4(p.rot));
 			p.strokeWeight(4);

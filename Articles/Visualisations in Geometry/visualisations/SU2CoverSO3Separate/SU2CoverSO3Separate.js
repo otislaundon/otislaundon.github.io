@@ -69,7 +69,7 @@ let sketch_SU2CoverSO3Separate = new p5((p) => {
 				// add annotations for axes.
 				let wpx = p.worldToScreen(PI,0,0);
 				let wpy = p.worldToScreen(0,-PI,0);
-				let wpz = p.worldToScreen(0,0,-PI);
+				let wpz = p.worldToScreen(0,0,PI);
 				let wpa = p.worldToScreen(p.points_transformed_su2[0][0],p.points_transformed_su2[0][1],p.points_transformed_su2[0][2]);
 				p.setAnnotationPos(p.lab_su2_x, wpx.x, wpx.y);
 				p.setAnnotationPos(p.lab_su2_y, wpy.x, wpy.y);
@@ -89,7 +89,7 @@ let sketch_SU2CoverSO3Separate = new p5((p) => {
 				// add annotations for axes.
 				wpx = p.worldToScreen(PI,0,0);
 				wpy = p.worldToScreen(0,-PI,0);
-				wpz = p.worldToScreen(0,0,-PI);
+				wpz = p.worldToScreen(0,0,PI);
 				wpa = p.worldToScreen(p.points_transformed_so3[0][0],p.points_transformed_so3[0][1],p.points_transformed_so3[0][2]);
 				p.setAnnotationPos(p.lab_so3_x, wpx.x, wpx.y);
 				p.setAnnotationPos(p.lab_so3_y, wpy.x, wpy.y);

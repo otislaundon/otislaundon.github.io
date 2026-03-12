@@ -206,7 +206,10 @@ function rotate_vector(v, e, phi){
 }
 
 // converts a rotation in angle-axis representation to it's rotation matrix
-function angleaxis_to_matrix(e, phi){
+
+function angleaxis_to_matrix(v){
+	let e = v_normalise(v);
+	let phi = -v_len(v); // This minus sign comes from the non-standard orientation being used
 	let e1 = rotate_vector([1,0,0], e, phi);
 	let e2 = rotate_vector([0,1,0], e, phi);
 	let e3 = rotate_vector([0,0,1], e, phi);
@@ -214,6 +217,23 @@ function angleaxis_to_matrix(e, phi){
 			e1[1],e2[1],e3[1],
 			e1[2],e2[2],e3[2]];
 }
+
+
+/*
+function angleaxis_to_matrix(e, phi){
+		let axis = v_normalise(e);
+		if(phi==0)
+			return mat3_id;
+		let s = sin(phi);
+		let c = cos(phi);
+		let oc = 1 - c;
+	return [
+		oc * axis[0] * axis[0] + c,           oc * axis[0] * axis[1] + axis[2] * s ,oc * axis[2] * axis[0] - axis[1] * s,
+		oc * axis[0] * axis[1] - axis[2] * s,  oc * axis[1] * axis[1] + c          ,oc * axis[1] * axis[2] + axis[0] * s,
+		oc * axis[2] * axis[0] + axis[1] * s,  oc * axis[1] * axis[2] - axis[0] * s, oc * axis[2] * axis[2] + c
+	];
+}
+*/
 
 function cross_matrix(v){
 	return [
@@ -229,14 +249,14 @@ function matrix_to_angleaxis(A){
 		return ax;
 	ax = v_normalise(ax);
 	let K = cross_matrix(ax);
-	let theta = -Math.atan2(-m_trace(mm_prod(K,A,3),3), m_trace(A,3) - 1);
+	let theta = Math.atan2(-m_trace(mm_prod(K,A,3),3), m_trace(A,3) - 1);
 	//let a = 1 / (2 * sin(Math.atan2(-m_trace(mm_prod(K, A)))));
 	return vs_prod(ax, theta);
 }
 
 // takes a list of rotations R_1, R_2, ..., R_n in angle-axis representation and returns the composite R_1 R_2 ... R_n
 mult_so3 = function(...args){
-	let mats = args.map((a) => angleaxis_to_matrix(v_normalise(a), v_len(a))); // convert each argument to a rotation matrix
+	let mats = args.map((a) => angleaxis_to_matrix(a)); // convert each argument to a rotation matrix
 	let prod = mats.reduce((p, m) => mm_prod(p, m, 3)); // compute product of all these matrices
 	return matrix_to_angleaxis(prod); // convert back to point
 }
@@ -269,13 +289,15 @@ mat4_to_Q = function(m){
 //takes point in ball of radius pi to a quaternion.
 //This is the quaternion exponential map.
 vec3_to_Q = function(a){
-	let h_len_w = v_len(a);
-	let fac = -sin(h_len_w)/h_len_w;
+	if(v_len(a) == 0.)
+		return [1.,0.,0.,0.];
+	let h_len_w = -v_len(a);
+	let fac = sin(h_len_w)/h_len_w;
 	return [cos(h_len_w), fac * a[0],fac * a[1],fac * a[2]];
 }
 
 angleaxis_to_Q = function(a){
-	return vec3_to_Q(vs_prod(a, 0.5));
+	return vec3_to_Q(a);
 }
 
 // This is the right inverse of the above function.

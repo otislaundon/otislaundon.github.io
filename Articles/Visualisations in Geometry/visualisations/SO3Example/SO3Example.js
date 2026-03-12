@@ -20,7 +20,7 @@ let sketch_SO3Example = new p5((p) => {
 
 		p.sphere_geom = p.buildGeometry(() => p.createCheckerSphere(50,100,1));
 
-		p.rot = angleaxis_to_matrix(v_normalise([0.5,1,0]), PI/2);
+		p.rot = angleaxis_to_matrix([0.5,1,0]);
 
 		p.noStroke();
 		p.setWorldRot(-0.5,0.45);
@@ -53,7 +53,7 @@ let sketch_SO3Example = new p5((p) => {
 	}
 
 	p.Animate = function(){
-		p.rot = mm_prod(angleaxis_to_matrix([1,0,0],p.deltaTime / 2000), p.rot, 3);
+		p.rot = mm_prod(angleaxis_to_matrix([p.deltaTime / 2000,0,0]), p.rot, 3);
 	}
 
     p.draw = function(){
@@ -65,7 +65,6 @@ let sketch_SO3Example = new p5((p) => {
 			p.Animate();
 
 		p.clear();
-		//p.rot = angleaxis_to_matrix(v_normalise([0.5,1,-0.1]), p.millis()/1000);
 		let rotVector = matrix_to_angleaxis(p.rot);
 		let theta = v_len(rotVector);
 		let rotAxis = v_normalise(rotVector);
@@ -107,7 +106,7 @@ let sketch_SO3Example = new p5((p) => {
 			// set annotation positions
 			p.setAnnotationPos3left(p.lab_left_x, [PI,0,0]);
 			p.setAnnotationPos3left(p.lab_left_y, [0,-PI,0]);
-			p.setAnnotationPos3left(p.lab_left_z, [0,0,-PI]);
+			p.setAnnotationPos3left(p.lab_left_z, [0,0,PI]);
 			p.setAnnotationPos3left(p.lab_left_thetau, vv_add(rotVector, [0,-0.6,0]));
 
 			// draw axes
@@ -135,7 +134,7 @@ let sketch_SO3Example = new p5((p) => {
 			// set axis annotation positions
 			p.setAnnotationPos3right(p.lab_right_x, [PI,0,0]);
 			p.setAnnotationPos3right(p.lab_right_y, [0,-PI,0]);
-			p.setAnnotationPos3right(p.lab_right_z, [0,0,-PI]);
+			p.setAnnotationPos3right(p.lab_right_z, [0,0,PI]);
 
 			p.handleRotationSelectionInput();
 			
