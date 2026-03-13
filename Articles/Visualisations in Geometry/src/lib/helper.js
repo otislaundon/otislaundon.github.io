@@ -459,10 +459,10 @@ function p5_lib_so3_core(p){
 		p.push();
 			p.scale(r);
 			p.gl.disable(p.gl.DEPTH_TEST);
-			p.fill(255,255,255,10);
+			p.fill(255,255,255,30);
 			p.sphere(1,32,32);
 
-			p.stroke(0,0,0,30);
+			p.stroke(0,0,0,60);
 			p.strokeWeight(2);
 			p.rotateX(HALF_PI);
 			p.ellipse(0,0,2,2,50);

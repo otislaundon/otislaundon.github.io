@@ -66,7 +66,6 @@ void main() {
 	vec3 pos = vVertexPos;
 	pos.y=-pos.y;
 
-	vec4 pos4 = vec3_to_Q(pos * 3.141593);
 
 	vec3 pos_spherical = xyz_to_spherical(pos);	
 	float r = pos_spherical.x;
@@ -76,6 +75,7 @@ void main() {
                   floor(pos_spherical.z * uCheckSize+0.5);
 	float blend = (mod(total, 2.0) == 0.0) ? 0.0 : 1.0;
 
+	vec4 pos4 = vec3_to_Q(pos * 3.141593);
 
 	float h = (pos4.y + 1.)*0.25;
 	float s = (pos4.z + 1.)*0.5*(1.-pow((1.-pos4.x)/2., 4.));

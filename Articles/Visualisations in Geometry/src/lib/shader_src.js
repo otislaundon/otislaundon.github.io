@@ -20,7 +20,7 @@ const SO3_shader_funcs = `
 			return ax;
 		ax = normalize(ax);
 		mat3 K = mat3(0.,ax.z,-ax.y, -ax.z,0.,ax.x, ax.y,-ax.x,0.); // cross matrix
-		float theta = atan(-trace(K * A), trace(A) - 1.);
+		float theta = -atan(-trace(K * A), trace(A) - 1.);
 		return ax * theta;
 	}
 `;
@@ -42,7 +42,7 @@ const SO3_shader_hooks = {
 	'vec3 mat3_to_angleaxis': `(mat3 A){
 		vec3 ax = normalize(vec3(A[1][2]-A[2][1], A[2][0]-A[0][2], A[0][1]-A[1][0]));
 		mat3 K = mat3(0.,ax.z,-ax.y, -ax.z,0.,ax.x, ax.y,-ax.x,0.); // cross matrix
-		float theta = atan(-trace(K * A), trace(A) - 1.);
+		float theta = -atan(-trace(K * A), trace(A) - 1.);
 		return ax * theta;
 	}`,
 };
