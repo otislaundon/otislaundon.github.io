@@ -14,7 +14,7 @@ attribute vec2 aTexCoord;
 varying vec2 vComplexPos;
 
 void main() {
-  vComplexPos = uBounds.xy * aTexCoord + uBounds.zw * (vec2(1.0,1.0) - aTexCoord);
+  vComplexPos = uBounds.zw * aTexCoord + uBounds.xy * (vec2(1.0,1.0) - aTexCoord);
   gl_Position = uProjectionMatrix * (uModelViewMatrix * vec4(aPosition,1.0));
 }
 `;
@@ -22,7 +22,8 @@ void main() {
 p.fragDomCol = src_complex_base +
 `
 vec2 f(vec2 z){
-	return -(cpow(z, 2.0) - vec2(1.0,0.0));
+	return cdiv(z - vec2(-1.,-1.), z - vec2(1.,0.));
+	//return -(cpow(z, 2.0) - vec2(1.0,0.0));
 }
 
 void main() {

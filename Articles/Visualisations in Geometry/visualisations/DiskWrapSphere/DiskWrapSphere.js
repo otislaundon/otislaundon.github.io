@@ -19,7 +19,6 @@ let sketch_DiskWrapSphere = new p5((p) => {
 			}`,
 			'vec4 hsv2rgb_smooth':`( vec4 c ){
 				vec3 rgb = clamp( abs(mod(c.x*6.0+vec3(0.0,4.0,2.0),6.0)-3.0)-1.0, 0.0, 1.0);
-				rgb = rgb*rgb*(3.0-2.0*rgb); // cubic smoothing	
 				rgb = c.z * mix(vec3(1.0), rgb, c.y);
 				return vec4(rgb, c.w);
 			}`,
@@ -37,7 +36,6 @@ let sketch_DiskWrapSphere = new p5((p) => {
 			}`,
 			'vec4 hsv2rgb_smooth':`( vec4 c ){
 				vec3 rgb = clamp( abs(mod(c.x*6.0+vec3(0.0,4.0,2.0),6.0)-3.0)-1.0, 0.0, 1.0);
-				rgb = rgb*rgb*(3.0-2.0*rgb); // cubic smoothing	
 				rgb = c.z * mix(vec3(1.0), rgb, c.y);
 				return vec4(rgb, c.w);
 			}`,
@@ -52,12 +50,14 @@ let sketch_DiskWrapSphere = new p5((p) => {
 			}`,
 		});
 
+		p.lab_x = p.createAnnotation(0, 0, "\\(x\\)");
+		p.lab_y = p.createAnnotation(0, 0, "\\(y\\)");
+		p.lab_z = p.createAnnotation(0, 0, "\\(z\\)");
+
 		// create controls panel
 		p.animate = false;
 		p.margin = p.createMargin();
 		p.createTitle("Controls", p.margin);
-		//p.createButton("Reset view", ()=> {p.setWorldRot(0,0)}, p.margin);
-		//p.createBr(p.margin);
 		p.createP("Drag with mouse to rotate the view.", p.margin);
 	}
 
@@ -82,11 +82,14 @@ let sketch_DiskWrapSphere = new p5((p) => {
 			p.rotateY(HALF_PI);
 			p.scale(PI);
 			p.shader(p.circle_shader);
-			p.circle(0,0,TWOPI,50);
+			p.ellipse(0,0,TWOPI, TWOPI,50);
 		p.pop();
 
 		p.clearDepth();
 		p.draw_axes(4,2);
+		p.setAnnotationPos3(p.lab_x,[4.0,0.0,0.0]);
+		p.setAnnotationPos3(p.lab_y,[0.0,-5.5,0.0]);
+		p.setAnnotationPos3(p.lab_z,[0.0,0.0,4.0]);
     }
 
 	p.mousePressed = function(){

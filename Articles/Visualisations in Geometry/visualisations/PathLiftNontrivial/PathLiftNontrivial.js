@@ -44,6 +44,8 @@ let sketch_PathLiftNontrivial = new p5((p) => {
 		p.path_1_geom = p.buildGeometry(() => {p.create_path_geom(p.path_1, 64)});
 		p.path_1_so3_geom = p.buildGeometry(() => {p.create_path_so3_geom(p.path_1, 64)});
 
+		p.setWorldRot(1.2,0.35);
+
 		p.t = 0;
 		p.lab_t = p.createAnnotation(100,70,"\\(t={}\\)");
 		p.lab_x0 = p.createAnnotation(0,0,"\\(x_0\\)");
@@ -72,7 +74,7 @@ let sketch_PathLiftNontrivial = new p5((p) => {
 				p.rotateX(PI/2);
 				p.line(-2*PI,0,0,2*PI,0,0);
 			p.pop();
-			p.setAnnotationPos3(p.lab_x0, p.path_1(0));
+			p.setAnnotationPos3(p.lab_x0, p.path_1(0), [0,10]);
 		
 			p.push();
 				p.scale(2);
@@ -102,6 +104,7 @@ let sketch_PathLiftNontrivial = new p5((p) => {
 			p.setAnnotationPos3(p.lab_atil, atil_pos, [15,0]);
 			p.setAnnotationPos3(p.lab_a, a_pos, [15,-20]);
 		p.pop(); // end scene
+
 
 		p.t = (p.t + p.deltaTime/5000)%1;
 		p.lab_t.innerHTML = "t = "+p.t.toFixed(2);

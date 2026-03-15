@@ -14,7 +14,7 @@ attribute vec2 aTexCoord;
 varying vec2 vComplexPos;
 
 void main() {
-  vComplexPos = uBounds.xy * aTexCoord + uBounds.zw * (vec2(1.0,1.0) - aTexCoord);
+  vComplexPos = uBounds.zw * aTexCoord + uBounds.xy * (vec2(1.) - aTexCoord);
   gl_Position = uProjectionMatrix * (uModelViewMatrix * vec4(aPosition,1.0));
 }
 `;

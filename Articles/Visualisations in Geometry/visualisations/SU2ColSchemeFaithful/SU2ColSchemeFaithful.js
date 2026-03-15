@@ -144,6 +144,8 @@ void main() {
 		// draw checkered sphere
 		p.push();
 			p.scale(PI);
+			p.stroke(0,100);
+			p.strokeWeight(1);
 			p.shader(p.inner_shader);
 			p.inner_shader.setUniform("uRotMat", mat3_id);
 			p.ellipse(0,0,2,2,50);
@@ -160,7 +162,7 @@ void main() {
 		// set annotation positions
 		p.setAnnotationPos3(p.lab_left_x, [3.4,0,0]);
 		p.setAnnotationPos3(p.lab_left_y, [0,-3.8,0]);
-		p.setAnnotationPos3(p.lab_left_z, [0,0,PI]);
+		p.setAnnotationPos3(p.lab_left_z, [0.2,0,PI]);
 
 		// draw axes
 		p.clearDepth();

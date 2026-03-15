@@ -134,7 +134,7 @@ let sketch_SO3ConjActInteractive = new p5((p) => {
 			// set annotation positions
 			p.setAnnotationPos3left(p.lab_left_x, [PI,0,0]);
 			p.setAnnotationPos3left(p.lab_left_y, [0,-PI,0]);
-			p.setAnnotationPos3left(p.lab_left_z, [0,0,-PI]);
+			p.setAnnotationPos3left(p.lab_left_z, [0,0,PI]);
 			p.setAnnotationPos3left(p.lab_left_b, vv_add(rotVector, [0,-0.6,0]));
 
 			// draw axes
@@ -167,9 +167,10 @@ let sketch_SO3ConjActInteractive = new p5((p) => {
 			p.draw_axes(PI,2);
 
 			// set axis annotation positions
+
 			p.setAnnotationPos3right(p.lab_right_x, [PI,0,0]);
 			p.setAnnotationPos3right(p.lab_right_y, [0,-PI,0]);
-			p.setAnnotationPos3right(p.lab_right_z, [0,0,-PI]);
+			p.setAnnotationPos3right(p.lab_right_z, [0,0,PI]);
 
 			p.handleRotationSelectionInput();
 			

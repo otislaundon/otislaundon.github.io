@@ -255,9 +255,8 @@ float e = 2.7183;
 float pi = 3.141593;
 vec2 i = vec2(0.0, 1.0);
 
-vec4 hsv2rgb_smooth( vec4 c ){
+vec4 hsv2rgb( vec4 c ){
 	vec3 rgb = clamp( abs(mod(c.x*6.0+vec3(0.0,4.0,2.0),6.0)-3.0)-1.0, 0.0, 1.0);
-	rgb = rgb*rgb*(3.0-2.0*rgb); // cubic smoothing	
 	rgb = c.z * mix(vec3(1.0), rgb, c.y);
 	return vec4(rgb, c.w);
 }
@@ -266,7 +265,7 @@ vec4 complexToColor(vec2 z){
 	float zmag = length(z);
 	float heading = atan(z.y, z.x);
 
-	return hsv2rgb_smooth(vec4(heading / (2.0 * 3.1415927) + 0.5, min(1.0, 1.0/zmag), min(1.0, zmag), 0.6));
+	return hsv2rgb(vec4(heading / (2.0 * 3.1415927), min(1.0, 1.0/zmag), min(1.0, zmag), 1.0));
 }
 
 vec2 cmult(vec2 a, vec2 b){

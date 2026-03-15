@@ -1,6 +1,10 @@
 let sketch_domain_col = new p5((p) => {
-	p5_lib_annotations(p);
     p.canvas_id = "vis:domain-col";
+
+	p5_lib_world_orientation_interaction(p);
+	p5_lib_rotation_selection(p);
+	p5_lib_controls(p);
+	p5_lib_annotations(p);
 
 p.vertSrc = `
 precision highp float;
@@ -18,35 +22,62 @@ void main() {
 }
 `;
 
+p.fragDomCol = src_complex_base +
+`
+uniform float uT;
+
+varying vec3 vPos;
+uniform mat3 uRot;
+
+vec2 f(vec2 z){
+	return z;
+}
+
+void main() {
+	float x = vComplexPos.x;
+	float y = vComplexPos.y;
+	float den = 1. + x*x + y*y;
+	vec3 posRiem = vec3(2.*x/den, -(den-2.)/den, 2.*y/den);
+	posRiem = uRot * -posRiem;
+	vec2 pos_complex = posRiem.xz/(1.-posRiem.y);
+
+    vec2 image = f(pos_complex);
+    gl_FragColor = vec4(complexToColor(image).xyz, 1.0);
+}
+`;
+
 p.vertRiemSrc = `
 precision highp float;
 uniform mat4 uModelViewMatrix;
 uniform mat4 uProjectionMatrix;
+uniform mat3 uRot;
 
 attribute vec3 aPosition;
 attribute vec2 aTexCoord;
 varying vec2 vComplexPos;
+varying vec3 vPos;
 
 void main() {
   gl_Position = uProjectionMatrix * (uModelViewMatrix * vec4(aPosition,1.0));
-  vComplexPos = aPosition.xz / (aPosition.y - 1.0);
+  vPos = uRot * aPosition;
 }
 `
 
-p.fragDomCol = src_complex_base +
+p.fragDomColRiem = src_complex_base +
 `
 uniform float uT;
+
+varying vec3 vPos;
+
 vec2 f(vec2 z){
-	vec2 u = cpow(e, vec2(0.0, -uT/3.0));
-	vec2 v = cpow(e, vec2(0.0, uT/3.0));
-	float l = length(u) + length(v);
-	u /= l; v /= l;
-	return cmobius(z, u, -cconj(v), v, cconj(u));
-	//return cmult(z, u);
+	return z;
 }
 
 void main() {
-    vec2 image = f(vComplexPos);
+	vec3 vPosN = normalize(vPos);
+	//vPosN = -vPosN;
+    vec2 complex_pos = vPosN.xz / (1. - vPosN.y);
+    vec2 image = f(complex_pos);
     gl_FragColor = vec4(complexToColor(image).xyz, 1.0);
 }
 `;
@@ -58,7 +89,8 @@ void main() {
 
 	p.preload = function(){
 		p.dom_col_shader = p.createShader(p.vertSrc, p.fragDomCol);
-		p.dom_col_riem_shader = p.createShader(p.vertRiemSrc, p.fragDomCol);
+		p.dom_col_riem_shader = p.createShader(p.vertRiemSrc, p.fragDomColRiem);
+		p.dom_col_shader.setUniform("uBounds", [-2,-2, 2,2]);
 	}
 
     p.setup = function(){
@@ -66,26 +98,61 @@ void main() {
         p.canvas.parent(p.canvas_id);
 		p.noStroke();
 
+		p.setWorldRot(0.3,0.5);
+
+		p.rot = mat3_id;
+
 		p.lab_Re = p.createAnnotation(0,0,"Re");
 		p.lab_Im = p.createAnnotation(0,0,"Im");
 
 		p.preload();
-    }
+
+		p.animate = false;
+		p.margin = p.createMargin();
+		p.createTitle("Controls", p.margin);
+		p.createButton("Reset to identity", ()=> {p.rot = mat3_id}, p.margin);
+		p.createBr(p.margin);
+		p.createButton("Start/Stop Animation", () => {p.animate = !p.animate}, p.margin);
+		p.createP("Drag with mouse to rotate the sphere.", p.margin);
+	}
+
+	p.Animate = function(){
+		p.rot = mm_prod(angleaxis_to_matrix([0,p.deltaTime / 2000,0]), p.rot, 3);
+	}
+
+	p.handleRotationSelectionInput = function(){
+			p.v1_vec = p.screenToWorld(p.mouseX, p.mouseY, 0.8).sub(p.screenToWorld(p.mouseX, p.mouseY, 0.2));
+			p.v1 = v_normalise([p.v1_vec.x, p.v1_vec.y, p.v1_vec.z]);
+			if(p.v0 != undefined && p.mouseIsPressed && p.clickStartedInCanvas){
+				p.v0xv1 = vv_cross(p.v0, p.v1);
+				let rot_change = angleaxis_to_matrix(vs_prod(p.v0xv1,12));
+				p.rot = mm_prod(p.rot, rot_change,3);
+				p.points_updated = false;
+			}
+			p.v0 = [p.v1[0], p.v1[1], p.v1[2]];
+	}
+
 
     p.draw = function(){
 		// don't do any drawing if not visible
 		if(!isVisibleInViewport(p.canvas.elt))
 			return;
+		if(p.animate)
+			p.Animate();
 
 		p.scale(1,-1,-1); // reorient into standard coordinates
 
-		p.orbitControl();
-
-		p.background(255,255,255,0);
+		p.scale(0.48);
 		p.scale(p.height/2);
 
-		p.dom_col_shader.setUniform("uBounds", [-2,-2, 2,2]);
-		p.dom_col_shader.setUniform("uT", p.millis()/1000);
+		p.background(255,255,255,0);
+
+		p.applyMatrix(p.world_transform.mat);
+
+		p.handleRotationSelectionInput();
+
+		p.dom_col_shader.setUniform("uRot",mat3_inv(p.rot));
+		p.dom_col_riem_shader.setUniform("uRot", mat3_inv(p.rot));
 		p.shader(p.dom_col_shader);
 
 		p.quad(-2,0,-2,
@@ -100,15 +167,18 @@ void main() {
 		p.noStroke();
 
 		p.setAnnotationPos3(p.lab_Re, [2.1,0,0]);
-		p.setAnnotationPos3(p.lab_Im, [0,0,2.1]);
+		p.setAnnotationPos3(p.lab_Im, [0,0,2.8]);
 
 		p.push();
-			p.dom_col_riem_shader.setUniform("uT", p.millis()/1000);
 			p.shader(p.dom_col_riem_shader);
-
 			p.translate(0,0.5,0);
 			p.sphere(0.5);
 		p.pop();
     }
+
+	p.mousePressed = function(){
+        if(p.mouseX > 0 && p.mouseY > 0 && p.mouseX < p.width && p.mouseY < p.height)
+			p.clickStartedInCanvas = true;
+	}
 })
 

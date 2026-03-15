@@ -1,78 +1,227 @@
 let sketch_SU2coverSO3 = new p5((p) => {
+
+
+
+
+
 	p5_lib_world_orientation_interaction(p);
 	p5_lib_controls (p);
 	p5_lib_so3_core(p);
 
     p.canvas_id = "vis:SU2-cover-SO3";
 
-	p.compute_transformed_points = function(q_mat, quaternion_matrices){
-		p.points_transformed_so3 = [];
-		p.points_transformed_su2 = [];
 
-		for(let i = 0; i < quaternion_matrices.length; i++){
-			let q_new = mat4_to_Q(mm_prod(q_mat, quaternion_matrices[i], 4));
-			p.points_transformed_su2.push(Q_to_vec3(q_new));
-			p.points_transformed_so3.push(matrix_to_angleaxis(QSpinor(q_new)));
-		}
-	}
+	p5_lib_world_orientation_interaction(p);
+	p5_lib_rotation_selection(p);
+	p5_lib_so3_core(p);
+	p5_lib_annotations(p);
+	p5_lib_axes(p);
+	p5_lib_checker_sphere_mesh(p);
+	p5_lib_controls(p);
 
-
-    p.setup = function(){
-        p.canvas = p.createCanvas(720, 480,p.WEBGL);
+	p.setup = function(){
+        p.canvas = p.createCanvas(720, 480, p.WEBGL);
         p.canvas.parent(p.canvas_id);
 		p.gl = p._renderer.GL;
 
-		p.quaternion_matrices = [];
+		p.rot = angleaxis_to_matrix([0,0,0]);
+		p.tildeB = vec3_to_Q(matrix_to_angleaxis(p.rot));
 
-		//initialise points
-		let resi = 48;
-		let resj = 12;
-		for(let i = 0; i <=resi; i++)
-			for(let j = 0; j <= resj; j++)
-			{
-				p.quaternion_matrices.push(
-				mm_prod(
-					mm_prod(
-							Q_to_mat4(vec3_to_Q([(i/resi*PI-PI/2)*2.0,0,0])),
-							Q_to_mat4(vec3_to_Q([0,0,(j/resj*PI-PI/2)*2.0])),4),
-							Q_to_mat4(vec3_to_Q([0,PI/4,0])),4)
-				);
+		p.normal_shader = p.createShader(src_vert_normal, src_frag_normal);
+
+		p.noStroke();
+		p.setWorldRot(-0.5,0.45);
+
+		p.left = p.createFramebuffer({width: p.width/2, height: p.height});	
+		p.right = p.createFramebuffer({width: p.width/2, height: p.height});	
+
+		// create labels
+		p.lab_left_title = p.createAnnotation(10,10, "\\(\\text{SO}(3)\\) visualised inside \\(\\text{SU}(2)\\).");
+		p.lab_left_x = p.createAnnotation(0, 0, "\\(x\\)", true);
+		p.lab_left_y = p.createAnnotation(0, 0, "\\(y\\)", true);
+		p.lab_left_z = p.createAnnotation(0, 0, "\\(z\\)", true);
+		p.lab_left_b = p.createAnnotation(0, 0,"\\(b\\)",true);
+		p.lab_left_tb = p.createAnnotation(0, 0,"\\(\\tilde{b}\\)",true);
+
+		p.lab_right_title = p.createAnnotation(p.width/2+10, 10, "\\( b = \\theta \\mathbf{u} \\in \\text{SO}(3) \\) acting on \\( \\mathbb{R}^3 \\)");
+		p.lab_right_x = p.createAnnotation(0, 0, "\\(x\\)");
+		p.lab_right_y = p.createAnnotation(0, 0, "\\(y\\)");
+		p.lab_right_z = p.createAnnotation(0, 0, "\\(z\\)");
+		p.lab_right_u = p.createAnnotation(0, 0, "\\(\\mathbf{u}\\)");
+		p.lab_right_theta = p.createAnnotation(0, 0, "\\(\\theta\\)");
+
+		// create controls panel
+		p.animate = false;
+		p.margin = p.createMargin();
+		p.createTitle("Controls", p.margin);
+		p.createButton("Reset b to identity", ()=> {p.rot = mat3_id; p.tildeB = [1,0,0,0];}, p.margin);
+		p.createBr(p.margin);
+		p.createButton("Start/Stop Animation", () => {p.animate = !p.animate}, p.margin);
+		p.createP("Drag with mouse on left hand side to rotate the view. Drag with mouse on the right hand side to change \\(b\\).", p.margin);
+	}
+
+	p.Animate = function(){
+		p.multleftBLift([p.deltaTime/1000,0,0]);
+		//p.rot = mm_prod(angleaxis_to_matrix([1,0,0],p.deltaTime / 2000), p.rot, 3);
+	}
+
+	p.multleftBLift = function(a){
+		if(v_len(a) == 0)
+			return;
+		// turn small rotation into quaternion.
+		let q = angleaxis_to_Q(a);
+		// apply a to b
+		p.rot = mm_prod(angleaxis_to_matrix(a), p.rot, 3);
+		// apply this quaternion to tildeB.
+		p.tildeB = mat4_to_Q(mm_prod(Q_to_mat4(q),Q_to_mat4(p.tildeB),4));
+	}
+
+	p.multrightBLift = function(a){
+		if(v_len(a) == 0)
+			return;
+		// turn small rotation into quaternion.
+		let q = angleaxis_to_Q(a);
+		// apply a to b
+		p.rot = mm_prod(p.rot, angleaxis_to_matrix(a), 3);
+		// apply this quaternion to tildeB.
+		p.tildeB = mat4_to_Q(mm_prod(Q_to_mat4(p.tildeB), Q_to_mat4(q), 4));
+	}
+
+	p.handleRotationSelectionInput = function(){
+			p.v1_vec = p.screenToWorld(p.mouseX, p.height-p.mouseY, 0.8).sub(p.screenToWorld(p.mouseX, p.height-p.mouseY, 0.2));
+			p.v1 = v_normalise([p.v1_vec.x, p.v1_vec.y, p.v1_vec.z]);
+			if(p.v0 != undefined && p.mouseIsPressed && p.clickStartedOnRight){
+				p.v0xv1 = vv_cross(p.v0, p.v1);
+				let rot_change = angleaxis_to_matrix(vs_prod(p.v0xv1,12));
+				p.multrightBLift(matrix_to_angleaxis(rot_change));
+				p.points_updated = false;
 			}
-		p.n_points = p.quaternion_matrices.length;
-    }
+			p.v0 = [p.v1[0], p.v1[1], p.v1[2]];
+	}
 
     p.draw = function(){
 		// don't do any drawing if not visible
 		if(!isVisibleInViewport(p.canvas.elt))
 			return;
 
-		p.compute_transformed_points(Q_to_mat4(vec3_to_Q([p.millis()/2000,0,0])), p.quaternion_matrices);
+		if(p.animate)
+			p.Animate();
+
 		p.clear();
-		p.fill(255,255,255,0);
+		let rotVector = matrix_to_angleaxis(p.rot);
+		let theta = v_len(rotVector);
+		let rotAxis = v_normalise(rotVector);
+
+		let tildeBVec = Q_to_vec3(p.tildeB);
+		let tildeBAxis = v_normalise(tildeBVec);
+
+		p.strokeWeight(2);
+		p.stroke(50);
+		p.line(0,-p.height/2,0,p.height/2); // Vertical centerline
 		p.noStroke();
 
-		p.push(); // start scene
-		p.lights(); 
-		p.applyMatrix(p.world_transform.mat);
-			p.scale(30);
-			p.strokeWeight(4);
+		// begin left framebuffer
+		p.left.begin();
+			p.clear();
+			p.applyMatrix(p.world_transform.mat);
+			p.scale(50);
+			p.lights();
 
+			// DRAW OUTLINE SPHERE HERE
 			p.draw_outline_ball(PI);
-			p.draw_outline_ball(2*PI);
+			p.draw_outline_ball(HALF_PI);
+
+			// we will draw things inside sphere, so just overwrite it's depth information.
+			p.clearDepth();
+
+			// draw tildeB
+			p.stroke(255,0,0);
+			p.strokeWeight(16);
+			p.beginShape(p.POINTS);
+				p.vertex(tildeBVec[0], tildeBVec[1], tildeBVec[2]);
+			p.endShape();
+			p.setAnnotationPos3left(p.lab_left_tb, tildeBVec, [0,2]);
+
+			// set annotation positions
+			p.setAnnotationPos3left(p.lab_left_x, [PI,0,0]);
+			p.setAnnotationPos3left(p.lab_left_y, [0,-PI,0]);
+			p.setAnnotationPos3left(p.lab_left_z, [0,0,PI]);
+
+			// draw axes
+			p.clearDepth();
+			p.draw_axes(PI,2);
+
+			// draw lines through b and tb
+			p.strokeWeight(2);
+			p.stroke(255,0,0,100);
+			p.line(0, 0,0,tildeBAxis[0]*PI, tildeBAxis[1]*PI, tildeBAxis[2]*PI);
+
 			p.push();
-				p.stroke(0,0,0,30);
-				p.rotateX(PI/2);
-				p.line(-2*PI,0,0,2*PI,0,0);
+			p.scale(0.5);
+			p.setAnnotationPos3left(p.lab_left_b, rotVector, [0,-25]);
+
+			// draw lines through b and tb
+			p.strokeWeight(2);
+			p.stroke(0,0,255,100);
+			p.line(0, 0,0,rotAxis[0]*PI, rotAxis[1]*PI, rotAxis[2]*PI);
+
+			// draw theta u
+			p.stroke(0,0,255);
+			p.strokeWeight(16);
+			p.beginShape(p.POINTS);
+				p.vertex(rotVector[0], rotVector[1], rotVector[2]);
+			p.endShape();
+
 			p.pop();
-		
-			p.stroke(255,0,0,50);
-			p.draw_points(p.points_transformed_su2);
-			p.stroke(0,0,250,50);
-			p.draw_points(p.points_transformed_so3);
-		p.pop(); // end scene
+		p.left.end();
+
+		// begin right framebuffer
+		p.right.begin();
+			p.clear();
+			p.applyMatrix(p.world_transform.mat);
+			p.scale(50);
+
+			p.draw_axes(PI,2);
+
+			// set axis annotation positions
+			p.setAnnotationPos3right(p.lab_right_x, [PI,0,0]);
+			p.setAnnotationPos3right(p.lab_right_y, [0,-PI,0]);
+			p.setAnnotationPos3right(p.lab_right_z, [0,0,PI]);
+
+			p.handleRotationSelectionInput();
+			
+			p.draw_angle_axis_markers(rotAxis, theta, p.lab_right_u, p.lab_right_theta);
+			
+			p.applyMatrix(mat3_to_mat4(p.rot));
+
+			// draw cube with rotation theta u
+			p.lights();
+			p.noStroke();
+			p.fill(255);
+			p.shader(p.normal_shader);
+			p.box(2);
+		p.right.end();
+
+		// draw frame buffers to screen
+		p.image(p.left, -p.width/2, -p.height/2);
+		p.image(p.right, 0, -p.height/2);
     }
 
-	p.mousePressed = function(){p.interactOnPressed();}
-	p.mouseDragged = function(){p.interactOnDragged();}
+	p.mousePressed = function(){
+        if(p.mouseX > 0 && p.mouseY > 0 && p.mouseX < p.width && p.mouseY < p.height){
+			p.clickStartedInCanvas = true;
+			p.clickStartedOnRight = (p.mouseX > p.width/2);
+		}
+		else{
+			p.clickStartedOnRight = false; 
+			p.clickStartedInCanvas = false;
+		}
+
+		p.interactOnPressed();
+	}
+	p.mouseDragged = function(){
+		if(!p.clickStartedOnRight)
+			p.interactOnDragged();
+	}
 })
 
