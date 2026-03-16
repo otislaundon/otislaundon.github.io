@@ -151,14 +151,16 @@ void main() {
 
 		p.handleRotationSelectionInput();
 
-		p.dom_col_shader.setUniform("uRot",mat3_inv(p.rot));
-		p.dom_col_riem_shader.setUniform("uRot", mat3_inv(p.rot));
+		p.dom_col_shader.setUniform("uRot",p.rot);
+		p.dom_col_riem_shader.setUniform("uRot",p.rot);
+		p.push();
 		p.shader(p.dom_col_shader);
 
 		p.quad(-2,0,-2,
 				2,0,-2,
 				2,0, 2,
 			   -2,0, 2);
+		p.pop();
 
 		p.stroke(0);
 		p.strokeWeight(1);
@@ -173,6 +175,16 @@ void main() {
 			p.shader(p.dom_col_riem_shader);
 			p.translate(0,0.5,0);
 			p.sphere(0.5);
+		p.pop();
+
+		p.push();
+			p.translate(0,0.5,0);
+			p.applyMatrix(mat3_to_mat4(p.rot));
+			p.stroke(0,0,0,70);
+			p.strokeWeight(1);
+			p.noFill();
+			p.scale(1.05);
+			p.sphere(0.5,24,12);
 		p.pop();
     }
 

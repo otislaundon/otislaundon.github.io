@@ -109,7 +109,6 @@ let sketch_PathLiftTrivial = new p5((p) => {
 		p.pop(); // end scene
 
 		p.t = (p.t + p.deltaTime/5000)%1;
-		p.t = 0.8;
 		p.lab_t.innerHTML = "t = "+p.t.toFixed(2);
     }
 
