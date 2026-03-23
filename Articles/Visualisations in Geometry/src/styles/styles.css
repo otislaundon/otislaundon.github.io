@@ -1,7 +1,4 @@
-body{
-    max-width:960px;
-    margin: auto;
-
+.body{
     font-family: Helvetica, Arial, sans-serif;
 }
 .top-bar{
@@ -13,6 +10,13 @@ body{
     align-content: center;
     
     display: grid;
+}
+/* Hacky way to hide some elements */
+.ltx_document > .ltx_TOC{
+	display:none;
+}
+.ltx_TOC > .ltx_title{
+	display:none;
 }
 
 /* The below class styles are for custom html elements formatted from typst html export */

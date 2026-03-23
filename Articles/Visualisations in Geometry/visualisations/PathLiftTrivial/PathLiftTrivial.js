@@ -54,12 +54,27 @@ let sketch_PathLiftTrivial = new p5((p) => {
 		p.lab_x0 = p.createAnnotation(0,0,"\\(x_0\\)");
 		p.lab_a = p.createAnnotation(0,0,"\\(\\alpha^2(t)\\)");
 		p.lab_atil = p.createAnnotation(0,0,"\\(\\tilde{\\alpha}^2(t)\\)");
+
+		// create controls panel
+		p.animate = false;
+		p.margin = p.createMargin();
+		p.createTitle("Controls", p.margin);
+		p.createButton("Reset t to 0", ()=> {p.t = 0}, p.margin);
+		p.createBr(p.margin);
+		p.createButton("Start/Stop Animation", () => {p.animate = !p.animate}, p.margin);
+		p.createP("Drag with mouse to rotate the view.", p.margin);
     }
+
+	p.Animate = function(){
+		p.t = (p.t + p.deltaTime/5000)%1;
+	}
 
     p.draw = function(){
 		// don't do any drawing if not visible
 		if(!isVisibleInViewport(p.canvas.elt))
 			return;
+		if(p.animate)
+			p.Animate();
 
 		p.clear();
 		p.fill(255,255,255,0);

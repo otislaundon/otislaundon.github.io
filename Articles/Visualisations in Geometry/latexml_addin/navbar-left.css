@@ -3,12 +3,17 @@
 .ltx_page_navbar {
     display:block!important; position:fixed; left:0px; top:0px; width:170px;
     margin:0em; padding:1em; font: bold 75% sans-serif; 
-    border: 3px double; overflow-y: auto; max-height: 95vh; }
+    overflow-y: auto; max-height: 95vh;
+	width: min-content;
+}
 .ltx_page_navbar ol,
 .ltx_page_navbar ul {
     margin-left:-2em; }
 .ltx_page_main {
-    position:absolute; left:190px; top:0px; right:2px; 
-    margin:0px; padding:1em 3em 1em 2em;
+	background-color: white;
+    position:absolute; left:0px; top:0px; right:2px; 
+    padding:1em 3em 1em 2em;
+	margin: auto;
     padding:min(1em,1.5%) min(3em,4.5%) min(1em,1.5%) min(2em, 3%);
+    max-width:960px;
     width:70%; }
