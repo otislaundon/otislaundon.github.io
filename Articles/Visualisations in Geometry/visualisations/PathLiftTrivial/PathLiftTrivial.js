@@ -56,7 +56,7 @@ let sketch_PathLiftTrivial = new p5((p) => {
 		p.lab_atil = p.createAnnotation(0,0,"\\(\\tilde{\\alpha}^2(t)\\)");
 
 		// create controls panel
-		p.animate = false;
+		p.animate = true;
 		p.margin = p.createMargin();
 		p.createTitle("Controls", p.margin);
 		p.createButton("Reset t to 0", ()=> {p.t = 0}, p.margin);
