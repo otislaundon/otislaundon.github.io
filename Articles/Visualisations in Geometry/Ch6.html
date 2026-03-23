@@ -1,0 +1,820 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Chapter 6 Appendix ‣ Visualisations in Geometry</title>
+<!--Generated on Mon Mar 23 11:47:33 2026 by LaTeXML (version 0.8.8) http://dlmf.nist.gov/LaTeXML/.-->
+<!--Document created on March 16, 2026.-->
+
+<link rel="stylesheet" href="LaTeXML.css" type="text/css">
+<link rel="stylesheet" href="ltx-report.css" type="text/css">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="src/styles/styles.css" type="text/css">
+<link rel="stylesheet" href="latexml_addin/navbar-left.css" type="text/css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script src="src/lib/p5/p5.min.js"></script>
+<script src="src/lib/linalg.js"></script>
+<script src="src/lib/vertex_sets.js"></script>
+<script src="src/lib/helper.js"></script>
+<script src="src/lib/shader_src.js"></script>
+<link rel="up" href="main.html" title="Visualisations in Geometry">
+<link rel="start" href="main.html" title="Visualisations in Geometry">
+<link rel="prev" href="Ch5.html" title="Chapter 5 Conclusions ‣ Visualisations in Geometry">
+<link rel="next" href="bib.html" title="Bibliography ‣ Visualisations in Geometry">
+<link rel="chapter" href="Chx1.html" title="Declaration ‣ Visualisations in Geometry">
+<link rel="chapter" href="Ch1.html" title="Chapter 1 Introduction ‣ Visualisations in Geometry">
+<link rel="chapter" href="Ch2.html" title="Chapter 2 Visualisation Techniques ‣ Visualisations in Geometry">
+<link rel="chapter" href="Ch3.html" title="Chapter 3 Visualising 𝑆⁢𝑂⁢(3) ‣ Visualisations in Geometry">
+<link rel="chapter" href="Ch4.html" title="Chapter 4 Visualising 𝑆⁢𝑈⁢(2) ‣ Visualisations in Geometry">
+<link rel="chapter" href="Ch5.html" title="Chapter 5 Conclusions ‣ Visualisations in Geometry">
+<link rel="bibliography" href="bib.html" title="Bibliography ‣ Visualisations in Geometry">
+</head>
+<body>
+<nav class="ltx_page_navbar"><a href="main.html" title="" class="ltx_ref" rel="start"><span class="ltx_text ltx_ref_title">Visualisations in Geometry</span></a>
+<nav class="ltx_TOC">
+<ol class="ltx_toclist">
+<li class="ltx_tocentry ltx_tocentry_chapter"><a href="Chx1.html" title="In Visualisations in Geometry" class="ltx_ref"><span class="ltx_text ltx_ref_title">Declaration</span></a></li>
+<li class="ltx_tocentry ltx_tocentry_chapter"><a href="Ch1.html" title="In Visualisations in Geometry" class="ltx_ref"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">1 </span>Introduction</span></a></li>
+<li class="ltx_tocentry ltx_tocentry_chapter"><a href="Ch2.html" title="In Visualisations in Geometry" class="ltx_ref"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">2 </span>Visualisation Techniques</span></a></li>
+<li class="ltx_tocentry ltx_tocentry_chapter"><a href="Ch3.html" title="In Visualisations in Geometry" class="ltx_ref"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">3 </span>Visualising <math class="ltx_Math" alttext="SO(3)" display="inline"><mrow><mi>S</mi><mo>⁢</mo><mi>O</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>3</mn><mo stretchy="false">)</mo></mrow></mrow></math></span></a></li>
+<li class="ltx_tocentry ltx_tocentry_chapter"><a href="Ch4.html" title="In Visualisations in Geometry" class="ltx_ref"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">4 </span>Visualising <math class="ltx_Math" alttext="SU(2)" display="inline"><mrow><mi>S</mi><mo>⁢</mo><mi>U</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></mrow></math></span></a></li>
+<li class="ltx_tocentry ltx_tocentry_chapter"><a href="Ch5.html" title="In Visualisations in Geometry" class="ltx_ref"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">5 </span>Conclusions</span></a></li>
+<li class="ltx_tocentry ltx_tocentry_chapter ltx_ref_self">
+<span class="ltx_ref ltx_ref_self"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">6 </span>Appendix</span></span>
+<ol class="ltx_toclist ltx_toclist_chapter">
+<li class="ltx_tocentry ltx_tocentry_section">
+<a href="#S1" title="In Chapter 6 Appendix ‣ Visualisations in Geometry" class="ltx_ref"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">6.1 </span>Lie Groups and Lie Algebras</span></a>
+<ol class="ltx_toclist ltx_toclist_section">
+<li class="ltx_tocentry ltx_tocentry_subsection"><a href="#S1.SS1" title="In 6.1 Lie Groups and Lie Algebras ‣ Chapter 6 Appendix ‣ Visualisations in Geometry" class="ltx_ref"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">6.1.1 </span>Lie Groups</span></a></li>
+<li class="ltx_tocentry ltx_tocentry_subsection"><a href="#S1.SS2" title="In 6.1 Lie Groups and Lie Algebras ‣ Chapter 6 Appendix ‣ Visualisations in Geometry" class="ltx_ref"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">6.1.2 </span>Lie Algebras</span></a></li>
+<li class="ltx_tocentry ltx_tocentry_subsection"><a href="#S1.SS3" title="In 6.1 Lie Groups and Lie Algebras ‣ Chapter 6 Appendix ‣ Visualisations in Geometry" class="ltx_ref"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">6.1.3 </span>Exponential Map</span></a></li>
+<li class="ltx_tocentry ltx_tocentry_subsection"><a href="#S1.SS4" title="In 6.1 Lie Groups and Lie Algebras ‣ Chapter 6 Appendix ‣ Visualisations in Geometry" class="ltx_ref"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">6.1.4 </span>Representations</span></a></li>
+</ol>
+</li>
+<li class="ltx_tocentry ltx_tocentry_section"><a href="#S2" title="In Chapter 6 Appendix ‣ Visualisations in Geometry" class="ltx_ref"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">6.2 </span>Quaternions</span></a></li>
+</ol>
+</li>
+<li class="ltx_tocentry ltx_tocentry_bibliography"><a href="bib.html" title="In Visualisations in Geometry" class="ltx_ref"><span class="ltx_text ltx_ref_title">Bibliography</span></a></li>
+</ol></nav>
+</nav>
+<div class="ltx_page_main">
+<header class="ltx_page_header">
+<div class="ltx_align_center">
+<a href="main.html" title="" class="ltx_ref" rel="up"><span class="ltx_text ltx_ref_title">Visualisations in Geometry</span></a><a href="Ch5.html" title="In Visualisations in Geometry" class="ltx_ref" rel="prev"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">5 </span>Conclusions</span></a><a href="bib.html" title="In Visualisations in Geometry" class="ltx_ref" rel="next"><span class="ltx_text ltx_ref_title">Bibliography</span></a>
+</div></header>
+<div class="ltx_page_content">
+<section class="ltx_chapter ltx_authors_1line">
+<h1 class="ltx_title ltx_title_chapter">
+<span class="ltx_tag ltx_tag_chapter">Chapter 6 </span>Appendix</h1>
+
+<section id="S1" class="ltx_section">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">6.1 </span>Lie Groups and Lie Algebras</h2>
+
+<div id="S1.p1" class="ltx_para">
+<p class="ltx_p">In this section we will give some (by no means comprehensive) background on the basics of Lie theory. The definitions and results come from <cite class="ltx_cite ltx_citemacro_cite">[<a href="bib.html#bib5" title="Lie groups, Lie algebras, and representations. An elementary introduction" class="ltx_ref">HAL15</a>]</cite> and <cite class="ltx_cite ltx_citemacro_cite">[<a href="bib.html#bib13" title="Mathematical gauge theory. With applications to the standard model of particle physics" class="ltx_ref">HAM17</a>]</cite>.</p>
+</div>
+<section id="S1.SS1" class="ltx_subsection">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">6.1.1 </span>Lie Groups</h3>
+
+<div id="S1.Thmdefinition1" class="ltx_theorem ltx_theorem_definition">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Definition 6.1.1</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S1.Thmdefinition1.p1" class="ltx_para">
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">A <span class="ltx_text ltx_font_bold">Lie group</span> is a smooth manifold <math id="S1.Thmdefinition1.p1.m1" class="ltx_Math" alttext="G" display="inline"><mi>G</mi></math> together with smooth maps</span></p>
+<table id="S2.EGx10" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tbody id="Ex1"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ex1.m1" class="ltx_Math" alttext="\displaystyle\rho:G\times G" display="inline"><mrow><mi>ρ</mi><mo lspace="0.278em" rspace="0.278em">:</mo><mrow><mi>G</mi><mo lspace="0.222em" rspace="0.222em">×</mo><mi>G</mi></mrow></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ex1.m2" class="ltx_Math" alttext="\displaystyle\rightarrow G" display="inline"><mrow><mi></mi><mo stretchy="false">→</mo><mi>G</mi></mrow></math></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ex1.m3" class="ltx_Math" alttext="\displaystyle\iota:G" display="inline"><mrow><mi>ι</mi><mo lspace="0.278em" rspace="0.278em">:</mo><mi>G</mi></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ex1.m4" class="ltx_Math" alttext="\displaystyle\rightarrow G" display="inline"><mrow><mi></mi><mo stretchy="false">→</mo><mi>G</mi></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+<tbody id="Ex2"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ex2.m1" class="ltx_Math" alttext="\displaystyle(g,h)" display="inline"><mrow><mo stretchy="false">(</mo><mi>g</mi><mo>,</mo><mi>h</mi><mo stretchy="false">)</mo></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ex2.m2" class="ltx_Math" alttext="\displaystyle\mapsto gh" display="inline"><mrow><mi></mi><mo stretchy="false">↦</mo><mrow><mi>g</mi><mo>⁢</mo><mi>h</mi></mrow></mrow></math></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ex2.m3" class="ltx_Math" alttext="\displaystyle g" display="inline"><mi>g</mi></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ex2.m4" class="ltx_Math" alttext="\displaystyle\mapsto g^{-1}" display="inline"><mrow><mi></mi><mo stretchy="false">↦</mo><msup><mi>g</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+</table>
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">and an element <math id="S1.Thmdefinition1.p1.m2" class="ltx_Math" alttext="e" display="inline"><mi>e</mi></math> such that for all <math id="S1.Thmdefinition1.p1.m3" class="ltx_Math" alttext="g,h,k\in G" display="inline"><mrow><mrow><mi>g</mi><mo>,</mo><mi>h</mi><mo>,</mo><mi>k</mi></mrow><mo>∈</mo><mi>G</mi></mrow></math>,</span></p>
+<table id="S2.EGx11" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tbody id="Ex3"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ex3.m1" class="ltx_Math" alttext="\displaystyle(gh)k=g(hk)" display="inline"><mrow><mrow><mrow><mo stretchy="false">(</mo><mrow><mi>g</mi><mo>⁢</mo><mi>h</mi></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mi>k</mi></mrow><mo>=</mo><mrow><mi>g</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>h</mi><mo>⁢</mo><mi>k</mi></mrow><mo stretchy="false">)</mo></mrow></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+<tbody id="Ex4"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ex4.m1" class="ltx_Math" alttext="\displaystyle ge=g=eg" display="inline"><mrow><mrow><mi>g</mi><mo>⁢</mo><mi>e</mi></mrow><mo>=</mo><mi>g</mi><mo>=</mo><mrow><mi>e</mi><mo>⁢</mo><mi>g</mi></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+<tbody id="Ex5"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ex5.m1" class="ltx_Math" alttext="\displaystyle gg^{-1}=e=g^{-1}g." display="inline"><mrow><mrow><mrow><mi>g</mi><mo>⁢</mo><msup><mi>g</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup></mrow><mo>=</mo><mi>e</mi><mo>=</mo><mrow><msup><mi>g</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><mo>⁢</mo><mi>g</mi></mrow></mrow><mo lspace="0em">.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+</table>
+</div>
+</div>
+<div id="S1.SS1.p1" class="ltx_para">
+<p class="ltx_p">A readily available class of Lie groups are the matrix Lie groups. Let <math id="S1.SS1.p1.m1" class="ltx_Math" alttext="\mathbb{K}" display="inline"><mi>𝕂</mi></math> be a field <math id="S1.SS1.p1.m2" class="ltx_Math" alttext="\mathbb{R}" display="inline"><mi>ℝ</mi></math> or <math id="S1.SS1.p1.m3" class="ltx_Math" alttext="\mathbb{C}" display="inline"><mi>ℂ</mi></math>.</p>
+</div>
+<div id="S1.Thmdefinition2" class="ltx_theorem ltx_theorem_definition">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Definition 6.1.2</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S1.Thmdefinition2.p1" class="ltx_para">
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">Let <math id="S1.Thmdefinition2.p1.m1" class="ltx_Math" alttext="G" display="inline"><mi>G</mi></math> be a Lie group that is a closed subset of <math id="S1.Thmdefinition2.p1.m2" class="ltx_Math" alttext="\text{GL}(n,\mathbb{K})" display="inline"><mrow><mtext class="ltx_mathvariant_italic">GL</mtext><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>n</mi><mo>,</mo><mi>𝕂</mi><mo stretchy="false">)</mo></mrow></mrow></math>. Then we call <math id="S1.Thmdefinition2.p1.m3" class="ltx_Math" alttext="G" display="inline"><mi>G</mi></math> a <span class="ltx_text ltx_font_bold">matrix Lie group</span>.</span></p>
+</div>
+</div>
+<div id="S1.SS1.p2" class="ltx_para">
+<p class="ltx_p">An important result for understanding compact Lie groups is</p>
+</div>
+<div id="S1.Thmtheorem1" class="ltx_theorem ltx_theorem_theorem">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Theorem 6.1.1</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S1.Thmtheorem1.p1" class="ltx_para">
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">Let <math id="S1.Thmtheorem1.p1.m1" class="ltx_Math" alttext="G" display="inline"><mi>G</mi></math> be a compact Lie group. Then there exists a smooth, injective homomorphism <math id="S1.Thmtheorem1.p1.m2" class="ltx_Math" alttext="\phi" display="inline"><mi>ϕ</mi></math> of <math id="S1.Thmtheorem1.p1.m3" class="ltx_Math" alttext="G" display="inline"><mi>G</mi></math> into a general linear group <math id="S1.Thmtheorem1.p1.m4" class="ltx_Math" alttext="\text{GL}(n,\mathbb{R})" display="inline"><mrow><mtext class="ltx_mathvariant_italic">GL</mtext><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>n</mi><mo>,</mo><mi>ℝ</mi><mo stretchy="false">)</mo></mrow></mrow></math> for some <math id="S1.Thmtheorem1.p1.m5" class="ltx_Math" alttext="n\in\mathbb{N}" display="inline"><mrow><mi>n</mi><mo>∈</mo><mi>ℕ</mi></mrow></math>.</span></p>
+</div>
+</div>
+<div id="S1.SS1.p3" class="ltx_para">
+<p class="ltx_p">This is saying that every compact Lie group has a faithful representation <a href="#S1.Thmdefinition11" title="Definition 6.1.11. ‣ 6.1.4 Representations ‣ 6.1 Lie Groups and Lie Algebras ‣ Chapter 6 Appendix ‣ Visualisations in Geometry" class="ltx_ref"><span class="ltx_text ltx_ref_tag">6.1.11</span></a>.</p>
+</div>
+<div id="S1.SS1.p4" class="ltx_para">
+<p class="ltx_p">For any element <math id="S1.SS1.p4.m1" class="ltx_Math" alttext="g\in G" display="inline"><mrow><mi>g</mi><mo>∈</mo><mi>G</mi></mrow></math>, we obtain invertible diffeomorphisms <math id="S1.SS1.p4.m2" class="ltx_Math" alttext="L_{g},R_{g},C_{g}" display="inline"><mrow><msub><mi>L</mi><mi>g</mi></msub><mo>,</mo><msub><mi>R</mi><mi>g</mi></msub><mo>,</mo><msub><mi>C</mi><mi>g</mi></msub></mrow></math> from <math id="S1.SS1.p4.m3" class="ltx_Math" alttext="G" display="inline"><mi>G</mi></math> to itself.</p>
+</div>
+<div id="S1.Thmdefinition3" class="ltx_theorem ltx_theorem_definition">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Definition 6.1.3</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S1.Thmdefinition3.p1" class="ltx_para">
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">Let <math id="S1.Thmdefinition3.p1.m1" class="ltx_Math" alttext="G" display="inline"><mi>G</mi></math> be a Lie group, and <math id="S1.Thmdefinition3.p1.m2" class="ltx_Math" alttext="g\in G" display="inline"><mrow><mi>g</mi><mo>∈</mo><mi>G</mi></mrow></math>. Then we define the left multiplication, right multiplication, and conjugation maps by</span></p>
+<table id="S2.EGx12" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tbody id="Ex6"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ex6.m1" class="ltx_Math" alttext="\displaystyle L_{g}:G" display="inline"><mrow><msub><mi>L</mi><mi>g</mi></msub><mo lspace="0.278em" rspace="0.278em">:</mo><mi>G</mi></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ex6.m2" class="ltx_Math" alttext="\displaystyle\rightarrow G" display="inline"><mrow><mi></mi><mo stretchy="false">→</mo><mi>G</mi></mrow></math></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ex6.m3" class="ltx_Math" alttext="\displaystyle R_{g}:G" display="inline"><mrow><msub><mi>R</mi><mi>g</mi></msub><mo lspace="0.278em" rspace="0.278em">:</mo><mi>G</mi></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ex6.m4" class="ltx_Math" alttext="\displaystyle\rightarrow G" display="inline"><mrow><mi></mi><mo stretchy="false">→</mo><mi>G</mi></mrow></math></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ex6.m5" class="ltx_Math" alttext="\displaystyle C_{g}:G" display="inline"><mrow><msub><mi>C</mi><mi>g</mi></msub><mo lspace="0.278em" rspace="0.278em">:</mo><mi>G</mi></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ex6.m6" class="ltx_Math" alttext="\displaystyle\rightarrow G" display="inline"><mrow><mi></mi><mo stretchy="false">→</mo><mi>G</mi></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+<tbody id="Ex7"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ex7.m1" class="ltx_Math" alttext="\displaystyle h" display="inline"><mi>h</mi></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ex7.m2" class="ltx_Math" alttext="\displaystyle\mapsto gh" display="inline"><mrow><mi></mi><mo stretchy="false">↦</mo><mrow><mi>g</mi><mo>⁢</mo><mi>h</mi></mrow></mrow></math></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ex7.m3" class="ltx_Math" alttext="\displaystyle h" display="inline"><mi>h</mi></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ex7.m4" class="ltx_Math" alttext="\displaystyle\mapsto hg" display="inline"><mrow><mi></mi><mo stretchy="false">↦</mo><mrow><mi>h</mi><mo>⁢</mo><mi>g</mi></mrow></mrow></math></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ex7.m5" class="ltx_Math" alttext="\displaystyle h" display="inline"><mi>h</mi></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ex7.m6" class="ltx_Math" alttext="\displaystyle\mapsto ghg^{-1}" display="inline"><mrow><mi></mi><mo stretchy="false">↦</mo><mrow><mi>g</mi><mo>⁢</mo><mi>h</mi><mo>⁢</mo><msup><mi>g</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+</table>
+</div>
+</div>
+<div id="S1.SS1.p5" class="ltx_para">
+<p class="ltx_p">The left and right multiplication maps as well as the conjugation map are all diffeomorphisms, with inverses <math id="S1.SS1.p5.m1" class="ltx_Math" alttext="L_{g^{-1}},R_{g^{-1}},C_{g^{-1}}" display="inline"><mrow><msub><mi>L</mi><msup><mi>g</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup></msub><mo>,</mo><msub><mi>R</mi><msup><mi>g</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup></msub><mo>,</mo><msub><mi>C</mi><msup><mi>g</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup></msub></mrow></math> respectively. Furthermore, <math id="S1.SS1.p5.m2" class="ltx_Math" alttext="C_{g}" display="inline"><msub><mi>C</mi><mi>g</mi></msub></math> is a group isomorphism for all <math id="S1.SS1.p5.m3" class="ltx_Math" alttext="g\in G" display="inline"><mrow><mi>g</mi><mo>∈</mo><mi>G</mi></mrow></math>. These maps for the Lie groups <math id="S1.SS1.p5.m4" class="ltx_Math" alttext="SO(3)" display="inline"><mrow><mi>S</mi><mo>⁢</mo><mi>O</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>3</mn><mo stretchy="false">)</mo></mrow></mrow></math> and <math id="S1.SS1.p5.m5" class="ltx_Math" alttext="SU(2)" display="inline"><mrow><mi>S</mi><mo>⁢</mo><mi>U</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></mrow></math> are visualised in sections <a href="Ch3.html#S2" title="3.2 Left, Right, and Conjugation Actions on 𝑆⁢𝑂⁢(3) ‣ Chapter 3 Visualising 𝑆⁢𝑂⁢(3) ‣ Visualisations in Geometry" class="ltx_ref"><span class="ltx_text ltx_ref_tag">3.2</span></a> and <a href="Ch4.html#S2" title="4.2 Left, Right, and Conjugation Actions on 𝑆⁢𝑈⁢(2) ‣ Chapter 4 Visualising 𝑆⁢𝑈⁢(2) ‣ Visualisations in Geometry" class="ltx_ref"><span class="ltx_text ltx_ref_tag">4.2</span></a>.</p>
+</div>
+</section>
+<section id="S1.SS2" class="ltx_subsection">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">6.1.2 </span>Lie Algebras</h3>
+
+<div id="S1.SS2.p1" class="ltx_para">
+<p class="ltx_p">Closely related to the notion of Lie group, is that of a Lie Algebra.</p>
+</div>
+<div id="S1.Thmdefinition4" class="ltx_theorem ltx_theorem_definition">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Definition 6.1.4</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S1.Thmdefinition4.p1" class="ltx_para">
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">A <span class="ltx_text ltx_font_bold">Lie algebra</span> is a vector space <math id="S1.Thmdefinition4.p1.m1" class="ltx_Math" alttext="V" display="inline"><mi>V</mi></math> along with a bilinear, skew-symmetric map <math id="S1.Thmdefinition4.p1.m2" class="ltx_Math" alttext="[\cdot,\cdot]:V\times V\rightarrow V" display="inline"><mrow><mrow><mo stretchy="false">[</mo><mo lspace="0em" rspace="0em">⋅</mo><mo rspace="0em">,</mo><mo lspace="0em" rspace="0em">⋅</mo><mo rspace="0.278em" stretchy="false">]</mo></mrow><mo rspace="0.278em">:</mo><mrow><mrow><mi>V</mi><mo lspace="0.222em" rspace="0.222em">×</mo><mi>V</mi></mrow><mo stretchy="false">→</mo><mi>V</mi></mrow></mrow></math> such that</span></p>
+<table id="E1" class="ltx_equation ltx_eqn_table">
+
+<tbody><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="E1.m1" class="ltx_Math" alttext="[X,[Y,Z]]+[Z,[X,Y]]+[Y,[Z,X]]=0\quad\forall X,Y,Z\in V." display="block"><mrow><mrow><mrow><mrow><mrow><mo stretchy="false">[</mo><mi>X</mi><mo>,</mo><mrow><mo stretchy="false">[</mo><mi>Y</mi><mo>,</mo><mi>Z</mi><mo stretchy="false">]</mo></mrow><mo stretchy="false">]</mo></mrow><mo>+</mo><mrow><mo stretchy="false">[</mo><mi>Z</mi><mo>,</mo><mrow><mo stretchy="false">[</mo><mi>X</mi><mo>,</mo><mi>Y</mi><mo stretchy="false">]</mo></mrow><mo stretchy="false">]</mo></mrow><mo>+</mo><mrow><mo stretchy="false">[</mo><mi>Y</mi><mo>,</mo><mrow><mo stretchy="false">[</mo><mi>Z</mi><mo>,</mo><mi>X</mi><mo stretchy="false">]</mo></mrow><mo stretchy="false">]</mo></mrow></mrow><mo>=</mo><mrow><mn>0</mn><mspace width="1.167em"></mspace><mrow><mo rspace="0.167em">∀</mo><mi>X</mi></mrow><mo>,</mo><mi>Y</mi></mrow></mrow><mo>,</mo><mrow><mi>Z</mi><mo>∈</mo><mi>V</mi></mrow></mrow><mo lspace="0em">.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(6.1)</span></td>
+</tr></tbody>
+</table>
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">Equation (<a href="#E1" title="In Definition 6.1.4. ‣ 6.1.2 Lie Algebras ‣ 6.1 Lie Groups and Lie Algebras ‣ Chapter 6 Appendix ‣ Visualisations in Geometry" class="ltx_ref"><span class="ltx_text ltx_ref_tag">6.1</span></a>) is called the <span class="ltx_text ltx_font_bold">Jacobi identity</span>.</span></p>
+</div>
+</div>
+<div id="S1.Thmexample1" class="ltx_theorem ltx_theorem_example">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Example 6.1.1</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S1.Thmexample1.p1" class="ltx_para">
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">The set of all vector fields <math id="S1.Thmexample1.p1.m1" class="ltx_Math" alttext="\Gamma(TM)" display="inline"><mrow><mi mathvariant="normal">Γ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>T</mi><mo>⁢</mo><mi>M</mi></mrow><mo stretchy="false">)</mo></mrow></mrow></math> on a smooth manifold <math id="S1.Thmexample1.p1.m2" class="ltx_Math" alttext="M" display="inline"><mi>M</mi></math> forms an infinite-dimensional Lie Algebra under the bracket <math id="S1.Thmexample1.p1.m3" class="ltx_Math" alttext="(X,Y)\mapsto[X,Y]" display="inline"><mrow><mrow><mo stretchy="false">(</mo><mi>X</mi><mo>,</mo><mi>Y</mi><mo stretchy="false">)</mo></mrow><mo stretchy="false">↦</mo><mrow><mo stretchy="false">[</mo><mi>X</mi><mo>,</mo><mi>Y</mi><mo stretchy="false">]</mo></mrow></mrow></math> where <math id="S1.Thmexample1.p1.m4" class="ltx_Math" alttext="[X,Y](f)=X(Y(f))-Y(X(f))" display="inline"><mrow><mrow><mrow><mo stretchy="false">[</mo><mi>X</mi><mo>,</mo><mi>Y</mi><mo stretchy="false">]</mo></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>f</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mrow><mi>X</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>Y</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>f</mi><mo stretchy="false">)</mo></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mrow><mi>Y</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>X</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>f</mi><mo stretchy="false">)</mo></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow></mrow></mrow></math>.</span></p>
+</div>
+</div>
+<div id="S1.SS2.p2" class="ltx_para">
+<p class="ltx_p">So for any smooth manifold <math id="S1.SS2.p2.m1" class="ltx_Math" alttext="M" display="inline"><mi>M</mi></math> we have an infinite-dimensional Lie algebra consisting of all vector fields on <math id="S1.SS2.p2.m2" class="ltx_Math" alttext="M" display="inline"><mi>M</mi></math>. But given a Lie group <math id="S1.SS2.p2.m3" class="ltx_Math" alttext="G" display="inline"><mi>G</mi></math>, we can obtain a <em class="ltx_emph ltx_font_italic">finite dimensional</em> Lie Algebra <math id="S1.SS2.p2.m4" class="ltx_Math" alttext="\operatorname{Lie}(G)=\mathfrak{g}" display="inline"><mrow><mrow><mi>Lie</mi><mo>⁡</mo><mrow><mo stretchy="false">(</mo><mi>G</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mi>𝔤</mi></mrow></math> with dimension equal to that of <math id="S1.SS2.p2.m5" class="ltx_Math" alttext="G" display="inline"><mi>G</mi></math>. This construction is fundamental to the study of Lie groups.</p>
+</div>
+<div id="S1.SS2.p3" class="ltx_para">
+<p class="ltx_p">Keeping with the convention that Lie groups are denoted with upper case letters <math id="S1.SS2.p3.m1" class="ltx_Math" alttext="\text{GL}(n,\mathbb{R})" display="inline"><mrow><mtext>GL</mtext><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>n</mi><mo>,</mo><mi>ℝ</mi><mo stretchy="false">)</mo></mrow></mrow></math>, <math id="S1.SS2.p3.m2" class="ltx_Math" alttext="\text{SL}(n,\mathbb{R})" display="inline"><mrow><mtext>SL</mtext><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>n</mi><mo>,</mo><mi>ℝ</mi><mo stretchy="false">)</mo></mrow></mrow></math>, <math id="S1.SS2.p3.m3" class="ltx_Math" alttext="SO(n,\mathbb{R})" display="inline"><mrow><mi>S</mi><mo>⁢</mo><mi>O</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>n</mi><mo>,</mo><mi>ℝ</mi><mo stretchy="false">)</mo></mrow></mrow></math>, <math id="S1.SS2.p3.m4" class="ltx_Math" alttext="SU(n)" display="inline"><mrow><mi>S</mi><mo>⁢</mo><mi>U</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow></mrow></math>, we will denote their corresponding Lie algebras in lower case fraktur <math id="S1.SS2.p3.m5" class="ltx_Math" alttext="\mathfrak{gl}" display="inline"><mrow><mi>𝔤</mi><mo>⁢</mo><mi>𝔩</mi></mrow></math>, <math id="S1.SS2.p3.m6" class="ltx_Math" alttext="\mathfrak{sl}" display="inline"><mrow><mi>𝔰</mi><mo>⁢</mo><mi>𝔩</mi></mrow></math>, <math id="S1.SS2.p3.m7" class="ltx_Math" alttext="\mathfrak{so}" display="inline"><mrow><mi>𝔰</mi><mo>⁢</mo><mi>𝔬</mi></mrow></math>, <math id="S1.SS2.p3.m8" class="ltx_Math" alttext="\mathfrak{su}" display="inline"><mrow><mi>𝔰</mi><mo>⁢</mo><mi>𝔲</mi></mrow></math>, etc.</p>
+</div>
+<div id="S1.SS2.p4" class="ltx_para">
+<p class="ltx_p">In order to define <math id="S1.SS2.p4.m1" class="ltx_Math" alttext="\operatorname{Lie}(G)=\mathfrak{g}" display="inline"><mrow><mrow><mi>Lie</mi><mo>⁡</mo><mrow><mo stretchy="false">(</mo><mi>G</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mi>𝔤</mi></mrow></math>, we use left-invariant vector fields.</p>
+</div>
+<div id="S1.Thmdefinition5" class="ltx_theorem ltx_theorem_definition">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Definition 6.1.5</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S1.Thmdefinition5.p1" class="ltx_para">
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">A <span class="ltx_text ltx_font_bold">left-invariant vector field</span> <math id="S1.Thmdefinition5.p1.m1" class="ltx_Math" alttext="X\in\Gamma(TM)" display="inline"><mrow><mi>X</mi><mo>∈</mo><mrow><mi mathvariant="normal">Γ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>T</mi><mo>⁢</mo><mi>M</mi></mrow><mo stretchy="false">)</mo></mrow></mrow></mrow></math> is a vector field such that for all <math id="S1.Thmdefinition5.p1.m2" class="ltx_Math" alttext="g\in G" display="inline"><mrow><mi>g</mi><mo>∈</mo><mi>G</mi></mrow></math>,</span></p>
+<table id="Ex8" class="ltx_equation ltx_eqn_table">
+
+<tbody><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ex8.m1" class="ltx_Math" alttext="(L_{g})_{*}(X)(f)=X(f)." display="block"><mrow><mrow><mrow><msub><mrow><mo stretchy="false">(</mo><msub><mi>L</mi><mi>g</mi></msub><mo stretchy="false">)</mo></mrow><mo>∗</mo></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>X</mi><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>f</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mi>X</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>f</mi><mo stretchy="false">)</mo></mrow></mrow></mrow><mo lspace="0em">.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+</table>
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">We will denote the set of left-invariant vector fields on a Lie group by <math id="S1.Thmdefinition5.p1.m3" class="ltx_Math" alttext="L" display="inline"><mi>L</mi></math>.</span></p>
+</div>
+</div>
+<div id="S1.SS2.p5" class="ltx_para">
+<p class="ltx_p">Given a Lie group <math id="S1.SS2.p5.m1" class="ltx_Math" alttext="G" display="inline"><mi>G</mi></math>, left-invariant vector fields always exist, and are determined uniquely by their value at the identity of <math id="S1.SS2.p5.m2" class="ltx_Math" alttext="G" display="inline"><mi>G</mi></math>, and because of this, we are able to construct a vector space isomorphism between the set of left-invariant vector fields on a Lie Group to it’s tangent space at the identity.</p>
+</div>
+<div id="S1.Thmproposition1" class="ltx_theorem ltx_theorem_proposition">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Proposition 6.1.1</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S1.Thmproposition1.p1" class="ltx_para">
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">Let <math id="S1.Thmproposition1.p1.m1" class="ltx_Math" alttext="G" display="inline"><mi>G</mi></math> be a Lie group. The set <math id="S1.Thmproposition1.p1.m2" class="ltx_Math" alttext="L" display="inline"><mi>L</mi></math> of left invariant vector fields on <math id="S1.Thmproposition1.p1.m3" class="ltx_Math" alttext="G" display="inline"><mi>G</mi></math> is a vector space isomorphic to <math id="S1.Thmproposition1.p1.m4" class="ltx_Math" alttext="T_{e}G" display="inline"><mrow><msub><mi>T</mi><mi>e</mi></msub><mo>⁢</mo><mi>G</mi></mrow></math>.</span></p>
+</div>
+</div>
+<div class="ltx_proof">
+<h6 class="ltx_title ltx_runin ltx_font_italic ltx_title_proof">Proof.</h6>
+<div id="S1.SS2.p6" class="ltx_para">
+<p class="ltx_p">Let <math id="S1.SS2.p6.m1" class="ltx_Math" alttext="X,Y" display="inline"><mrow><mi>X</mi><mo>,</mo><mi>Y</mi></mrow></math> be left-invariant vector fields and <math id="S1.SS2.p6.m2" class="ltx_Math" alttext="\lambda" display="inline"><mi>λ</mi></math> be a scalar. Then for all <math id="S1.SS2.p6.m3" class="ltx_Math" alttext="g\in G" display="inline"><mrow><mi>g</mi><mo>∈</mo><mi>G</mi></mrow></math> we have</p>
+<table id="S2.EGx13" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tbody id="Ex9"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ex9.m1" class="ltx_Math" alttext="\displaystyle((L_{g})_{*}(X+\lambda Y))(f)" display="inline"><mrow><mrow><mo stretchy="false">(</mo><mrow><msub><mrow><mo stretchy="false">(</mo><msub><mi>L</mi><mi>g</mi></msub><mo stretchy="false">)</mo></mrow><mo>∗</mo></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>X</mi><mo>+</mo><mrow><mi>λ</mi><mo>⁢</mo><mi>Y</mi></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>f</mi><mo stretchy="false">)</mo></mrow></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ex9.m2" class="ltx_Math" alttext="\displaystyle=((L_{g})_{*}X)(f)+(\lambda(L_{g})_{*}Y)(f)" display="inline"><mrow><mi></mi><mo>=</mo><mrow><mrow><mrow><mo stretchy="false">(</mo><mrow><msub><mrow><mo stretchy="false">(</mo><msub><mi>L</mi><mi>g</mi></msub><mo stretchy="false">)</mo></mrow><mo>∗</mo></msub><mo>⁢</mo><mi>X</mi></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>f</mi><mo stretchy="false">)</mo></mrow></mrow><mo>+</mo><mrow><mrow><mo stretchy="false">(</mo><mrow><mi>λ</mi><mo>⁢</mo><msub><mrow><mo stretchy="false">(</mo><msub><mi>L</mi><mi>g</mi></msub><mo stretchy="false">)</mo></mrow><mo>∗</mo></msub><mo>⁢</mo><mi>Y</mi></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>f</mi><mo stretchy="false">)</mo></mrow></mrow></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+<tbody id="Ex10"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_eqn_cell"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ex10.m1" class="ltx_Math" alttext="\displaystyle=X(f)+\lambda Y(f)" display="inline"><mrow><mi></mi><mo>=</mo><mrow><mrow><mi>X</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>f</mi><mo stretchy="false">)</mo></mrow></mrow><mo>+</mo><mrow><mi>λ</mi><mo>⁢</mo><mi>Y</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>f</mi><mo stretchy="false">)</mo></mrow></mrow></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+</table>
+<p class="ltx_p">by definition of left-invariance. Therefore the left-invariant vector fields form a vector space. To obtain our isomorphism with <math id="S1.SS2.p6.m4" class="ltx_Math" alttext="T_{e}G" display="inline"><mrow><msub><mi>T</mi><mi>e</mi></msub><mo>⁢</mo><mi>G</mi></mrow></math>, we have map</p>
+<table id="S2.EGx14" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tbody id="Ex11"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ex11.m1" class="ltx_Math" alttext="\displaystyle\Phi:L" display="inline"><mrow><mi mathvariant="normal">Φ</mi><mo lspace="0.278em" rspace="0.278em">:</mo><mi>L</mi></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ex11.m2" class="ltx_Math" alttext="\displaystyle\rightarrow T_{e}G" display="inline"><mrow><mi></mi><mo stretchy="false">→</mo><mrow><msub><mi>T</mi><mi>e</mi></msub><mo>⁢</mo><mi>G</mi></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+<tbody id="Ex12"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ex12.m1" class="ltx_Math" alttext="\displaystyle X" display="inline"><mi>X</mi></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ex12.m2" class="ltx_Math" alttext="\displaystyle\mapsto X_{e}" display="inline"><mrow><mi></mi><mo stretchy="false">↦</mo><msub><mi>X</mi><mi>e</mi></msub></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+</table>
+<p class="ltx_p">and</p>
+<table id="S2.EGx15" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tbody id="Ex13"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ex13.m1" class="ltx_Math" alttext="\displaystyle\Phi^{-1}:T_{e}G" display="inline"><mrow><msup><mi mathvariant="normal">Φ</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><mo lspace="0.278em" rspace="0.278em">:</mo><mrow><msub><mi>T</mi><mi>e</mi></msub><mo>⁢</mo><mi>G</mi></mrow></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ex13.m2" class="ltx_Math" alttext="\displaystyle\rightarrow L" display="inline"><mrow><mi></mi><mo stretchy="false">→</mo><mi>L</mi></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+<tbody id="Ex14"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ex14.m1" class="ltx_Math" alttext="\displaystyle v" display="inline"><mi>v</mi></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ex14.m2" class="ltx_Math" alttext="\displaystyle\mapsto V" display="inline"><mrow><mi></mi><mo stretchy="false">↦</mo><mi>V</mi></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+</table>
+<p class="ltx_p">where <math id="S1.SS2.p6.m5" class="ltx_Math" alttext="V_{g}=(L_{g})_{*}v\in T_{L_{g}(e)}G=T_{g}G" display="inline"><mrow><msub><mi>V</mi><mi>g</mi></msub><mo>=</mo><mrow><msub><mrow><mo stretchy="false">(</mo><msub><mi>L</mi><mi>g</mi></msub><mo stretchy="false">)</mo></mrow><mo>∗</mo></msub><mo>⁢</mo><mi>v</mi></mrow><mo>∈</mo><mrow><msub><mi>T</mi><mrow><msub><mi>L</mi><mi>g</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>e</mi><mo stretchy="false">)</mo></mrow></mrow></msub><mo>⁢</mo><mi>G</mi></mrow><mo>=</mo><mrow><msub><mi>T</mi><mi>g</mi></msub><mo>⁢</mo><mi>G</mi></mrow></mrow></math>. The map <math id="S1.SS2.p6.m6" class="ltx_Math" alttext="\Phi" display="inline"><mi mathvariant="normal">Φ</mi></math> is linear because addition and scalar multiplication of vector spaces is defined pointwise. We have that</p>
+<table id="S2.EGx16" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tbody id="Ex15"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ex15.m1" class="ltx_Math" alttext="\displaystyle\Phi(\Phi^{-1}(v))" display="inline"><mrow><mi mathvariant="normal">Φ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><msup><mi mathvariant="normal">Φ</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>v</mi><mo stretchy="false">)</mo></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ex15.m2" class="ltx_Math" alttext="\displaystyle=\Phi(g\mapsto(L_{g})_{*}v)" display="inline"><mrow><mi></mi><mo>=</mo><mrow><mi mathvariant="normal">Φ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>g</mi><mo stretchy="false">↦</mo><mrow><msub><mrow><mo stretchy="false">(</mo><msub><mi>L</mi><mi>g</mi></msub><mo stretchy="false">)</mo></mrow><mo>∗</mo></msub><mo>⁢</mo><mi>v</mi></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+<tbody id="Ex16"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_eqn_cell"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ex16.m1" class="ltx_Math" alttext="\displaystyle=(L_{e})_{*}v" display="inline"><mrow><mi></mi><mo>=</mo><mrow><msub><mrow><mo stretchy="false">(</mo><msub><mi>L</mi><mi>e</mi></msub><mo stretchy="false">)</mo></mrow><mo>∗</mo></msub><mo>⁢</mo><mi>v</mi></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+<tbody id="Ex17"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_eqn_cell"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ex17.m1" class="ltx_Math" alttext="\displaystyle=\operatorname{id}_{*}v" display="inline"><mrow><mi></mi><mo>=</mo><mrow><msub><mi>id</mi><mo>∗</mo></msub><mo lspace="0.167em">⁡</mo><mi>v</mi></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+<tbody id="Ex18"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_eqn_cell"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ex18.m1" class="ltx_Math" alttext="\displaystyle=v" display="inline"><mrow><mi></mi><mo>=</mo><mi>v</mi></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+</table>
+<p class="ltx_p">and</p>
+<table id="S2.EGx17" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tbody id="Ex19"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ex19.m1" class="ltx_Math" alttext="\displaystyle\Phi^{-1}(\Phi(X))" display="inline"><mrow><msup><mi mathvariant="normal">Φ</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi mathvariant="normal">Φ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>X</mi><mo stretchy="false">)</mo></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ex19.m2" class="ltx_Math" alttext="\displaystyle=\Phi^{-1}(X_{e})=V" display="inline"><mrow><mi></mi><mo>=</mo><mrow><msup><mi mathvariant="normal">Φ</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>X</mi><mi>e</mi></msub><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mi>V</mi></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+</table>
+<p class="ltx_p">where <math id="S1.SS2.p6.m7" class="ltx_Math" alttext="V_{g}=(L_{g})_{*}X_{e}=X_{g}" display="inline"><mrow><msub><mi>V</mi><mi>g</mi></msub><mo>=</mo><mrow><msub><mrow><mo stretchy="false">(</mo><msub><mi>L</mi><mi>g</mi></msub><mo stretchy="false">)</mo></mrow><mo>∗</mo></msub><mo>⁢</mo><msub><mi>X</mi><mi>e</mi></msub></mrow><mo>=</mo><msub><mi>X</mi><mi>g</mi></msub></mrow></math> by definition of left-invariance.
+∎</p>
+</div>
+</div>
+<div id="S1.SS2.p7" class="ltx_para">
+<p class="ltx_p">The above proof is included because it shows us how to obtain a left-invariant vector field from an element of <math id="S1.SS2.p7.m1" class="ltx_Math" alttext="T_{e}G=\mathfrak{g}" display="inline"><mrow><mrow><msub><mi>T</mi><mi>e</mi></msub><mo>⁢</mo><mi>G</mi></mrow><mo>=</mo><mi>𝔤</mi></mrow></math>, and how to obtain an element of <math id="S1.SS2.p7.m2" class="ltx_Math" alttext="\mathfrak{g}" display="inline"><mi>𝔤</mi></math> from a left-invariant vector field.</p>
+</div>
+<div id="S1.SS2.p8" class="ltx_para">
+<p class="ltx_p">To define the Lie bracket on <math id="S1.SS2.p8.m1" class="ltx_Math" alttext="\mathfrak{g}" display="inline"><mi>𝔤</mi></math>, turning <math id="S1.SS2.p8.m2" class="ltx_Math" alttext="\mathfrak{g}" display="inline"><mi>𝔤</mi></math> from just a vector space into a Lie algebra, we use the identification of <math id="S1.SS2.p8.m3" class="ltx_Math" alttext="\mathfrak{g}" display="inline"><mi>𝔤</mi></math> with the set of left invariant vector fields on <math id="S1.SS2.p8.m4" class="ltx_Math" alttext="G" display="inline"><mi>G</mi></math>, and then use the usual bracket of vector fields.</p>
+</div>
+<div id="S1.Thmdefinition6" class="ltx_theorem ltx_theorem_definition">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Definition 6.1.6</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S1.Thmdefinition6.p1" class="ltx_para">
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">Let <math id="S1.Thmdefinition6.p1.m1" class="ltx_Math" alttext="x,y\in\mathfrak{g}" display="inline"><mrow><mrow><mi>x</mi><mo>,</mo><mi>y</mi></mrow><mo>∈</mo><mi>𝔤</mi></mrow></math> and <math id="S1.Thmdefinition6.p1.m2" class="ltx_Math" alttext="X,Y\in\Gamma(TM)" display="inline"><mrow><mrow><mi>X</mi><mo>,</mo><mi>Y</mi></mrow><mo>∈</mo><mrow><mi mathvariant="normal">Γ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>T</mi><mo>⁢</mo><mi>M</mi></mrow><mo stretchy="false">)</mo></mrow></mrow></mrow></math> be the unique left invariant vector fields with values <math id="S1.Thmdefinition6.p1.m3" class="ltx_Math" alttext="X_{e}=x,Y_{e}=y" display="inline"><mrow><mrow><msub><mi>X</mi><mi>e</mi></msub><mo>=</mo><mi>x</mi></mrow><mo>,</mo><mrow><msub><mi>Y</mi><mi>e</mi></msub><mo>=</mo><mi>y</mi></mrow></mrow></math> at the identity. Then</span></p>
+</div>
+<div id="S1.Thmdefinition6.p2" class="ltx_para">
+<table id="S2.EGx18" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tbody id="Ex21"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ex21.m1" class="ltx_Math" alttext="\displaystyle[\cdot,\cdot]:\mathfrak{g}\times\mathfrak{g}" display="inline"><mrow><mrow><mo stretchy="false">[</mo><mo lspace="0em" rspace="0em">⋅</mo><mo rspace="0em">,</mo><mo lspace="0em" rspace="0em">⋅</mo><mo rspace="0.278em" stretchy="false">]</mo></mrow><mo rspace="0.278em">:</mo><mrow><mi>𝔤</mi><mo lspace="0.222em" rspace="0.222em">×</mo><mi>𝔤</mi></mrow></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ex21.m2" class="ltx_Math" alttext="\displaystyle\rightarrow\mathfrak{g}" display="inline"><mrow><mi></mi><mo stretchy="false">→</mo><mi>𝔤</mi></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+<tbody id="Ex22"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ex22.m1" class="ltx_Math" alttext="\displaystyle(x,y)" display="inline"><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false">)</mo></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ex22.m2" class="ltx_Math" alttext="\displaystyle\mapsto[X,Y]_{e}" display="inline"><mrow><mi></mi><mo stretchy="false">↦</mo><msub><mrow><mo stretchy="false">[</mo><mi>X</mi><mo>,</mo><mi>Y</mi><mo stretchy="false">]</mo></mrow><mi>e</mi></msub></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+</table>
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">That is we take <math id="S1.Thmdefinition6.p2.m1" class="ltx_Math" alttext="[x,y]" display="inline"><mrow><mo stretchy="false">[</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false">]</mo></mrow></math> to be the value at the identity of the vector field <math id="S1.Thmdefinition6.p2.m2" class="ltx_Math" alttext="[X,Y]" display="inline"><mrow><mo stretchy="false">[</mo><mi>X</mi><mo>,</mo><mi>Y</mi><mo stretchy="false">]</mo></mrow></math>.</span></p>
+</div>
+</div>
+</section>
+<section id="S1.SS3" class="ltx_subsection">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">6.1.3 </span>Exponential Map</h3>
+
+<div id="S1.SS3.p1" class="ltx_para">
+<p class="ltx_p">Suppose we have a Lie group <math id="S1.SS3.p1.m1" class="ltx_Math" alttext="G" display="inline"><mi>G</mi></math> with Lie algebra <math id="S1.SS3.p1.m2" class="ltx_Math" alttext="\mathfrak{g}" display="inline"><mi>𝔤</mi></math>. The exponential map is a way of going from <math id="S1.SS3.p1.m3" class="ltx_Math" alttext="\mathfrak{g}" display="inline"><mi>𝔤</mi></math> to <math id="S1.SS3.p1.m4" class="ltx_Math" alttext="G" display="inline"><mi>G</mi></math>. It takes a vector <math id="S1.SS3.p1.m5" class="ltx_Math" alttext="\mathbf{v}\in\mathfrak{g}=T_{e}G" display="inline"><mrow><mi>𝐯</mi><mo>∈</mo><mi>𝔤</mi><mo>=</mo><mrow><msub><mi>T</mi><mi>e</mi></msub><mo>⁢</mo><mi>G</mi></mrow></mrow></math> and outputs the result of flowing along the left invariant vector field determined by <math id="S1.SS3.p1.m6" class="ltx_Math" alttext="\mathbf{v}" display="inline"><mi>𝐯</mi></math> for time <math id="S1.SS3.p1.m7" class="ltx_Math" alttext="1" display="inline"><mn>1</mn></math>. Let <math id="S1.SS3.p1.m8" class="ltx_Math" alttext="M" display="inline"><mi>M</mi></math> be a smooth manifold and <math id="S1.SS3.p1.m9" class="ltx_Math" alttext="X" display="inline"><mi>X</mi></math> a smooth vector field on <math id="S1.SS3.p1.m10" class="ltx_Math" alttext="M" display="inline"><mi>M</mi></math>.</p>
+</div>
+<div id="S1.Thmdefinition7" class="ltx_theorem ltx_theorem_definition">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Definition 6.1.7</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S1.Thmdefinition7.p1" class="ltx_para">
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">A curve <math id="S1.Thmdefinition7.p1.m1" class="ltx_Math" alttext="\gamma:I\rightarrow M" display="inline"><mrow><mi>γ</mi><mo lspace="0.278em" rspace="0.278em">:</mo><mrow><mi>I</mi><mo stretchy="false">→</mo><mi>M</mi></mrow></mrow></math>, where <math id="S1.Thmdefinition7.p1.m2" class="ltx_Math" alttext="I\subseteq\mathbb{R}" display="inline"><mrow><mi>I</mi><mo>⊆</mo><mi>ℝ</mi></mrow></math> is an open interval around <math id="S1.Thmdefinition7.p1.m3" class="ltx_Math" alttext="0" display="inline"><mn>0</mn></math>, is called an <span class="ltx_text ltx_font_bold">integral curve</span> for <math id="S1.Thmdefinition7.p1.m4" class="ltx_Math" alttext="X" display="inline"><mi>X</mi></math> through <math id="S1.Thmdefinition7.p1.m5" class="ltx_Math" alttext="p\in M" display="inline"><mrow><mi>p</mi><mo>∈</mo><mi>M</mi></mrow></math> if</span></p>
+<table id="Ex23" class="ltx_equation ltx_eqn_table">
+
+<tbody><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ex23.m1" class="ltx_Math" alttext="\gamma(0)=p\text{ and }\gamma^{\prime}(t)=X_{\gamma(t)}\;\forall t\in I." display="block"><mrow><mrow><mrow><mi>γ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>0</mn><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mi>p</mi><mo>⁢</mo><mtext class="ltx_mathvariant_italic"> and </mtext><mo>⁢</mo><msup><mi>γ</mi><mo>′</mo></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><msub><mi>X</mi><mrow><mi>γ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mrow></msub><mo lspace="0.167em">⁢</mo><mrow><mo rspace="0.167em">∀</mo><mi>t</mi></mrow></mrow><mo>∈</mo><mi>I</mi></mrow><mo lspace="0em">.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+</table>
+</div>
+</div>
+<div id="S1.Thmtheorem2" class="ltx_theorem ltx_theorem_theorem">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Theorem 6.1.2</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S1.Thmtheorem2.p1" class="ltx_para">
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">For all <math id="S1.Thmtheorem2.p1.m1" class="ltx_Math" alttext="p\in M" display="inline"><mrow><mi>p</mi><mo>∈</mo><mi>M</mi></mrow></math>, there exists an open neighbourhood <math id="S1.Thmtheorem2.p1.m2" class="ltx_Math" alttext="U" display="inline"><mi>U</mi></math> of <math id="S1.Thmtheorem2.p1.m3" class="ltx_Math" alttext="p" display="inline"><mi>p</mi></math> in <math id="S1.Thmtheorem2.p1.m4" class="ltx_Math" alttext="M" display="inline"><mi>M</mi></math> and an open interval <math id="S1.Thmtheorem2.p1.m5" class="ltx_Math" alttext="I" display="inline"><mi>I</mi></math> containing <math id="S1.Thmtheorem2.p1.m6" class="ltx_Math" alttext="0" display="inline"><mn>0</mn></math> such that the integral curves <math id="S1.Thmtheorem2.p1.m7" class="ltx_Math" alttext="\gamma_{q}" display="inline"><msub><mi>γ</mi><mi>q</mi></msub></math> are defined on <math id="S1.Thmtheorem2.p1.m8" class="ltx_Math" alttext="I" display="inline"><mi>I</mi></math> for all <math id="S1.Thmtheorem2.p1.m9" class="ltx_Math" alttext="q\in U" display="inline"><mrow><mi>q</mi><mo>∈</mo><mi>U</mi></mrow></math>. The map</span></p>
+<table id="S2.EGx19" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tbody id="Ex24"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ex24.m1" class="ltx_Math" alttext="\displaystyle\Phi_{U}:U\times I" display="inline"><mrow><msub><mi mathvariant="normal">Φ</mi><mi>U</mi></msub><mo lspace="0.278em" rspace="0.278em">:</mo><mrow><mi>U</mi><mo lspace="0.222em" rspace="0.222em">×</mo><mi>I</mi></mrow></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ex24.m2" class="ltx_Math" alttext="\displaystyle\rightarrow M" display="inline"><mrow><mi></mi><mo stretchy="false">→</mo><mi>M</mi></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+<tbody id="Ex25"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ex25.m1" class="ltx_Math" alttext="\displaystyle(q,t)" display="inline"><mrow><mo stretchy="false">(</mo><mi>q</mi><mo>,</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ex25.m2" class="ltx_Math" alttext="\displaystyle\mapsto\gamma_{q}(t)" display="inline"><mrow><mi></mi><mo stretchy="false">↦</mo><mrow><msub><mi>γ</mi><mi>q</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+</table>
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">is differentiable and is called the <span class="ltx_text ltx_font_bold">local flow</span> of <math id="S1.Thmtheorem2.p1.m10" class="ltx_Math" alttext="X" display="inline"><mi>X</mi></math>.</span></p>
+</div>
+</div>
+<div id="S1.Thmdefinition8" class="ltx_theorem ltx_theorem_definition">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Definition 6.1.8</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S1.Thmdefinition8.p1" class="ltx_para">
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">Let <math id="S1.Thmdefinition8.p1.m1" class="ltx_Math" alttext="X\in\mathfrak{g}" display="inline"><mrow><mi>X</mi><mo>∈</mo><mi>𝔤</mi></mrow></math> be a left-invariant vector field and let <math id="S1.Thmdefinition8.p1.m2" class="ltx_Math" alttext="\Phi_{X}" display="inline"><msub><mi mathvariant="normal">Φ</mi><mi>X</mi></msub></math> be the integral curve through through <math id="S1.Thmdefinition8.p1.m3" class="ltx_Math" alttext="e\in G" display="inline"><mrow><mi>e</mi><mo>∈</mo><mi>G</mi></mrow></math>. Then we define the <span class="ltx_text ltx_font_bold">exponential map</span></span></p>
+<table id="S2.EGx20" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tbody id="E2"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="E2.m1" class="ltx_Math" alttext="\displaystyle\exp:\mathfrak{g}" display="inline"><mrow><mi>exp</mi><mo lspace="0.278em" rspace="0.278em">:</mo><mi>𝔤</mi></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="E2.m2" class="ltx_Math" alttext="\displaystyle\rightarrow G" display="inline"><mrow><mi></mi><mo stretchy="false">→</mo><mi>G</mi></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(6.2)</span></td>
+</tr></tbody>
+<tbody id="Ex26"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ex26.m1" class="ltx_Math" alttext="\displaystyle X" display="inline"><mi>X</mi></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ex26.m2" class="ltx_Math" alttext="\displaystyle\mapsto\exp(X)=\exp X=\Phi_{X}(1)." display="inline"><mrow><mrow><mi></mi><mo stretchy="false">↦</mo><mrow><mi>exp</mi><mo>⁡</mo><mrow><mo stretchy="false">(</mo><mi>X</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mi>exp</mi><mo lspace="0.167em">⁡</mo><mi>X</mi></mrow><mo>=</mo><mrow><msub><mi mathvariant="normal">Φ</mi><mi>X</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></mrow></mrow><mo lspace="0em">.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+</table>
+</div>
+</div>
+<div id="S1.SS3.p2" class="ltx_para">
+<p class="ltx_p">Left-invariant vector fields always have global flows (defined on all of <math id="S1.SS3.p2.m1" class="ltx_Math" alttext="\mathbb{R}" display="inline"><mi>ℝ</mi></math>), so this definition makes sense, i.e. there is no risk of <math id="S1.SS3.p2.m2" class="ltx_Math" alttext="\Phi_{X}" display="inline"><msub><mi mathvariant="normal">Φ</mi><mi>X</mi></msub></math> being undefined at <math id="S1.SS3.p2.m3" class="ltx_Math" alttext="1" display="inline"><mn>1</mn></math>. The exponential map for a Lie group is closely related to the idea of a matrix exponential.</p>
+</div>
+<div id="S1.Thmdefinition9" class="ltx_theorem ltx_theorem_definition">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Definition 6.1.9</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S1.Thmdefinition9.p1" class="ltx_para">
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">Let <math id="S1.Thmdefinition9.p1.m1" class="ltx_Math" alttext="A\in\operatorname{Mat}(n\times n,\mathbb{K})" display="inline"><mrow><mi>A</mi><mo>∈</mo><mrow><mi>Mat</mi><mo>⁡</mo><mrow><mo stretchy="false">(</mo><mrow><mi>n</mi><mo lspace="0.222em" rspace="0.222em">×</mo><mi>n</mi></mrow><mo>,</mo><mi>𝕂</mi><mo stretchy="false">)</mo></mrow></mrow></mrow></math>. Then the <span class="ltx_text ltx_font_bold">exponential</span> of <math id="S1.Thmdefinition9.p1.m2" class="ltx_Math" alttext="A" display="inline"><mi>A</mi></math> is defined as the sum</span></p>
+<table id="E3" class="ltx_equation ltx_eqn_table">
+
+<tbody><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="E3.m1" class="ltx_Math" alttext="e^{A}=\sum_{k=0}^{\infty}\frac{1}{k!}A^{k}." display="block"><mrow><mrow><msup><mi>e</mi><mi>A</mi></msup><mo rspace="0.111em">=</mo><mrow><munderover><mo movablelimits="false">∑</mo><mrow><mi>k</mi><mo>=</mo><mn>0</mn></mrow><mi mathvariant="normal">∞</mi></munderover><mrow><mfrac><mn>1</mn><mrow><mi>k</mi><mo>!</mo></mrow></mfrac><mo>⁢</mo><msup><mi>A</mi><mi>k</mi></msup></mrow></mrow></mrow><mo lspace="0em">.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(6.3)</span></td>
+</tr></tbody>
+</table>
+</div>
+</div>
+<div id="S1.SS3.p3" class="ltx_para">
+<p class="ltx_p">We may be worried that this sum does not converge, however just as in the case of the real exponential function, it does.</p>
+</div>
+<div id="S1.Thmlemma1" class="ltx_theorem ltx_theorem_lemma">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Lemma 6.1.1</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S1.Thmlemma1.p1" class="ltx_para">
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">For any square matrix <math id="S1.Thmlemma1.p1.m1" class="ltx_Math" alttext="A\in\operatorname{Mat}(n\times n,\mathbb{K})" display="inline"><mrow><mi>A</mi><mo>∈</mo><mrow><mi>Mat</mi><mo>⁡</mo><mrow><mo stretchy="false">(</mo><mrow><mi>n</mi><mo lspace="0.222em" rspace="0.222em">×</mo><mi>n</mi></mrow><mo>,</mo><mi>𝕂</mi><mo stretchy="false">)</mo></mrow></mrow></mrow></math>, the series <math id="S1.Thmlemma1.p1.m2" class="ltx_Math" alttext="\sum_{k=0}^{\infty}\frac{1}{k!}A^{k}" display="inline"><mrow><msubsup><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mn>0</mn></mrow><mi mathvariant="normal">∞</mi></msubsup><mrow><mfrac><mn>1</mn><mrow><mi>k</mi><mo>!</mo></mrow></mfrac><mo>⁢</mo><msup><mi>A</mi><mi>k</mi></msup></mrow></mrow></math> converges.</span></p>
+</div>
+</div>
+<div id="S1.SS3.p4" class="ltx_para">
+<p class="ltx_p">By the following theorem we see where the exponential map <a href="#E2" title="In Definition 6.1.8. ‣ 6.1.3 Exponential Map ‣ 6.1 Lie Groups and Lie Algebras ‣ Chapter 6 Appendix ‣ Visualisations in Geometry" class="ltx_ref"><span class="ltx_text ltx_ref_tag">6.2</span></a> gets it’s name. The exponential map of a matrix group is exactly given by the formula (<a href="#E3" title="In Definition 6.1.9. ‣ 6.1.3 Exponential Map ‣ 6.1 Lie Groups and Lie Algebras ‣ Chapter 6 Appendix ‣ Visualisations in Geometry" class="ltx_ref"><span class="ltx_text ltx_ref_tag">6.3</span></a>) for the matrix exponential.</p>
+</div>
+<div id="S1.Thmtheorem3" class="ltx_theorem ltx_theorem_theorem">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Theorem 6.1.3</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S1.Thmtheorem3.p1" class="ltx_para">
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">Let <math id="S1.Thmtheorem3.p1.m1" class="ltx_Math" alttext="A\in\mathfrak{gl}(n,\mathbb{K})\subset\operatorname{Mat}(n\times n,\mathbb{K})" display="inline"><mrow><mi>A</mi><mo>∈</mo><mrow><mi>𝔤</mi><mo>⁢</mo><mi>𝔩</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>n</mi><mo>,</mo><mi>𝕂</mi><mo stretchy="false">)</mo></mrow></mrow><mo>⊂</mo><mrow><mi>Mat</mi><mo>⁡</mo><mrow><mo stretchy="false">(</mo><mrow><mi>n</mi><mo lspace="0.222em" rspace="0.222em">×</mo><mi>n</mi></mrow><mo>,</mo><mi>𝕂</mi><mo stretchy="false">)</mo></mrow></mrow></mrow></math>. Then</span></p>
+<table id="E4" class="ltx_equation ltx_eqn_table">
+
+<tbody><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="E4.m1" class="ltx_Math" alttext="\exp(A)=e^{A}" display="block"><mrow><mrow><mi>exp</mi><mo>⁡</mo><mrow><mo stretchy="false">(</mo><mi>A</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><msup><mi>e</mi><mi>A</mi></msup></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(6.4)</span></td>
+</tr></tbody>
+</table>
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">where <math id="S1.Thmtheorem3.p1.m2" class="ltx_Math" alttext="\exp" display="inline"><mi>exp</mi></math> on the left denotes the canonical exponential map from Lie algebra to Lie group (<a href="#E2" title="In Definition 6.1.8. ‣ 6.1.3 Exponential Map ‣ 6.1 Lie Groups and Lie Algebras ‣ Chapter 6 Appendix ‣ Visualisations in Geometry" class="ltx_ref"><span class="ltx_text ltx_ref_tag">6.2</span></a>). The same formula holds for the exponential map of any linear group.</span></p>
+</div>
+</div>
+<div id="S1.SS3.p5" class="ltx_para">
+<p class="ltx_p">An inverse to the matrix exponential is given by</p>
+</div>
+<div id="S1.Thmdefinition10" class="ltx_theorem ltx_theorem_definition">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Definition 6.1.10</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S1.Thmdefinition10.p1" class="ltx_para">
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">Let <math id="S1.Thmdefinition10.p1.m1" class="ltx_Math" alttext="A" display="inline"><mi>A</mi></math> be an <math id="S1.Thmdefinition10.p1.m2" class="ltx_Math" alttext="n\times n" display="inline"><mrow><mi>n</mi><mo lspace="0.222em" rspace="0.222em">×</mo><mi>n</mi></mrow></math> matrix. Then the <span class="ltx_text ltx_font_bold">logarithm</span> of <math id="S1.Thmdefinition10.p1.m3" class="ltx_Math" alttext="A" display="inline"><mi>A</mi></math> is</span></p>
+<table id="E5" class="ltx_equation ltx_eqn_table">
+
+<tbody><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="E5.m1" class="ltx_Math" alttext="\log A=\sum_{k=1}^{\infty}(-1)^{k+1}\frac{(A-\mathbb{I})^{k}}{k}" display="block"><mrow><mrow><mi>log</mi><mo lspace="0.167em">⁡</mo><mi>A</mi></mrow><mo rspace="0.111em">=</mo><mrow><munderover><mo movablelimits="false" rspace="0em">∑</mo><mrow><mi>k</mi><mo>=</mo><mn>1</mn></mrow><mi mathvariant="normal">∞</mi></munderover><mrow><msup><mrow><mo stretchy="false">(</mo><mrow><mo>−</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow><mrow><mi>k</mi><mo>+</mo><mn>1</mn></mrow></msup><mo>⁢</mo><mfrac><msup><mrow><mo stretchy="false">(</mo><mrow><mi>A</mi><mo>−</mo><mi>𝕀</mi></mrow><mo stretchy="false">)</mo></mrow><mi>k</mi></msup><mi>k</mi></mfrac></mrow></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(6.5)</span></td>
+</tr></tbody>
+</table>
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">wherever the series <a href="#E5" title="In Definition 6.1.10. ‣ 6.1.3 Exponential Map ‣ 6.1 Lie Groups and Lie Algebras ‣ Chapter 6 Appendix ‣ Visualisations in Geometry" class="ltx_ref"><span class="ltx_text ltx_ref_tag">6.5</span></a> converges.</span></p>
+</div>
+</div>
+<div id="S1.SS3.p6" class="ltx_para">
+<p class="ltx_p">For connected Lie groups, the exponential map is surjective. It is always a diffeomorphism in some neighbourhood of the identity. This gives a chart containing the identity in terms of <span class="ltx_text ltx_font_bold">logarithmic coordinates</span>.</p>
+</div>
+</section>
+<section id="S1.SS4" class="ltx_subsection">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">6.1.4 </span>Representations</h3>
+
+<div id="S1.SS4.p1" class="ltx_para">
+<p class="ltx_p">We can study Lie groups and Lie algebras by how they map into the general linear groups of vector spaces.</p>
+</div>
+<div id="S1.Thmdefinition11" class="ltx_theorem ltx_theorem_definition">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Definition 6.1.11</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S1.Thmdefinition11.p1" class="ltx_para">
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">Let <math id="S1.Thmdefinition11.p1.m1" class="ltx_Math" alttext="G" display="inline"><mi>G</mi></math> be a matrix Lie group. A <span class="ltx_text ltx_font_bold">finite-dimensional complex (real) representation</span> of <math id="S1.Thmdefinition11.p1.m2" class="ltx_Math" alttext="G" display="inline"><mi>G</mi></math> is a Lie group homomorphism</span></p>
+<table id="Ex27" class="ltx_equation ltx_eqn_table">
+
+<tbody><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ex27.m1" class="ltx_Math" alttext="\Pi:G\rightarrow\text{GL}(V)" display="block"><mrow><mi mathvariant="normal">Π</mi><mo lspace="0.278em" rspace="0.278em">:</mo><mrow><mi>G</mi><mo stretchy="false">→</mo><mrow><mtext class="ltx_mathvariant_italic">GL</mtext><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>V</mi><mo stretchy="false">)</mo></mrow></mrow></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+</table>
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">where <math id="S1.Thmdefinition11.p1.m3" class="ltx_Math" alttext="V" display="inline"><mi>V</mi></math> is a finite-dimensional complex (real) vector space (with <math id="S1.Thmdefinition11.p1.m4" class="ltx_Math" alttext="\dim(V)\geq 1" display="inline"><mrow><mrow><mo rspace="0em">dim</mo><mrow><mo stretchy="false">(</mo><mi>V</mi><mo stretchy="false">)</mo></mrow></mrow><mo>≥</mo><mn>1</mn></mrow></math>). If <math id="S1.Thmdefinition11.p1.m5" class="ltx_Math" alttext="\mathfrak{g}" display="inline"><mi>𝔤</mi></math> is real or complex Lie algebra, then a <span class="ltx_text ltx_font_bold">finite-dimensional complex (real) representation</span> of <math id="S1.Thmdefinition11.p1.m6" class="ltx_Math" alttext="\mathfrak{g}" display="inline"><mi>𝔤</mi></math> is a Lie algebra homomorphism <math id="S1.Thmdefinition11.p1.m7" class="ltx_Math" alttext="\pi:\mathfrak{g}\rightarrow\mathfrak{gl}(V)" display="inline"><mrow><mi>π</mi><mo lspace="0.278em" rspace="0.278em">:</mo><mrow><mi>𝔤</mi><mo stretchy="false">→</mo><mrow><mi>𝔤</mi><mo>⁢</mo><mi>𝔩</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>V</mi><mo stretchy="false">)</mo></mrow></mrow></mrow></mrow></math>, where <math id="S1.Thmdefinition11.p1.m8" class="ltx_Math" alttext="V" display="inline"><mi>V</mi></math> is a finite-dimensional complex (real) vector space.If <math id="S1.Thmdefinition11.p1.m9" class="ltx_Math" alttext="\Pi" display="inline"><mi mathvariant="normal">Π</mi></math> or <math id="S1.Thmdefinition11.p1.m10" class="ltx_Math" alttext="\pi" display="inline"><mi>π</mi></math> is an injective homomorphism, the representation is called <span class="ltx_text ltx_font_bold">faithful</span>.</span></p>
+</div>
+</div>
+<div id="S1.SS4.p2" class="ltx_para">
+<p class="ltx_p">There is a notion of maps between representations as follows:</p>
+</div>
+<div id="S1.Thmdefinition12" class="ltx_theorem ltx_theorem_definition">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Definition 6.1.12</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S1.Thmdefinition12.p1" class="ltx_para">
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">Let <math id="S1.Thmdefinition12.p1.m1" class="ltx_Math" alttext="G" display="inline"><mi>G</mi></math> be a matrix Lie group, let <math id="S1.Thmdefinition12.p1.m2" class="ltx_Math" alttext="\Pi" display="inline"><mi mathvariant="normal">Π</mi></math> be a representation of <math id="S1.Thmdefinition12.p1.m3" class="ltx_Math" alttext="G" display="inline"><mi>G</mi></math> acting on the space <math id="S1.Thmdefinition12.p1.m4" class="ltx_Math" alttext="V" display="inline"><mi>V</mi></math>, and let <math id="S1.Thmdefinition12.p1.m5" class="ltx_Math" alttext="\Sigma" display="inline"><mi mathvariant="normal">Σ</mi></math> be a representation of <math id="S1.Thmdefinition12.p1.m6" class="ltx_Math" alttext="G" display="inline"><mi>G</mi></math> acting on the space <math id="S1.Thmdefinition12.p1.m7" class="ltx_Math" alttext="W" display="inline"><mi>W</mi></math>. A linear map <math id="S1.Thmdefinition12.p1.m8" class="ltx_Math" alttext="\phi:V\rightarrow W" display="inline"><mrow><mi>ϕ</mi><mo lspace="0.278em" rspace="0.278em">:</mo><mrow><mi>V</mi><mo stretchy="false">→</mo><mi>W</mi></mrow></mrow></math> is called an <span class="ltx_text ltx_font_bold">intertwining map</span> of representations if</span></p>
+<table id="Ex28" class="ltx_equation ltx_eqn_table">
+
+<tbody><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ex28.m1" class="ltx_Math" alttext="\phi(\Pi(A)v)=\Sigma(A)\phi(v)" display="block"><mrow><mrow><mi>ϕ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi mathvariant="normal">Π</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>A</mi><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mi>v</mi></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mi mathvariant="normal">Σ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>A</mi><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mi>ϕ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>v</mi><mo stretchy="false">)</mo></mrow></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+</table>
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">for all <math id="S1.Thmdefinition12.p1.m9" class="ltx_Math" alttext="A\in G" display="inline"><mrow><mi>A</mi><mo>∈</mo><mi>G</mi></mrow></math> and all <math id="S1.Thmdefinition12.p1.m10" class="ltx_Math" alttext="v\in V" display="inline"><mrow><mi>v</mi><mo>∈</mo><mi>V</mi></mrow></math>. The analogous property defines intertwining maps of representations of a Lie algebra.</span></p>
+</div>
+<div id="S1.Thmdefinition12.p2" class="ltx_para">
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">If <math id="S1.Thmdefinition12.p2.m1" class="ltx_Math" alttext="\phi" display="inline"><mi>ϕ</mi></math> is an intertwining map of representations, and <math id="S1.Thmdefinition12.p2.m2" class="ltx_Math" alttext="\phi" display="inline"><mi>ϕ</mi></math> is invertible, then <math id="S1.Thmdefinition12.p2.m3" class="ltx_Math" alttext="\phi" display="inline"><mi>ϕ</mi></math> is called an <span class="ltx_text ltx_font_bold">isomorphism</span> of representations. If there exists an isomorphism between <math id="S1.Thmdefinition12.p2.m4" class="ltx_Math" alttext="V" display="inline"><mi>V</mi></math> and <math id="S1.Thmdefinition12.p2.m5" class="ltx_Math" alttext="W" display="inline"><mi>W</mi></math>, then the representations are said to be <span class="ltx_text ltx_font_bold">isomorphic</span>.</span></p>
+</div>
+</div>
+<div id="S1.SS4.p3" class="ltx_para">
+<p class="ltx_p">Given a representation of a matrix Lie group, we can construct a representation of it’s Lie algebra.</p>
+</div>
+<div id="S1.Thmproposition2" class="ltx_theorem ltx_theorem_proposition">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Proposition 6.1.2</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S1.Thmproposition2.p1" class="ltx_para">
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">Let <math id="S1.Thmproposition2.p1.m1" class="ltx_Math" alttext="G" display="inline"><mi>G</mi></math> be a matrix Lie group with Lie algebra <math id="S1.Thmproposition2.p1.m2" class="ltx_Math" alttext="\mathfrak{g}" display="inline"><mi>𝔤</mi></math> and let <math id="S1.Thmproposition2.p1.m3" class="ltx_Math" alttext="\Pi" display="inline"><mi mathvariant="normal">Π</mi></math> be a (finite-dimensional real or complex) representation of <math id="S1.Thmproposition2.p1.m4" class="ltx_Math" alttext="G" display="inline"><mi>G</mi></math>, acting on the space <math id="S1.Thmproposition2.p1.m5" class="ltx_Math" alttext="V" display="inline"><mi>V</mi></math>. Then there is a unique representation <math id="S1.Thmproposition2.p1.m6" class="ltx_Math" alttext="\pi" display="inline"><mi>π</mi></math> of <math id="S1.Thmproposition2.p1.m7" class="ltx_Math" alttext="\mathfrak{g}" display="inline"><mi>𝔤</mi></math> acting on the same space such that</span></p>
+<table id="Ex29" class="ltx_equation ltx_eqn_table">
+
+<tbody><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ex29.m1" class="ltx_Math" alttext="\Pi(e^{X})=e^{\pi(X)}" display="block"><mrow><mrow><mi mathvariant="normal">Π</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>e</mi><mi>X</mi></msup><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><msup><mi>e</mi><mrow><mi>π</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>X</mi><mo stretchy="false">)</mo></mrow></mrow></msup></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+</table>
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">for all <math id="S1.Thmproposition2.p1.m8" class="ltx_Math" alttext="X\in\mathfrak{g}" display="inline"><mrow><mi>X</mi><mo>∈</mo><mi>𝔤</mi></mrow></math>. The representation <math id="S1.Thmproposition2.p1.m9" class="ltx_Math" alttext="\pi" display="inline"><mi>π</mi></math> can be computed as</span></p>
+<table id="Ex30" class="ltx_equation ltx_eqn_table">
+
+<tbody><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ex30.m1" class="ltx_Math" alttext="\pi(X)=\left.\frac{d}{dt}\Pi(e^{tX})\right|_{t=0}" display="block"><mrow><mrow><mi>π</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>X</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><msub><mrow><mrow><mfrac><mi>d</mi><mrow><mi>d</mi><mo>⁢</mo><mi>t</mi></mrow></mfrac><mo>⁢</mo><mi mathvariant="normal">Π</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>e</mi><mrow><mi>t</mi><mo>⁢</mo><mi>X</mi></mrow></msup><mo stretchy="false">)</mo></mrow></mrow><mo>|</mo></mrow><mrow><mi>t</mi><mo>=</mo><mn>0</mn></mrow></msub></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+</table>
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">and satisfies</span></p>
+<table id="Ex31" class="ltx_equation ltx_eqn_table">
+
+<tbody><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ex31.m1" class="ltx_Math" alttext="\pi(AXA^{-1})=\Pi(A)\pi(X)\Pi(A)^{-1}" display="block"><mrow><mrow><mi>π</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>A</mi><mo>⁢</mo><mi>X</mi><mo>⁢</mo><msup><mi>A</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mi mathvariant="normal">Π</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>A</mi><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mi>π</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>X</mi><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mi mathvariant="normal">Π</mi><mo>⁢</mo><msup><mrow><mo stretchy="false">(</mo><mi>A</mi><mo stretchy="false">)</mo></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msup></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+</table>
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">for all <math id="S1.Thmproposition2.p1.m10" class="ltx_Math" alttext="X\in\mathfrak{g}" display="inline"><mrow><mi>X</mi><mo>∈</mo><mi>𝔤</mi></mrow></math> and <math id="S1.Thmproposition2.p1.m11" class="ltx_Math" alttext="A\in G" display="inline"><mrow><mi>A</mi><mo>∈</mo><mi>G</mi></mrow></math>.</span></p>
+</div>
+</div>
+<div id="S1.SS4.p4" class="ltx_para">
+<p class="ltx_p">We then have a way of determining isomorphism of Lie group representations (for connected matrix Lie groups anyway) through their associated Lie algebra representations, which can be easier to work with than the group representations themselves, since the Lie algebras in question are well-behaved finite-dimensional vector spaces.</p>
+</div>
+<div id="S1.Thmproposition3" class="ltx_theorem ltx_theorem_proposition">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Proposition 6.1.3</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S1.Thmproposition3.p1" class="ltx_para">
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">Let <math id="S1.Thmproposition3.p1.m1" class="ltx_Math" alttext="G" display="inline"><mi>G</mi></math> be a connected matrix Lie group, let <math id="S1.Thmproposition3.p1.m2" class="ltx_Math" alttext="\Pi_{1}" display="inline"><msub><mi mathvariant="normal">Π</mi><mn>1</mn></msub></math> and <math id="S1.Thmproposition3.p1.m3" class="ltx_Math" alttext="\Pi_{2}" display="inline"><msub><mi mathvariant="normal">Π</mi><mn>2</mn></msub></math> be representations of <math id="S1.Thmproposition3.p1.m4" class="ltx_Math" alttext="G" display="inline"><mi>G</mi></math>, and let <math id="S1.Thmproposition3.p1.m5" class="ltx_Math" alttext="\pi_{1},\pi_{2}" display="inline"><mrow><msub><mi>π</mi><mn>1</mn></msub><mo>,</mo><msub><mi>π</mi><mn>2</mn></msub></mrow></math> be the associated Lie algebra representations. Then <math id="S1.Thmproposition3.p1.m6" class="ltx_Math" alttext="\pi_{1}" display="inline"><msub><mi>π</mi><mn>1</mn></msub></math> and <math id="S1.Thmproposition3.p1.m7" class="ltx_Math" alttext="\pi_{2}" display="inline"><msub><mi>π</mi><mn>2</mn></msub></math> are isomorphic if and only if <math id="S1.Thmproposition3.p1.m8" class="ltx_Math" alttext="\Pi_{1}" display="inline"><msub><mi mathvariant="normal">Π</mi><mn>1</mn></msub></math> and <math id="S1.Thmproposition3.p1.m9" class="ltx_Math" alttext="\Pi_{2}" display="inline"><msub><mi mathvariant="normal">Π</mi><mn>2</mn></msub></math> are isomorphic.</span></p>
+</div>
+</div>
+</section>
+</section>
+<section id="S2" class="ltx_section">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">6.2 </span>Quaternions</h2>
+
+<div id="S2.p1" class="ltx_para">
+<p class="ltx_p">Somewhat backwards to typical fashion, where quaternions find applications in computer graphics <cite class="ltx_cite ltx_citemacro_cite">[<a href="bib.html#bib15" title="Quaternions for computer graphics" class="ltx_ref">VIN21</a>]</cite>, we are applying computer graphics to visualising quaternions as they appear in representing <math id="S2.p1.m1" class="ltx_Math" alttext="SU(2)" display="inline"><mrow><mi>S</mi><mo>⁢</mo><mi>U</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></mrow></math>.</p>
+</div>
+<div id="S2.p2" class="ltx_para">
+<p class="ltx_p">Following <cite class="ltx_cite ltx_citemacro_cite">[<a href="bib.html#bib6" title="Quaternions, Clifford algebras and relativistic physics" class="ltx_ref">GIR07</a>]</cite>, we introduce quaternions. To do so, we first define the quaternion group.</p>
+</div>
+<div id="S2.Thmdefinition1" class="ltx_theorem ltx_theorem_definition">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Definition 6.2.1</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S2.Thmdefinition1.p1" class="ltx_para">
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">The quaternion group <math id="S2.Thmdefinition1.p1.m1" class="ltx_Math" alttext="Q" display="inline"><mi>Q</mi></math> is the <math id="S2.Thmdefinition1.p1.m2" class="ltx_Math" alttext="8" display="inline"><mn>8</mn></math> element set <math id="S2.Thmdefinition1.p1.m3" class="ltx_Math" alttext="\{1,-1,i,-i,j,-j,k,-k\}" display="inline"><mrow><mo stretchy="false">{</mo><mn>1</mn><mo>,</mo><mrow><mo>−</mo><mn>1</mn></mrow><mo>,</mo><mi>i</mi><mo>,</mo><mrow><mo>−</mo><mi>i</mi></mrow><mo>,</mo><mi>j</mi><mo>,</mo><mrow><mo>−</mo><mi>j</mi></mrow><mo>,</mo><mi>k</mi><mo>,</mo><mrow><mo>−</mo><mi>k</mi></mrow><mo stretchy="false">}</mo></mrow></math> equipped with multiplication such that the relations</span></p>
+<table id="S2.EGx21" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tbody id="Ex32"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ex32.m1" class="ltx_Math" alttext="\displaystyle i^{2}" display="inline"><msup><mi>i</mi><mn>2</mn></msup></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ex32.m2" class="ltx_Math" alttext="\displaystyle=j^{2}=k^{2}=-1," display="inline"><mrow><mrow><mi></mi><mo>=</mo><msup><mi>j</mi><mn>2</mn></msup><mo>=</mo><msup><mi>k</mi><mn>2</mn></msup><mo>=</mo><mrow><mo>−</mo><mn>1</mn></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+<tbody id="Ex33"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ex33.m1" class="ltx_Math" alttext="\displaystyle ij" display="inline"><mrow><mi>i</mi><mo>⁢</mo><mi>j</mi></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ex33.m2" class="ltx_Math" alttext="\displaystyle=k" display="inline"><mrow><mi></mi><mo>=</mo><mi>k</mi></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+</table>
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">hold.</span></p>
+</div>
+</div>
+<div id="S2.p3" class="ltx_para">
+<p class="ltx_p">With the quaternion group we are now ready to define the quaternions (or the quaternion algebra).</p>
+</div>
+<div id="S2.Thmdefinition2" class="ltx_theorem ltx_theorem_definition">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Definition 6.2.2</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S2.Thmdefinition2.p1" class="ltx_para">
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">The quaternions <math id="S2.Thmdefinition2.p1.m1" class="ltx_Math" alttext="\mathbb{H}" display="inline"><mi>ℍ</mi></math> are the vector space <math id="S2.Thmdefinition2.p1.m2" class="ltx_Math" alttext="\{a_{0}+a_{1}i+a_{2}j+a_{3}k|a_{0},a_{1},a_{2},a_{3}\in\mathbb{R}\}" display="inline"><mrow><mo stretchy="false">{</mo><mrow><msub><mi>a</mi><mn>0</mn></msub><mo>+</mo><mrow><msub><mi>a</mi><mn>1</mn></msub><mo>⁢</mo><mi>i</mi></mrow><mo>+</mo><mrow><msub><mi>a</mi><mn>2</mn></msub><mo>⁢</mo><mi>j</mi></mrow><mo>+</mo><mrow><msub><mi>a</mi><mn>3</mn></msub><mo>⁢</mo><mi>k</mi></mrow></mrow><mo lspace="0em" rspace="0em">|</mo><mrow><mrow><msub><mi>a</mi><mn>0</mn></msub><mo>,</mo><msub><mi>a</mi><mn>1</mn></msub><mo>,</mo><msub><mi>a</mi><mn>2</mn></msub><mo>,</mo><msub><mi>a</mi><mn>3</mn></msub></mrow><mo>∈</mo><mi>ℝ</mi></mrow><mo stretchy="false">}</mo></mrow></math>. For quaternions <math id="S2.Thmdefinition2.p1.m3" class="ltx_Math" alttext="a=(a_{0}+a_{1}i+a_{2}j+a_{3}k),b=(b_{0}+b_{1}i+b_{2}j+b_{3}k)" display="inline"><mrow><mrow><mi>a</mi><mo>=</mo><mrow><mo stretchy="false">(</mo><mrow><msub><mi>a</mi><mn>0</mn></msub><mo>+</mo><mrow><msub><mi>a</mi><mn>1</mn></msub><mo>⁢</mo><mi>i</mi></mrow><mo>+</mo><mrow><msub><mi>a</mi><mn>2</mn></msub><mo>⁢</mo><mi>j</mi></mrow><mo>+</mo><mrow><msub><mi>a</mi><mn>3</mn></msub><mo>⁢</mo><mi>k</mi></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>,</mo><mrow><mi>b</mi><mo>=</mo><mrow><mo stretchy="false">(</mo><mrow><msub><mi>b</mi><mn>0</mn></msub><mo>+</mo><mrow><msub><mi>b</mi><mn>1</mn></msub><mo>⁢</mo><mi>i</mi></mrow><mo>+</mo><mrow><msub><mi>b</mi><mn>2</mn></msub><mo>⁢</mo><mi>j</mi></mrow><mo>+</mo><mrow><msub><mi>b</mi><mn>3</mn></msub><mo>⁢</mo><mi>k</mi></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow></mrow></math> and <math id="S2.Thmdefinition2.p1.m4" class="ltx_Math" alttext="\lambda\in\mathbb{R}" display="inline"><mrow><mi>λ</mi><mo>∈</mo><mi>ℝ</mi></mrow></math> we define addition by</span></p>
+<table id="Ex34" class="ltx_equation ltx_eqn_table">
+
+<tbody><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ex34.m1" class="ltx_Math" alttext="(a_{0}+a_{1}i+a_{2}j+a_{3}k)+(b_{0}+b_{1}i+b_{2}j+b_{3}k)=(a_{0}+b_{0})+(a_{1}%
++b_{1})i+(a_{2}+b_{2})j+(a_{3}+b_{3})k" display="block"><mrow><mrow><mrow><mo stretchy="false">(</mo><mrow><msub><mi>a</mi><mn>0</mn></msub><mo>+</mo><mrow><msub><mi>a</mi><mn>1</mn></msub><mo>⁢</mo><mi>i</mi></mrow><mo>+</mo><mrow><msub><mi>a</mi><mn>2</mn></msub><mo>⁢</mo><mi>j</mi></mrow><mo>+</mo><mrow><msub><mi>a</mi><mn>3</mn></msub><mo>⁢</mo><mi>k</mi></mrow></mrow><mo stretchy="false">)</mo></mrow><mo>+</mo><mrow><mo stretchy="false">(</mo><mrow><msub><mi>b</mi><mn>0</mn></msub><mo>+</mo><mrow><msub><mi>b</mi><mn>1</mn></msub><mo>⁢</mo><mi>i</mi></mrow><mo>+</mo><mrow><msub><mi>b</mi><mn>2</mn></msub><mo>⁢</mo><mi>j</mi></mrow><mo>+</mo><mrow><msub><mi>b</mi><mn>3</mn></msub><mo>⁢</mo><mi>k</mi></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mrow><mo stretchy="false">(</mo><mrow><msub><mi>a</mi><mn>0</mn></msub><mo>+</mo><msub><mi>b</mi><mn>0</mn></msub></mrow><mo stretchy="false">)</mo></mrow><mo>+</mo><mrow><mrow><mo stretchy="false">(</mo><mrow><msub><mi>a</mi><mn>1</mn></msub><mo>+</mo><msub><mi>b</mi><mn>1</mn></msub></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mi>i</mi></mrow><mo>+</mo><mrow><mrow><mo stretchy="false">(</mo><mrow><msub><mi>a</mi><mn>2</mn></msub><mo>+</mo><msub><mi>b</mi><mn>2</mn></msub></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mi>j</mi></mrow><mo>+</mo><mrow><mrow><mo stretchy="false">(</mo><mrow><msub><mi>a</mi><mn>3</mn></msub><mo>+</mo><msub><mi>b</mi><mn>3</mn></msub></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mi>k</mi></mrow></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+</table>
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">and scalar multiplication by</span></p>
+<table id="Ex35" class="ltx_equation ltx_eqn_table">
+
+<tbody><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ex35.m1" class="ltx_Math" alttext="\lambda(a_{0}+a_{1}i+a_{2}j+a_{3}k)=(\lambda a_{0})+(\lambda a_{1})i+(\lambda a%
+_{2})j+(\lambda a_{3})k." display="block"><mrow><mrow><mrow><mi>λ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><msub><mi>a</mi><mn>0</mn></msub><mo>+</mo><mrow><msub><mi>a</mi><mn>1</mn></msub><mo>⁢</mo><mi>i</mi></mrow><mo>+</mo><mrow><msub><mi>a</mi><mn>2</mn></msub><mo>⁢</mo><mi>j</mi></mrow><mo>+</mo><mrow><msub><mi>a</mi><mn>3</mn></msub><mo>⁢</mo><mi>k</mi></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mrow><mo stretchy="false">(</mo><mrow><mi>λ</mi><mo>⁢</mo><msub><mi>a</mi><mn>0</mn></msub></mrow><mo stretchy="false">)</mo></mrow><mo>+</mo><mrow><mrow><mo stretchy="false">(</mo><mrow><mi>λ</mi><mo>⁢</mo><msub><mi>a</mi><mn>1</mn></msub></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mi>i</mi></mrow><mo>+</mo><mrow><mrow><mo stretchy="false">(</mo><mrow><mi>λ</mi><mo>⁢</mo><msub><mi>a</mi><mn>2</mn></msub></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mi>j</mi></mrow><mo>+</mo><mrow><mrow><mo stretchy="false">(</mo><mrow><mi>λ</mi><mo>⁢</mo><msub><mi>a</mi><mn>3</mn></msub></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mi>k</mi></mrow></mrow></mrow><mo lspace="0em">.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+</table>
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">They form an associative algebra with multiplication operation</span></p>
+<table id="S2.EGx22" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tbody id="Ex36"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ex36.m1" class="ltx_Math" alttext="\displaystyle ab=" display="inline"><mrow><mrow><mi>a</mi><mo>⁢</mo><mi>b</mi></mrow><mo>=</mo><mi></mi></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ex36.m2" class="ltx_Math" alttext="\displaystyle(a_{0}b_{0}-a_{1}b_{1}-a_{2}b_{2}-a_{3}b_{3})" display="inline"><mrow><mo stretchy="false">(</mo><mrow><mrow><msub><mi>a</mi><mn>0</mn></msub><mo>⁢</mo><msub><mi>b</mi><mn>0</mn></msub></mrow><mo>−</mo><mrow><msub><mi>a</mi><mn>1</mn></msub><mo>⁢</mo><msub><mi>b</mi><mn>1</mn></msub></mrow><mo>−</mo><mrow><msub><mi>a</mi><mn>2</mn></msub><mo>⁢</mo><msub><mi>b</mi><mn>2</mn></msub></mrow><mo>−</mo><mrow><msub><mi>a</mi><mn>3</mn></msub><mo>⁢</mo><msub><mi>b</mi><mn>3</mn></msub></mrow></mrow><mo stretchy="false">)</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+<tbody id="Ex37"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ex37.m1" class="ltx_Math" alttext="\displaystyle+" display="inline"><mo>+</mo></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ex37.m2" class="ltx_Math" alttext="\displaystyle(a_{0}b_{1}+a_{1}b_{0}+a_{2}b_{3}-a_{3}b_{2})i" display="inline"><mrow><mrow><mo stretchy="false">(</mo><mrow><mrow><mrow><msub><mi>a</mi><mn>0</mn></msub><mo>⁢</mo><msub><mi>b</mi><mn>1</mn></msub></mrow><mo>+</mo><mrow><msub><mi>a</mi><mn>1</mn></msub><mo>⁢</mo><msub><mi>b</mi><mn>0</mn></msub></mrow><mo>+</mo><mrow><msub><mi>a</mi><mn>2</mn></msub><mo>⁢</mo><msub><mi>b</mi><mn>3</mn></msub></mrow></mrow><mo>−</mo><mrow><msub><mi>a</mi><mn>3</mn></msub><mo>⁢</mo><msub><mi>b</mi><mn>2</mn></msub></mrow></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mi>i</mi></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+<tbody id="Ex38"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ex38.m1" class="ltx_Math" alttext="\displaystyle+" display="inline"><mo>+</mo></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ex38.m2" class="ltx_Math" alttext="\displaystyle(a_{0}b_{2}+a_{2}b_{0}+a_{3}b_{1}-a_{1}b_{3})j" display="inline"><mrow><mrow><mo stretchy="false">(</mo><mrow><mrow><mrow><msub><mi>a</mi><mn>0</mn></msub><mo>⁢</mo><msub><mi>b</mi><mn>2</mn></msub></mrow><mo>+</mo><mrow><msub><mi>a</mi><mn>2</mn></msub><mo>⁢</mo><msub><mi>b</mi><mn>0</mn></msub></mrow><mo>+</mo><mrow><msub><mi>a</mi><mn>3</mn></msub><mo>⁢</mo><msub><mi>b</mi><mn>1</mn></msub></mrow></mrow><mo>−</mo><mrow><msub><mi>a</mi><mn>1</mn></msub><mo>⁢</mo><msub><mi>b</mi><mn>3</mn></msub></mrow></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mi>j</mi></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+<tbody id="Ex39"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ex39.m1" class="ltx_Math" alttext="\displaystyle+" display="inline"><mo>+</mo></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ex39.m2" class="ltx_Math" alttext="\displaystyle(a_{0}b_{3}+a_{3}b_{0}+a_{1}b_{2}-a_{2}b_{1})k" display="inline"><mrow><mrow><mo stretchy="false">(</mo><mrow><mrow><mrow><msub><mi>a</mi><mn>0</mn></msub><mo>⁢</mo><msub><mi>b</mi><mn>3</mn></msub></mrow><mo>+</mo><mrow><msub><mi>a</mi><mn>3</mn></msub><mo>⁢</mo><msub><mi>b</mi><mn>0</mn></msub></mrow><mo>+</mo><mrow><msub><mi>a</mi><mn>1</mn></msub><mo>⁢</mo><msub><mi>b</mi><mn>2</mn></msub></mrow></mrow><mo>−</mo><mrow><msub><mi>a</mi><mn>2</mn></msub><mo>⁢</mo><msub><mi>b</mi><mn>1</mn></msub></mrow></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mi>k</mi></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+</table>
+</div>
+</div>
+<div id="S2.p4" class="ltx_para">
+<p class="ltx_p">The multiplication operation on <math id="S2.p4.m1" class="ltx_Math" alttext="\mathbb{H}" display="inline"><mi>ℍ</mi></math> is defined in such a way that it is compatible with multiplication in the quaternion group <math id="S2.p4.m2" class="ltx_Math" alttext="Q" display="inline"><mi>Q</mi></math>, and the multiplicative identity is <math id="S2.p4.m3" class="ltx_Math" alttext="1=1+0i+0j+0k" display="inline"><mrow><mn>1</mn><mo>=</mo><mrow><mn>1</mn><mo>+</mo><mrow><mn>0</mn><mo>⁢</mo><mi>i</mi></mrow><mo>+</mo><mrow><mn>0</mn><mo>⁢</mo><mi>j</mi></mrow><mo>+</mo><mrow><mn>0</mn><mo>⁢</mo><mi>k</mi></mrow></mrow></mrow></math>.</p>
+</div>
+<div id="S2.p5" class="ltx_para">
+<p class="ltx_p">The quaternions are an extension of the complex numbers. If you were to restrict to just the subgroup <math id="S2.p5.m1" class="ltx_Math" alttext="\{1,-1,i,-1\}" display="inline"><mrow><mo stretchy="false">{</mo><mn>1</mn><mo>,</mo><mrow><mo>−</mo><mn>1</mn></mrow><mo>,</mo><mi>i</mi><mo>,</mo><mrow><mo>−</mo><mn>1</mn></mrow><mo stretchy="false">}</mo></mrow></math>, then the relations satisfied are exactly those satisfied by the complex numbers <math id="S2.p5.m2" class="ltx_Math" alttext="1" display="inline"><mn>1</mn></math> and <math id="S2.p5.m3" class="ltx_Math" alttext="i" display="inline"><mi>i</mi></math> under multiplication. We will soon see that it is this fact which makes quaternions so useful for representing rotations.</p>
+</div>
+<div id="S2.Thmdefinition3" class="ltx_theorem ltx_theorem_definition">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Definition 6.2.3</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S2.Thmdefinition3.p1" class="ltx_para">
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">Let <math id="S2.Thmdefinition3.p1.m1" class="ltx_Math" alttext="a\in\mathbb{H}" display="inline"><mrow><mi>a</mi><mo>∈</mo><mi>ℍ</mi></mrow></math>. Then we define the <span class="ltx_text ltx_font_bold">conjugate</span> of <math id="S2.Thmdefinition3.p1.m2" class="ltx_Math" alttext="a" display="inline"><mi>a</mi></math>, denoted <math id="S2.Thmdefinition3.p1.m3" class="ltx_Math" alttext="\overline{a}" display="inline"><mover accent="true"><mi>a</mi><mo>¯</mo></mover></math>, by</span></p>
+<table id="Ex41" class="ltx_equation ltx_eqn_table">
+
+<tbody><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ex41.m1" class="ltx_Math" alttext="\overline{a}=a_{0}-a_{1}i-a_{2}j-a_{3}k," display="block"><mrow><mrow><mover accent="true"><mi>a</mi><mo>¯</mo></mover><mo>=</mo><mrow><msub><mi>a</mi><mn>0</mn></msub><mo>−</mo><mrow><msub><mi>a</mi><mn>1</mn></msub><mo>⁢</mo><mi>i</mi></mrow><mo>−</mo><mrow><msub><mi>a</mi><mn>2</mn></msub><mo>⁢</mo><mi>j</mi></mrow><mo>−</mo><mrow><msub><mi>a</mi><mn>3</mn></msub><mo>⁢</mo><mi>k</mi></mrow></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+</table>
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">and the <span class="ltx_text ltx_font_bold">modulus</span> of <math id="S2.Thmdefinition3.p1.m4" class="ltx_Math" alttext="a" display="inline"><mi>a</mi></math>, denoted <math id="S2.Thmdefinition3.p1.m5" class="ltx_Math" alttext="|a|" display="inline"><mrow><mo stretchy="false">|</mo><mi>a</mi><mo stretchy="false">|</mo></mrow></math> by</span></p>
+<table id="S2.EGx23" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tbody id="Ex42"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ex42.m1" class="ltx_Math" alttext="\displaystyle|a|^{2}=a\overline{a}=a_{0}^{1}+a_{1}^{2}+a_{2}^{2}+a_{3}^{2}" display="inline"><mrow><msup><mrow><mo stretchy="false">|</mo><mi>a</mi><mo stretchy="false">|</mo></mrow><mn>2</mn></msup><mo>=</mo><mrow><mi>a</mi><mo>⁢</mo><mover accent="true"><mi>a</mi><mo>¯</mo></mover></mrow><mo>=</mo><mrow><msubsup><mi>a</mi><mn>0</mn><mn>1</mn></msubsup><mo>+</mo><msubsup><mi>a</mi><mn>1</mn><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>a</mi><mn>2</mn><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>a</mi><mn>3</mn><mn>2</mn></msubsup></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+<tbody id="Ex43"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ex43.m1" class="ltx_Math" alttext="\displaystyle|a|=\sqrt{|a|^{2}}." display="inline"><mrow><mrow><mrow><mo stretchy="false">|</mo><mi>a</mi><mo stretchy="false">|</mo></mrow><mo>=</mo><msqrt><msup><mrow><mo stretchy="false">|</mo><mi>a</mi><mo stretchy="false">|</mo></mrow><mn>2</mn></msup></msqrt></mrow><mo lspace="0em">.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+</table>
+</div>
+</div>
+<div id="S2.p6" class="ltx_para">
+<p class="ltx_p">We can streamline our definition of quaternions by representing a quaternion using a pair of complex numbers rather than a quadruple of real numbers.</p>
+</div>
+<div id="S2.p7" class="ltx_para">
+<p class="ltx_p">Let <math id="S2.p7.m1" class="ltx_Math" alttext="a_{0}+a_{1}i+a_{2}j+a_{3}k\in\mathbb{H}" display="inline"><mrow><mrow><msub><mi>a</mi><mn>0</mn></msub><mo>+</mo><mrow><msub><mi>a</mi><mn>1</mn></msub><mo>⁢</mo><mi>i</mi></mrow><mo>+</mo><mrow><msub><mi>a</mi><mn>2</mn></msub><mo>⁢</mo><mi>j</mi></mrow><mo>+</mo><mrow><msub><mi>a</mi><mn>3</mn></msub><mo>⁢</mo><mi>k</mi></mrow></mrow><mo>∈</mo><mi>ℍ</mi></mrow></math> be a quaternion, then we can equivalently represent it by a pair of complex numbers <math id="S2.p7.m2" class="ltx_Math" alttext="a=a_{0}+ia_{1}" display="inline"><mrow><mi>a</mi><mo>=</mo><mrow><msub><mi>a</mi><mn>0</mn></msub><mo>+</mo><mrow><mi>i</mi><mo>⁢</mo><msub><mi>a</mi><mn>1</mn></msub></mrow></mrow></mrow></math> and <math id="S2.p7.m3" class="ltx_Math" alttext="b=a_{2}+ia_{3}" display="inline"><mrow><mi>b</mi><mo>=</mo><mrow><msub><mi>a</mi><mn>2</mn></msub><mo>+</mo><mrow><mi>i</mi><mo>⁢</mo><msub><mi>a</mi><mn>3</mn></msub></mrow></mrow></mrow></math> using the complex matrix</p>
+<table id="E6" class="ltx_equation ltx_eqn_table">
+
+<tbody><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="E6.m1" class="ltx_Math" alttext="\begin{pmatrix}a_{0}+ia_{1}&amp;a_{2}+ia_{3}\\
+-a_{2}+ia_{3}&amp;a_{0}-ia_{1}\end{pmatrix}=\begin{pmatrix}a&amp;b\\
+-\overline{b}&amp;\overline{a}\end{pmatrix}" display="block"><mrow><mrow><mo>(</mo><mtable columnspacing="5pt" displaystyle="true" rowspacing="0pt"><mtr><mtd><mrow><msub><mi>a</mi><mn>0</mn></msub><mo>+</mo><mrow><mi>i</mi><mo>⁢</mo><msub><mi>a</mi><mn>1</mn></msub></mrow></mrow></mtd><mtd><mrow><msub><mi>a</mi><mn>2</mn></msub><mo>+</mo><mrow><mi>i</mi><mo>⁢</mo><msub><mi>a</mi><mn>3</mn></msub></mrow></mrow></mtd></mtr><mtr><mtd><mrow><mrow><mo>−</mo><msub><mi>a</mi><mn>2</mn></msub></mrow><mo>+</mo><mrow><mi>i</mi><mo>⁢</mo><msub><mi>a</mi><mn>3</mn></msub></mrow></mrow></mtd><mtd><mrow><msub><mi>a</mi><mn>0</mn></msub><mo>−</mo><mrow><mi>i</mi><mo>⁢</mo><msub><mi>a</mi><mn>1</mn></msub></mrow></mrow></mtd></mtr></mtable><mo>)</mo></mrow><mo>=</mo><mrow><mo>(</mo><mtable columnspacing="5pt" displaystyle="true" rowspacing="0pt"><mtr><mtd><mi>a</mi></mtd><mtd><mi>b</mi></mtd></mtr><mtr><mtd><mrow><mo>−</mo><mover accent="true"><mi>b</mi><mo>¯</mo></mover></mrow></mtd><mtd><mover accent="true"><mi>a</mi><mo>¯</mo></mover></mtd></mtr></mtable><mo>)</mo></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(6.6)</span></td>
+</tr></tbody>
+</table>
+</div>
+<div id="S2.p8" class="ltx_para">
+<p class="ltx_p">giving that the quaternions <math id="S2.p8.m1" class="ltx_Math" alttext="1,i,j,k" display="inline"><mrow><mn>1</mn><mo>,</mo><mi>i</mi><mo>,</mo><mi>j</mi><mo>,</mo><mi>k</mi></mrow></math> have matrices</p>
+<table id="E7" class="ltx_equation ltx_eqn_table">
+
+<tbody><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="E7.m1" class="ltx_Math" alttext="1\mapsto\begin{pmatrix}1&amp;0\\
+0&amp;1\end{pmatrix},i\mapsto\begin{pmatrix}i&amp;0\\
+0&amp;-i\end{pmatrix},j\mapsto\begin{pmatrix}0&amp;1\\
+-1&amp;0\end{pmatrix},k\mapsto\begin{pmatrix}0&amp;i\\
+i&amp;0\end{pmatrix}" display="block"><mrow><mrow><mn>1</mn><mo stretchy="false">↦</mo><mrow><mo>(</mo><mtable columnspacing="5pt" displaystyle="true" rowspacing="0pt"><mtr><mtd><mn>1</mn></mtd><mtd><mn>0</mn></mtd></mtr><mtr><mtd><mn>0</mn></mtd><mtd><mn>1</mn></mtd></mtr></mtable><mo>)</mo></mrow></mrow><mo>,</mo><mrow><mrow><mi>i</mi><mo stretchy="false">↦</mo><mrow><mo>(</mo><mtable columnspacing="5pt" displaystyle="true" rowspacing="0pt"><mtr><mtd><mi>i</mi></mtd><mtd><mn>0</mn></mtd></mtr><mtr><mtd><mn>0</mn></mtd><mtd><mrow><mo>−</mo><mi>i</mi></mrow></mtd></mtr></mtable><mo>)</mo></mrow></mrow><mo>,</mo><mrow><mrow><mi>j</mi><mo stretchy="false">↦</mo><mrow><mo>(</mo><mtable columnspacing="5pt" displaystyle="true" rowspacing="0pt"><mtr><mtd><mn>0</mn></mtd><mtd><mn>1</mn></mtd></mtr><mtr><mtd><mrow><mo>−</mo><mn>1</mn></mrow></mtd><mtd><mn>0</mn></mtd></mtr></mtable><mo>)</mo></mrow></mrow><mo>,</mo><mrow><mi>k</mi><mo stretchy="false">↦</mo><mrow><mo>(</mo><mtable columnspacing="5pt" displaystyle="true" rowspacing="0pt"><mtr><mtd><mn>0</mn></mtd><mtd><mi>i</mi></mtd></mtr><mtr><mtd><mi>i</mi></mtd><mtd><mn>0</mn></mtd></mtr></mtable><mo>)</mo></mrow></mrow></mrow></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(6.7)</span></td>
+</tr></tbody>
+</table>
+</div>
+<div id="S2.p9" class="ltx_para">
+<p class="ltx_p">The product of quaternions is then given by the product of their corresponding matrices.</p>
+</div>
+<div id="S2.Thmdefinition4" class="ltx_theorem ltx_theorem_definition">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Definition 6.2.4</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="S2.Thmdefinition4.p1" class="ltx_para">
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">If a quaternion <math id="S2.Thmdefinition4.p1.m1" class="ltx_Math" alttext="u" display="inline"><mi>u</mi></math> is such that <math id="S2.Thmdefinition4.p1.m2" class="ltx_Math" alttext="|u|=1" display="inline"><mrow><mrow><mo stretchy="false">|</mo><mi>u</mi><mo stretchy="false">|</mo></mrow><mo>=</mo><mn>1</mn></mrow></math>, we call <math id="S2.Thmdefinition4.p1.m3" class="ltx_Math" alttext="u" display="inline"><mi>u</mi></math> a <span class="ltx_text ltx_font_bold">unit quaternion</span>. Denote the set of unit quaternions <math id="S2.Thmdefinition4.p1.m4" class="ltx_Math" alttext="\{u\in\mathbb{H}||u|=1\}" display="inline"><mrow><mo stretchy="false">{</mo><mrow><mi>u</mi><mo>∈</mo><mi>ℍ</mi></mrow><mo lspace="0em" rspace="0em">|</mo><mrow><mrow><mo stretchy="false">|</mo><mi>u</mi><mo stretchy="false">|</mo></mrow><mo>=</mo><mn>1</mn></mrow><mo stretchy="false">}</mo></mrow></math> by <math id="S2.Thmdefinition4.p1.m5" class="ltx_Math" alttext="\mathbb{H}^{1}" display="inline"><msup><mi>ℍ</mi><mn>1</mn></msup></math>.</span></p>
+</div>
+</div>
+<div id="S2.p10" class="ltx_para">
+<p class="ltx_p">The unit quaternions <math id="S2.p10.m1" class="ltx_Math" alttext="\mathbb{H}^{1}" display="inline"><msup><mi>ℍ</mi><mn>1</mn></msup></math> form a subgroup of <math id="S2.p10.m2" class="ltx_Math" alttext="\mathbb{H}" display="inline"><mi>ℍ</mi></math>, since for quaternions <math id="S2.p10.m3" class="ltx_Math" alttext="a,b" display="inline"><mrow><mi>a</mi><mo>,</mo><mi>b</mi></mrow></math> in general, the norm of their product is the product of their norms, i.e. <math id="S2.p10.m4" class="ltx_Math" alttext="|ab|=|a||b|" display="inline"><mrow><mrow><mo stretchy="false">|</mo><mrow><mi>a</mi><mo>⁢</mo><mi>b</mi></mrow><mo stretchy="false">|</mo></mrow><mo>=</mo><mrow><mrow><mo stretchy="false">|</mo><mi>a</mi><mo stretchy="false">|</mo></mrow><mo>⁢</mo><mrow><mo stretchy="false">|</mo><mi>b</mi><mo stretchy="false">|</mo></mrow></mrow></mrow></math>. This means that for quaternions <math id="S2.p10.m5" class="ltx_Math" alttext="a,b\in\mathbb{H}^{1}" display="inline"><mrow><mrow><mi>a</mi><mo>,</mo><mi>b</mi></mrow><mo>∈</mo><msup><mi>ℍ</mi><mn>1</mn></msup></mrow></math>, the product <math id="S2.p10.m6" class="ltx_Math" alttext="|ab^{-1}|=\frac{|a|}{|b|}=1" display="inline"><mrow><mrow><mo stretchy="false">|</mo><mrow><mi>a</mi><mo>⁢</mo><msup><mi>b</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup></mrow><mo stretchy="false">|</mo></mrow><mo>=</mo><mfrac><mrow><mo stretchy="false">|</mo><mi>a</mi><mo stretchy="false">|</mo></mrow><mrow><mo stretchy="false">|</mo><mi>b</mi><mo stretchy="false">|</mo></mrow></mfrac><mo>=</mo><mn>1</mn></mrow></math>, which is sufficient to show that <math id="S2.p10.m7" class="ltx_Math" alttext="\mathbb{H}^{1}" display="inline"><msup><mi>ℍ</mi><mn>1</mn></msup></math> is a subgroup of <math id="S2.p10.m8" class="ltx_Math" alttext="\mathbb{H}" display="inline"><mi>ℍ</mi></math>.</p>
+</div>
+<div id="S2.p11" class="ltx_para">
+<p class="ltx_p">Topologically, the unit quaternions are homeomorphic to the <math id="S2.p11.m1" class="ltx_Math" alttext="3" display="inline"><mn>3</mn></math>-sphere <math id="S2.p11.m2" class="ltx_Math" alttext="S^{3}" display="inline"><msup><mi>S</mi><mn>3</mn></msup></math>, since they are the set of points of unit length in <math id="S2.p11.m3" class="ltx_Math" alttext="\mathbb{R}^{4}" display="inline"><msup><mi>ℝ</mi><mn>4</mn></msup></math>. This turns the <math id="S2.p11.m4" class="ltx_Math" alttext="3" display="inline"><mn>3</mn></math>-sphere into a Lie group, isomorphic to <math id="S2.p11.m5" class="ltx_Math" alttext="SU(2)" display="inline"><mrow><mi>S</mi><mo>⁢</mo><mi>U</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></mrow></math> through identification with their matrices of form <a href="#E6" title="In 6.2 Quaternions ‣ Chapter 6 Appendix ‣ Visualisations in Geometry" class="ltx_ref"><span class="ltx_text ltx_ref_tag">6.6</span></a>.</p>
+</div>
+</section>
+</section>
+</div>
+<footer class="ltx_page_footer">
+<div class="ltx_align_center">
+<a href="Ch5.html" title="In Visualisations in Geometry" class="ltx_ref" rel="prev"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">5 </span>Conclusions</span></a><a href="bib.html" title="In Visualisations in Geometry" class="ltx_ref" rel="bibliography"><span class="ltx_text ltx_ref_title">Bibliography</span></a><a href="bib.html" title="In Visualisations in Geometry" class="ltx_ref" rel="next"><span class="ltx_text ltx_ref_title">Bibliography</span></a>
+</div>
+<div class="ltx_page_logo">Generated  on Mon Mar 23 11:47:33 2026 by <a href="http://dlmf.nist.gov/LaTeXML/" class="ltx_LaTeXML_logo"><span style="letter-spacing:-0.2em; margin-right:0.1em;">L<span class="ltx_font_smallcaps" style="position:relative; bottom:2.2pt;">a</span>T<span class="ltx_font_smallcaps" style="font-size:120%;position:relative; bottom:-0.2ex;">e</span></span><span style="font-size:90%; position:relative; bottom:-0.2ex;">XML</span><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAOCAYAAAD5YeaVAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9wKExQZLWTEaOUAAAAddEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIFRoZSBHSU1Q72QlbgAAAdpJREFUKM9tkL+L2nAARz9fPZNCKFapUn8kyI0e4iRHSR1Kb8ng0lJw6FYHFwv2LwhOpcWxTjeUunYqOmqd6hEoRDhtDWdA8ApRYsSUCDHNt5ul13vz4w0vWCgUnnEc975arX6ORqN3VqtVZbfbTQC4uEHANM3jSqXymFI6yWazP2KxWAXAL9zCUa1Wy2tXVxheKA9YNoR8Pt+aTqe4FVVVvz05O6MBhqUIBGk8Hn8HAOVy+T+XLJfLS4ZhTiRJgqIoVBRFIoric47jPnmeB1mW/9rr9ZpSSn3Lsmir1fJZlqWlUonKsvwWwD8ymc/nXwVBeLjf7xEKhdBut9Hr9WgmkyGEkJwsy5eHG5vN5g0AKIoCAEgkEkin0wQAfN9/cXPdheu6P33fBwB4ngcAcByHJpPJl+fn54mD3Gg0NrquXxeLRQAAwzAYj8cwTZPwPH9/sVg8PXweDAauqqr2cDjEer1GJBLBZDJBs9mE4zjwfZ85lAGg2+06hmGgXq+j3+/DsixYlgVN03a9Xu8jgCNCyIegIAgx13Vfd7vdu+FweG8YRkjXdWy329+dTgeSJD3ieZ7RNO0VAXAPwDEAO5VKndi2fWrb9jWl9Esul6PZbDY9Go1OZ7PZ9z/lyuD3OozU2wAAAABJRU5ErkJggg==" alt="Mascot Sammy"></a>
+</div></footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Chapter 1 Introduction ‣ Visualisations in Geometry</title>
+<!--Generated on Mon Mar 23 11:47:33 2026 by LaTeXML (version 0.8.8) http://dlmf.nist.gov/LaTeXML/.-->
+<!--Document created on March 16, 2026.-->
+
+<link rel="stylesheet" href="LaTeXML.css" type="text/css">
+<link rel="stylesheet" href="ltx-report.css" type="text/css">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="src/styles/styles.css" type="text/css">
+<link rel="stylesheet" href="latexml_addin/navbar-left.css" type="text/css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script src="src/lib/p5/p5.min.js"></script>
+<script src="src/lib/linalg.js"></script>
+<script src="src/lib/vertex_sets.js"></script>
+<script src="src/lib/helper.js"></script>
+<script src="src/lib/shader_src.js"></script>
+<link rel="up" href="main.html" title="Visualisations in Geometry">
+<link rel="start" href="main.html" title="Visualisations in Geometry">
+<link rel="prev" href="Chx1.html" title="Declaration ‣ Visualisations in Geometry">
+<link rel="next" href="Ch2.html" title="Chapter 2 Visualisation Techniques ‣ Visualisations in Geometry">
+<link rel="chapter" href="Chx1.html" title="Declaration ‣ Visualisations in Geometry">
+<link rel="chapter" href="Ch2.html" title="Chapter 2 Visualisation Techniques ‣ Visualisations in Geometry">
+<link rel="chapter" href="Ch3.html" title="Chapter 3 Visualising 𝑆⁢𝑂⁢(3) ‣ Visualisations in Geometry">
+<link rel="chapter" href="Ch4.html" title="Chapter 4 Visualising 𝑆⁢𝑈⁢(2) ‣ Visualisations in Geometry">
+<link rel="chapter" href="Ch5.html" title="Chapter 5 Conclusions ‣ Visualisations in Geometry">
+<link rel="chapter" href="Ch6.html" title="Chapter 6 Appendix ‣ Visualisations in Geometry">
+<link rel="bibliography" href="bib.html" title="Bibliography ‣ Visualisations in Geometry">
+</head>
+<body>
+<nav class="ltx_page_navbar"><a href="main.html" title="" class="ltx_ref" rel="start"><span class="ltx_text ltx_ref_title">Visualisations in Geometry</span></a>
+<nav class="ltx_TOC">
+<ol class="ltx_toclist">
+<li class="ltx_tocentry ltx_tocentry_chapter"><a href="Chx1.html" title="In Visualisations in Geometry" class="ltx_ref"><span class="ltx_text ltx_ref_title">Declaration</span></a></li>
+<li class="ltx_tocentry ltx_tocentry_chapter ltx_ref_self"><span class="ltx_ref ltx_ref_self"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">1 </span>Introduction</span></span></li>
+<li class="ltx_tocentry ltx_tocentry_chapter"><a href="Ch2.html" title="In Visualisations in Geometry" class="ltx_ref"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">2 </span>Visualisation Techniques</span></a></li>
+<li class="ltx_tocentry ltx_tocentry_chapter"><a href="Ch3.html" title="In Visualisations in Geometry" class="ltx_ref"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">3 </span>Visualising <math class="ltx_Math" alttext="SO(3)" display="inline"><mrow><mi>S</mi><mo>⁢</mo><mi>O</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>3</mn><mo stretchy="false">)</mo></mrow></mrow></math></span></a></li>
+<li class="ltx_tocentry ltx_tocentry_chapter"><a href="Ch4.html" title="In Visualisations in Geometry" class="ltx_ref"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">4 </span>Visualising <math class="ltx_Math" alttext="SU(2)" display="inline"><mrow><mi>S</mi><mo>⁢</mo><mi>U</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></mrow></math></span></a></li>
+<li class="ltx_tocentry ltx_tocentry_chapter"><a href="Ch5.html" title="In Visualisations in Geometry" class="ltx_ref"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">5 </span>Conclusions</span></a></li>
+<li class="ltx_tocentry ltx_tocentry_chapter"><a href="Ch6.html" title="In Visualisations in Geometry" class="ltx_ref"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">6 </span>Appendix</span></a></li>
+<li class="ltx_tocentry ltx_tocentry_bibliography"><a href="bib.html" title="In Visualisations in Geometry" class="ltx_ref"><span class="ltx_text ltx_ref_title">Bibliography</span></a></li>
+</ol></nav>
+</nav>
+<div class="ltx_page_main">
+<header class="ltx_page_header">
+<div class="ltx_align_center">
+<a href="main.html" title="" class="ltx_ref" rel="up"><span class="ltx_text ltx_ref_title">Visualisations in Geometry</span></a><a href="Chx1.html" title="In Visualisations in Geometry" class="ltx_ref" rel="prev"><span class="ltx_text ltx_ref_title">Declaration</span></a><a href="Ch2.html" title="In Visualisations in Geometry" class="ltx_ref" rel="next"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">2 </span>Visualisation Techniques</span></a>
+</div></header>
+<div class="ltx_page_content">
+<section class="ltx_chapter ltx_authors_1line">
+<h1 class="ltx_title ltx_title_chapter">
+<span class="ltx_tag ltx_tag_chapter">Chapter 1 </span>Introduction</h1>
+
+<div id="p1" class="ltx_para ltx_noindent">
+<p class="ltx_p"><span class="ltx_rule" style="width:433.6pt;height:1.0pt;background:black;display:inline-block;"> </span></p>
+</div>
+<div id="p2" class="ltx_para ltx_noindent">
+<p class="ltx_p">This document has both a PDF version, and an interactive online version, available at <a href="https://otislaundon.com/Articles/Visualisations%20in%20Geometry/main.html" title="" class="ltx_ref ltx_url ltx_font_typewriter">https://otislaundon.com/Articles/Visualisations%20in%20Geometry/main.html</a>. Whilst there are images in the PDF version that show single frames of the interactive visualisations, the reader is highly encouraged to open the interactive version.</p>
+</div>
+<div id="p3" class="ltx_para ltx_noindent">
+<p class="ltx_p"><span class="ltx_rule" style="width:433.6pt;height:1.0pt;background:black;display:inline-block;"> </span></p>
+</div>
+<div id="p4" class="ltx_para ltx_noindent">
+<p class="ltx_p">The Lie groups <math id="p4.m1" class="ltx_Math" alttext="SO(3)" display="inline"><mrow><mi>S</mi><mo>⁢</mo><mi>O</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>3</mn><mo stretchy="false">)</mo></mrow></mrow></math> and <math id="p4.m2" class="ltx_Math" alttext="SU(2)" display="inline"><mrow><mi>S</mi><mo>⁢</mo><mi>U</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></mrow></math>, and the relationship between them as groups and their corresponding Lie algebras, are a good showcase for many general concepts encountered in the study of Lie groups. They also find applications in a wide range of fields, from computer graphics <cite class="ltx_cite ltx_citemacro_cite">[<a href="bib.html#bib15" title="Quaternions for computer graphics" class="ltx_ref">VIN21</a>]</cite> to physics <cite class="ltx_cite ltx_citemacro_cite">[<a href="bib.html#bib13" title="Mathematical gauge theory. With applications to the standard model of particle physics" class="ltx_ref">HAM17</a>, <a href="bib.html#bib9" title="Geometry, topology and physics" class="ltx_ref">NAK03</a>, <a href="bib.html#bib22" title="Topology, geometry and gauge fields" class="ltx_ref">NAB10</a>]</cite>. There are several aspects of these groups for which we create interactive visualisations, which can be accessed in a web browser. These visualisations are embedded into the document as if they are just regular figures, except rather than being still images, they are rendered in real time according to the inputs of the user. We visualise the topologies of <math id="p4.m3" class="ltx_Math" alttext="SO(3)" display="inline"><mrow><mi>S</mi><mo>⁢</mo><mi>O</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>3</mn><mo stretchy="false">)</mo></mrow></mrow></math> and <math id="p4.m4" class="ltx_Math" alttext="SU(2)" display="inline"><mrow><mi>S</mi><mo>⁢</mo><mi>U</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></mrow></math> individually as well as the fact that <math id="p4.m5" class="ltx_Math" alttext="SU(2)" display="inline"><mrow><mi>S</mi><mo>⁢</mo><mi>U</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></mrow></math> is the universal cover of <math id="p4.m6" class="ltx_Math" alttext="SO(3)" display="inline"><mrow><mi>S</mi><mo>⁢</mo><mi>O</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>3</mn><mo stretchy="false">)</mo></mrow></mrow></math>, showing how <math id="p4.m7" class="ltx_Math" alttext="SU(2)" display="inline"><mrow><mi>S</mi><mo>⁢</mo><mi>U</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></mrow></math> maps onto <math id="p4.m8" class="ltx_Math" alttext="SO(3)" display="inline"><mrow><mi>S</mi><mo>⁢</mo><mi>O</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>3</mn><mo stretchy="false">)</mo></mrow></mrow></math>, how paths in <math id="p4.m9" class="ltx_Math" alttext="SO(3)" display="inline"><mrow><mi>S</mi><mo>⁢</mo><mi>O</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>3</mn><mo stretchy="false">)</mo></mrow></mrow></math> lift to paths in <math id="p4.m10" class="ltx_Math" alttext="SU(2)" display="inline"><mrow><mi>S</mi><mo>⁢</mo><mi>U</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></mrow></math>, and that the fundamental group of <math id="p4.m11" class="ltx_Math" alttext="SO(3)" display="inline"><mrow><mi>S</mi><mo>⁢</mo><mi>O</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>3</mn><mo stretchy="false">)</mo></mrow></mrow></math> is <math id="p4.m12" class="ltx_Math" alttext="\mathbb{Z}/2\mathbb{Z}" display="inline"><mrow><mrow><mi>ℤ</mi><mo>/</mo><mn>2</mn></mrow><mo>⁢</mo><mi>ℤ</mi></mrow></math>. We also visualise the left, right, and conjugation self-actions of <math id="p4.m13" class="ltx_Math" alttext="SO(3)" display="inline"><mrow><mi>S</mi><mo>⁢</mo><mi>O</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>3</mn><mo stretchy="false">)</mo></mrow></mrow></math> and <math id="p4.m14" class="ltx_Math" alttext="SU(2)" display="inline"><mrow><mi>S</mi><mo>⁢</mo><mi>U</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></mrow></math> interactively.</p>
+</div>
+<div id="p5" class="ltx_para">
+<p class="ltx_p">We begin with an introduction to the visualisation technique of domain colouring, typically used for complex functions of one variable, and how it relates to the notion of the graph of a function. We then expand on the technique of domain colouring in a way that uses unordered pairs of colours visualised using checkerboard patterns. This takes us from the <math id="p5.m1" class="ltx_Math" alttext="3" display="inline"><mn>3</mn></math>-dimensional space of colours, to the <math id="p5.m2" class="ltx_Math" alttext="6" display="inline"><mn>6</mn></math>-dimensional space of unordered pairs of colours, which makes it possible to faithfully represent some maps that cannot be using standard domain colouring. Having these techniques at our disposal, as well as standard capabilities of computer graphics for <math id="p5.m3" class="ltx_Math" alttext="3" display="inline"><mn>3</mn></math>D rendering, we then show in detail the geometric, topological, and algebraic properties of <math id="p5.m4" class="ltx_Math" alttext="SO(3)" display="inline"><mrow><mi>S</mi><mo>⁢</mo><mi>O</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>3</mn><mo stretchy="false">)</mo></mrow></mrow></math> and <math id="p5.m5" class="ltx_Math" alttext="SU(2)" display="inline"><mrow><mi>S</mi><mo>⁢</mo><mi>U</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></mrow></math>.</p>
+</div>
+<div id="p6" class="ltx_para">
+<p class="ltx_p">A significant amount of work was put into developing a method and workflow for creating a <span class="ltx_text ltx_LaTeX_logo" style="letter-spacing:-0.2em; margin-right:0.1em;">L<span class="ltx_text" style="position:relative; bottom:0.4ex;font-variant:small-caps;;">a</span>T<span class="ltx_text" style="position:relative; bottom:-0.2ex;font-variant:small-caps;font-size:120%;">e</span>X</span>document which can be compiled to both a PDF and an HTML version, such that the figures present in the PDF version come to life in the HTML version as interactive visualisations. This was achieved through the use of the program LaTeXML <cite class="ltx_cite ltx_citemacro_cite">[<a href="bib.html#bib23" title="LaTeXML the manual" class="ltx_ref">MIL24</a>]</cite>, with some customisation to allow the images in figures to be replaced with HTML canvases, controlled by JavaScript files.</p>
+</div>
+<div id="p7" class="ltx_para">
+<p class="ltx_p">Throughout this document, we will assume background knowledge knowledge of various areas of mathematics, and use standard definitions from general and algebraic topology from Armstrong <cite class="ltx_cite ltx_citemacro_cite">[<a href="bib.html#bib2" title="Basic topology" class="ltx_ref">ARM83</a>]</cite>, Munkres <cite class="ltx_cite ltx_citemacro_cite">[<a href="bib.html#bib3" title="Topology" class="ltx_ref">MUN00</a>]</cite>, and Hatcher <cite class="ltx_cite ltx_citemacro_cite">[<a href="bib.html#bib4" title="Algebraic topology" class="ltx_ref">HAT02</a>]</cite>, and differential geometry, including manifolds and Lie groups from Hamilton <cite class="ltx_cite ltx_citemacro_cite">[<a href="bib.html#bib13" title="Mathematical gauge theory. With applications to the standard model of particle physics" class="ltx_ref">HAM17</a>]</cite> and Hall <cite class="ltx_cite ltx_citemacro_cite">[<a href="bib.html#bib5" title="Lie groups, Lie algebras, and representations. An elementary introduction" class="ltx_ref">HAL15</a>]</cite>. Since a significant portion of the content in this document is about Lie groups, some of the basic definitions and constructions used for Lie groups and Lie algebras is included in the appendix <a href="Ch6.html" title="Chapter 6 Appendix ‣ Visualisations in Geometry" class="ltx_ref"><span class="ltx_text ltx_ref_tag">6</span></a>.</p>
+</div>
+</section>
+</div>
+<footer class="ltx_page_footer">
+<div class="ltx_align_center">
+<a href="Chx1.html" title="In Visualisations in Geometry" class="ltx_ref" rel="prev"><span class="ltx_text ltx_ref_title">Declaration</span></a><a href="bib.html" title="In Visualisations in Geometry" class="ltx_ref" rel="bibliography"><span class="ltx_text ltx_ref_title">Bibliography</span></a><a href="Ch2.html" title="In Visualisations in Geometry" class="ltx_ref" rel="next"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">2 </span>Visualisation Techniques</span></a>
+</div>
+<div class="ltx_page_logo">Generated  on Mon Mar 23 11:47:33 2026 by <a href="http://dlmf.nist.gov/LaTeXML/" class="ltx_LaTeXML_logo"><span style="letter-spacing:-0.2em; margin-right:0.1em;">L<span class="ltx_font_smallcaps" style="position:relative; bottom:2.2pt;">a</span>T<span class="ltx_font_smallcaps" style="font-size:120%;position:relative; bottom:-0.2ex;">e</span></span><span style="font-size:90%; position:relative; bottom:-0.2ex;">XML</span><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAOCAYAAAD5YeaVAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9wKExQZLWTEaOUAAAAddEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIFRoZSBHSU1Q72QlbgAAAdpJREFUKM9tkL+L2nAARz9fPZNCKFapUn8kyI0e4iRHSR1Kb8ng0lJw6FYHFwv2LwhOpcWxTjeUunYqOmqd6hEoRDhtDWdA8ApRYsSUCDHNt5ul13vz4w0vWCgUnnEc975arX6ORqN3VqtVZbfbTQC4uEHANM3jSqXymFI6yWazP2KxWAXAL9zCUa1Wy2tXVxheKA9YNoR8Pt+aTqe4FVVVvz05O6MBhqUIBGk8Hn8HAOVy+T+XLJfLS4ZhTiRJgqIoVBRFIoric47jPnmeB1mW/9rr9ZpSSn3Lsmir1fJZlqWlUonKsvwWwD8ymc/nXwVBeLjf7xEKhdBut9Hr9WgmkyGEkJwsy5eHG5vN5g0AKIoCAEgkEkin0wQAfN9/cXPdheu6P33fBwB4ngcAcByHJpPJl+fn54mD3Gg0NrquXxeLRQAAwzAYj8cwTZPwPH9/sVg8PXweDAauqqr2cDjEer1GJBLBZDJBs9mE4zjwfZ85lAGg2+06hmGgXq+j3+/DsixYlgVN03a9Xu8jgCNCyIegIAgx13Vfd7vdu+FweG8YRkjXdWy329+dTgeSJD3ieZ7RNO0VAXAPwDEAO5VKndi2fWrb9jWl9Esul6PZbDY9Go1OZ7PZ9z/lyuD3OozU2wAAAABJRU5ErkJggg==" alt="Mascot Sammy"></a>
+</div></footer>
+</div>
+</body>
+</html>
