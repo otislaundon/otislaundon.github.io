@@ -123,7 +123,6 @@ let sketch_PathLiftTrivial = new p5((p) => {
 			p.setAnnotationPos3(p.lab_a, a_pos, [15,-12]);
 		p.pop(); // end scene
 
-		p.t = (p.t + p.deltaTime/5000)%1;
 		p.lab_t.innerHTML = "t = "+p.t.toFixed(2);
     }
 
