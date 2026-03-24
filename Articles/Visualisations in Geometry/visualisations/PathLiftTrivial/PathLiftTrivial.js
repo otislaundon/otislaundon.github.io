@@ -53,7 +53,7 @@ let sketch_PathLiftTrivial = new p5((p) => {
 		p.lab_t = p.createAnnotation(130,70,"\\(t={}\\)");
 		p.lab_x0 = p.createAnnotation(0,0,"\\(x_0\\)");
 		p.lab_a = p.createAnnotation(0,0,"\\(\\alpha^2(t)\\)");
-		p.lab_atil = p.createAnnotation(0,0,"\\(\\tilde{\\alpha}^2(t)\\)");
+		p.lab_atil = p.createAnnotation(0,0,"\\(\\tilde{\\alpha^2}(t)\\)");
 
 		// create controls panel
 		p.animate = true;
