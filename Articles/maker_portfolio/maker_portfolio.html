@@ -5,6 +5,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Otis Laundon's Blog</title>
+	<style>
+		.tooltip{
+			position:relative;
+			display: inline-block;
+		}
+		.tooltiptext{
+			width:100%;
+			height:100%;
+			position:absolute;
+			left:0;
+			top:0;
+			z-index:1;
+			visibility: hidden;
+		}
+		.tooltip:hover .tooltiptext {
+  			visibility: visible;
+		}
+		mark{
+			background-color: #000000ff;
+			color: white;
+			padding-inline:6px;
+			  box-decoration-break: clone;
+		}
+	</style>
+
 </head>
 <body>
     <header>
@@ -13,28 +38,74 @@
     <div class="page-container">
         <div class="article-content-wide">
             <h1>Maker Portfolio</h1>
-			Below are assembled images, of things that I have physically made. Hover over each image to see a description.
+				<p>Below are assembled images of things that I have physically made. </p>
+				<ul>
+					<li>Hover over each image to see a description.</li>
+					<li>Click an image to open a full size version.</li>
+				</ul>
 				<h2>Sewing</h2>
-				<img src="res/white shirt.jpg" style="max-width:420px; max-height:280px">
-				<img src="res/red shirt - finished.jpg" style="max-height:280px">
-				<img src="res/corduroy jacket.jpg" style="max-width:420px; max-height:280px">
-				<img src="res/camera bag.jpg" style="max-width:420px; max-height:280px">
+				<a class="tooltip" target="_blank" href="res/white shirt.jpg">
+					<img src="res/white shirt.jpg" style="max-width:420px; max-height:280px">
+					<span class="tooltiptext"><mark>2024 - A shirt made from calico with 3D printed buttons.</mark></span>
+				</a>
+				<a class="tooltip" target="_blank" href="res/red shirt - finished.jpg">
+					<img src="res/red shirt - finished.jpg" style="max-height:280px">
+					<span class="tooltiptext"><mark>2025 - A shirt jacket made from unknown heavy weight red fabric (found in a charity shop on Leith Walk in Edinburgh) with wooden buttons. Pattern designed from scratch.</mark></span>
+				</a>
+				<a class="tooltip" target="_blank" href="res/corduroy jacket.jpg">
+					<img src="res/corduroy jacket.jpg" style="max-width:420px; max-height:280px">
+					<span class="tooltiptext"><mark>2025 - A corduroy shirt jacket made as a christmas gift for my brother. Wooden buttons. Pattern based on the one used for the red shirt jacket.</mark></span>
+				</a>
+				<a class="tooltip" target="_blank" href="res/camera bag.jpg">
+					<img src="res/camera bag.jpg" style="max-width:420px; max-height:280px">
+					<span class="tooltiptext"><mark>2024 - Padded camera bag made almost entirely from recycled materials. Waterproof outer fabric, zippers, straps, hardware, all salvaged from a foldable dog kennel. Pattern designed from scratch.</mark></span>
+				</a>
 
 				<h2>Objects</h2>
-				<img src="res/watch - full.jpg" width="420px">
-				<img src="res/watch - angled face.jpg" width="420px">
+				<a class="tooltip" target="_blank" href="res/watch - full.jpg">
+					<img src="res/watch - full.jpg" width="420px">
+					<span class="tooltiptext"><mark>2025 - 3D printed watch casing, and cotton fabric strap, fastened with 3D printed button. 3D model for the red plastic case designed in Blender. Metal pieces used to attach strap salvaged from a broken computer case. Watch mechanism found in a charity shop in Edinburgh.</mark></span>
+				</a>
+				<a class="tooltip" target="_blank" href="res/watch - angled face.jpg">
+					<img src="res/watch - angled face.jpg" width="420px">
+					<span class="tooltiptext"><mark>See other photo...</mark></span>
+				</a>
 
-				<img src="res/spoons - top.jpg" width="420px">
-				<img src="res/spoons - angled.jpg" width="420px">
+				<a class="tooltip" target="_blank" href="res/spoons - top.jpg">
+					<img src="res/spoons - top.jpg" width="420px">
+					<span class="tooltiptext"><mark>Left: 2024 - hand-carved spoon, made from offcut of mahogany from the Anstruther Fisheries Museum boatyard. Right: 2020 - hand-carved folding flip-spoon made from similar offcuts.</mark></span>
+				</a>
+				<a class="tooltip" target="_blank" href="res/spoons - angled.jpg">
+					<img src="res/spoons - angled.jpg" width="420px">
+					<span class="tooltiptext"><mark>See other photo...</mark></span>
+				</a>
 
-				<img src="res/chinese chequers.jpg" width="420px">
+				<a class="tooltip" target="_blank" href="res/chinese chequers.jpg">
+					<img src="res/chinese chequers.jpg" width="420px">
+					<span class="tooltiptext"><mark>2024 - Chinese chequers game CNC milled from MDF offcut. Pieces made from metal dowels, painted with enamel paint. Made as a gift for my mum.</mark></span>
+				</a>
 				<h2>DIY</h2>
-				<img src="res/blackboard.jpg" style="max-height:280px" title="Blackboard made from an MDF board, painted with blackboard paint, and framed with a recycled wooden bed frame. Used during my mathematics undergraduate.">
+				<a class="tooltip" target="_blank" href="res/blackboard.jpg">
+					<img src="res/blackboard.jpg" style="max-height:280px">
+					<span class="tooltiptext"><mark>2024 - Blackboard made from an MDF board, painted with blackboard paint, and framed with a recycled wooden bed frame. Used during my mathematics undergraduate.</mark></span>
+				</a>
 
-				<img src="res/floor sanded - partial.jpg" style="max-height:280px" >
-				<img src="res/floor sanded - big room.jpg"style="max-height:280px" >
-				<img src="res/floor sanded - small room.jpg" style="max-height:280px">
-				<img src="res/pallet table.jpg" style="max-height:280px">
+				<a class="tooltip" target="_blank" href="res/floor sanded - partial.jpg">
+					<img src="res/floor sanded - partial.jpg" style="max-height:280px" >
+					<span class="tooltiptext"><mark>2026 - Drum-sander floor sanding, initial progress with 40 grid sandpaper.</mark></span>
+				</a>
+				<a class="tooltip" target="_blank" href="res/floor sanded - big room.jpg">
+					<img src="res/floor sanded - big room.jpg"style="max-height:280px" >
+					<span class="tooltiptext"><mark>2026 - Drum-sander and edge-sander used to sand entire room. Result after passes with 40, 80, and 120 grid paper.</mark></span>
+				</a>
+				<a class="tooltip" target="_blank" href="res/floor sanded - small room.jpg">
+					<img src="res/floor sanded - small room.jpg" style="max-height:280px">
+					<span class="tooltiptext"><mark>Thank you for looking at my maker portfolio! I appreciate people taking interest in the things I make!</mark></span>
+				</a>
+				<a class="tooltip" target="_blank" href="res/pallet table.jpg">
+					<img src="res/pallet table.jpg" style="max-height:280px">
+					<span class="tooltiptext"><mark>2026 - Table made from recycled pallets. After our picnic table rotted, and with a gardening event fast-approaching, a new table was needed quickly.</mark></span>
+				</a>
 
         </div>
         </div>
