@@ -55,6 +55,10 @@ footer{
     background-color: #ffffff11;
 
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+	border: 1px solid #00000000;
+}
+.card:hover{
+	border: 1px solid white;
 }
 .card-image{
     width:360px;
