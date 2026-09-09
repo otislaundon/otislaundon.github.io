@@ -40,14 +40,17 @@ footer{
     width: auto;
     
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(240px, 360px));
     grid-gap: 12px;
 
     margin-bottom: 20px;
 }
 .card{
     padding: 0px;
-    width: 360px;
+	max-width: 100%;
+
+	display: inline-block;
+	position: relative;
 
     color:white;
     text-decoration: none;
@@ -61,7 +64,7 @@ footer{
 	border: 1px solid white;
 }
 .card-image{
-    width:360px;
+	width:100%;
 }
 .card-content{
     padding: 10px 24px;
